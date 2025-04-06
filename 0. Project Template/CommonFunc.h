@@ -9,7 +9,12 @@
 #include<sstream>
 #include<SDL_mixer.h>
 using namespace std;
+	
+static SDL_Window* gWindow = NULL;
+static SDL_Renderer* gRenderer = NULL;
+static SDL_Event e;
+	
+// Screen 
 
-void in() {
-	cout << "1111";
-}
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;

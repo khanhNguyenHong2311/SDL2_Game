@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\FileName.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:FileName.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\BaseObject.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:BaseObject.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\BaseObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:BaseObject.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\CommonFunc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:CommonFunc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\CommonFunc.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -18,32 +30,72 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "CommonFunc.h",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\CommonFunc.h",
               "RelativeDocumentMoniker": "CommonFunc.h",
               "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\CommonFunc.h",
               "RelativeToolTip": "CommonFunc.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-04-05T13:53:02.944Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CommonFunc.cpp",
+              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\CommonFunc.cpp",
+              "RelativeDocumentMoniker": "CommonFunc.cpp",
+              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\CommonFunc.cpp",
+              "RelativeToolTip": "CommonFunc.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-06T07:20:16.473Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "FileName.cpp",
-              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\FileName.cpp",
-              "RelativeDocumentMoniker": "FileName.cpp",
-              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\FileName.cpp*",
-              "RelativeToolTip": "FileName.cpp*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAGAAAAAAAAAA==",
+              "Title": "Main.cpp",
+              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Main.cpp",
+              "RelativeDocumentMoniker": "Main.cpp",
+              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Main.cpp*",
+              "RelativeToolTip": "Main.cpp*",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAAFIAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-29T01:22:08.488Z",
+              "WhenOpened": "2025-04-06T06:54:33.272Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BaseObject.cpp",
+              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\BaseObject.cpp",
+              "RelativeDocumentMoniker": "BaseObject.cpp",
+              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\BaseObject.cpp",
+              "RelativeToolTip": "BaseObject.cpp",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAE4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-06T06:13:01.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BaseObject.h",
+              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\BaseObject.h",
+              "RelativeDocumentMoniker": "BaseObject.h",
+              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\BaseObject.h",
+              "RelativeToolTip": "BaseObject.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-06T01:56:00.321Z",
               "EditorCaption": ""
             }
           ]
