@@ -1,13 +1,6 @@
 #pragma once
-#include<iostream>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <stdio.h>
-#include <string>
-#include <cmath>
-#include<sstream>
-#include<SDL_mixer.h>
+#include"Library.h"
+
 using namespace std;
 	
 static SDL_Window* gWindow = NULL;
@@ -16,5 +9,13 @@ static SDL_Event e;
 	
 // Screen 
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 640 ;
+const int SCREEN_HEIGHT = 512;
+
+// Map
+
+#define TILE_SIZE 64
+#define MAX_SIZE_MAP_X 400
+#define MAX_SIZE_MAP_Y 10
+#define MAX_TILES 20
+

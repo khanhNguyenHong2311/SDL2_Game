@@ -1,9 +1,14 @@
 #define SDL_MAIN_HANDLE
+#include"Library.h"
 #include"CommonFunc.h"
 #include"BaseObject.h"
+#include"Map.h"
 using namespace std;
 
+
 BaseObject gBackGround;
+
+
 bool init() {
 	bool success = true;
 
@@ -40,6 +45,7 @@ bool init() {
 }
 
 
+
 void close() {
 	gBackGround.free();
 
@@ -51,6 +57,9 @@ void close() {
 	IMG_Quit();
 	SDL_Quit();
 }
+
+
+
 bool LoadBackground() {
 	bool success = true;
 	if (!gBackGround.loadFromFile("image/background.jpg", gRenderer)) {
@@ -61,31 +70,37 @@ bool LoadBackground() {
 }
 
 
+
 int main(int argc, char* args[]) {
+
 	if (!init()) {
 		cout << "Failed to initialize !" << endl;
+		return -1;
 	}
-	else {
-		if (!LoadBackground()) {
-			cout << "Failed to load background !" << endl;
-		}
-		else {
-			bool quit = false;
-			while (!quit) {
-				while (SDL_PollEvent(&e) != 0) {
-					if (e.type == SDL_QUIT) {
-						quit = true;
-					}
-				}
 
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF,0xFF);
-				SDL_RenderClear(gRenderer);
-				gBackGround.render(0,0, gRenderer);
-				SDL_RenderPresent(gRenderer);
+	if (!LoadBackground()) {
+		cout << "Failed to load background !" << endl;
+		return -1;
+	}
+
+	Map game_map;
+	game_map.LoadMap("map/map01.txt");
+	game_map.LoadTiles(gRenderer);
+
+	bool quit = false;
+	while (!quit) {
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT) {
+				quit = true;
 			}
 		}
+
+		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF,0xFF);
+		SDL_RenderClear(gRenderer);
+		gBackGround.render(0,0, gRenderer);
+		game_map.DrawMap(gRenderer);
+		SDL_RenderPresent(gRenderer);
 	}
 	close();
 	return 0;
 }
-// khanh dep trai 

@@ -1,2 +1,7 @@
-﻿  Main.cpp
+﻿  BaseObject.cpp
+  CommonFunc.cpp
+  Main.cpp
+  MainCharacter.cpp
+  Map.cpp
+  Generating Code...
   0. Project Template.vcxproj -> C:\Users\hp\Documents\SDL2_Game\0. Project Template\x64\Debug\0. Project Template.exe
