@@ -130,17 +130,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseObject.cpp" />
-    <ClCompile Include="CommonFunc.cpp" />
+    <ClCompile Include="LTexture.cpp" />
+    <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainCharacter.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseObject.h" />
-    <ClInclude Include="CommonFunc.h" />
+    <ClInclude Include="LTexture.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="Library.h" />
-    <ClInclude Include="MainCharacter.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

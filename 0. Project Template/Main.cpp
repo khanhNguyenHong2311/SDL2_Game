@@ -1,12 +1,14 @@
 #define SDL_MAIN_HANDLE
 #include"Library.h"
-#include"CommonFunc.h"
-#include"BaseObject.h"
+#include"Globals.h"
+#include"LTexture.h"
 #include"Map.h"
 using namespace std;
 
 
-BaseObject gBackGround;
+LTexture gBackGround1;
+LTexture gBackGround2;
+LTexture gBackGround3;
 
 
 bool init() {
@@ -47,8 +49,9 @@ bool init() {
 
 
 void close() {
-	gBackGround.free();
-
+	gBackGround1.free();
+	gBackGround2.free();
+	gBackGround3.free();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
@@ -60,10 +63,18 @@ void close() {
 
 
 
-bool LoadBackground() {
+bool LoadBackGround() {
 	bool success = true;
-	if (!gBackGround.loadFromFile("image/background.jpg", gRenderer)) {
-		cout<<"Failed to load image/background.jpg "<<endl;
+	if (!gBackGround1.loadFromFile("image/background/BG1.png", gRenderer)) {
+		cout<<"Failed to load image/background/BG1.png "<<endl;
+		success = false;
+	}
+	if (!gBackGround2.loadFromFile("image/background/BG2.png", gRenderer)) {
+		cout << "Failed to load image/background/BG2.png " << endl;
+		success = false;
+	}
+	if (!gBackGround3.loadFromFile("image/background/BG3.png", gRenderer)) {
+		cout << "Failed to load image/background/BG3.png " << endl;
 		success = false;
 	}
 	return success;
@@ -78,14 +89,12 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 
-	if (!LoadBackground()) {
+	if (!LoadBackGround()) {
 		cout << "Failed to load background !" << endl;
 		return -1;
 	}
 
-	Map game_map;
-	game_map.LoadMap("map/map01.txt");
-	game_map.LoadTiles(gRenderer);
+
 
 	bool quit = false;
 	while (!quit) {
@@ -97,8 +106,9 @@ int main(int argc, char* args[]) {
 
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF,0xFF);
 		SDL_RenderClear(gRenderer);
-		gBackGround.render(0,0, gRenderer);
-		game_map.DrawMap(gRenderer);
+		gBackGround1.render(0,0, gRenderer);
+		gBackGround2.render(0, 0, gRenderer);
+		gBackGround3.render(0, 0, gRenderer);
 		SDL_RenderPresent(gRenderer);
 	}
 	close();
