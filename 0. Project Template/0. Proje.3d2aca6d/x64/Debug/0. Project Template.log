@@ -1,4 +1,5 @@
-﻿  Main.cpp
-  Map.cpp
-  Generating Code...
+﻿  Globals.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(9,16): warning C4091: 'typedef ': ignored on left of 'Motion' when no variable is declared
+  (compiling source file 'Globals.cpp')
+  
   0. Project Template.vcxproj -> C:\Users\hp\Documents\SDL2_Game\0. Project Template\x64\Debug\0. Project Template.exe

@@ -1,3 +1,4 @@
+#include"Globals.h"
 #include"Library.h"
 #include<SDL_mixer.h>
 #include"LTexture.h"

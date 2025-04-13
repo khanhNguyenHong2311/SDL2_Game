@@ -6,10 +6,6 @@
 using namespace std;
 
 
-LTexture gBackGround1;
-LTexture gBackGround2;
-LTexture gBackGround3;
-
 
 bool init() {
 	bool success = true;
@@ -49,9 +45,7 @@ bool init() {
 
 
 void close() {
-	gBackGround1.free();
-	gBackGround2.free();
-	gBackGround3.free();
+	gLoadBackGround.free();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
@@ -63,23 +57,13 @@ void close() {
 
 
 
-bool LoadBackGround() {
+bool LoadMedia() {
 	bool success = true;
-	if (!gBackGround1.loadFromFile("image/background/BG1.png", gRenderer)) {
-		cout<<"Failed to load image/background/BG1.png "<<endl;
-		success = false;
-	}
-	if (!gBackGround2.loadFromFile("image/background/BG2.png", gRenderer)) {
-		cout << "Failed to load image/background/BG2.png " << endl;
-		success = false;
-	}
-	if (!gBackGround3.loadFromFile("image/background/BG3.png", gRenderer)) {
-		cout << "Failed to load image/background/BG3.png " << endl;
-		success = false;
-	}
+
+	gLoadBackGround.loadFromFile("image/background/background.jpg", gRenderer);
+	gLoadMainCharacter.loadFromFile("image/character/maincharacter/RUN_STAND.png", gRenderer);
 	return success;
 }
-
 
 
 int main(int argc, char* args[]) {
@@ -89,7 +73,7 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 
-	if (!LoadBackGround()) {
+	if (!LoadMedia()) {
 		cout << "Failed to load background !" << endl;
 		return -1;
 	}
@@ -102,13 +86,14 @@ int main(int argc, char* args[]) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
+			gMainCharacter.handleMotion(e);
 		}
 
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF,0xFF);
 		SDL_RenderClear(gRenderer);
-		gBackGround1.render(0,0, gRenderer);
-		gBackGround2.render(0, 0, gRenderer);
-		gBackGround3.render(0, 0, gRenderer);
+		gLoadBackGround.render(0, 0, gRenderer);
+		gMainCharacter.move();
+		gMainCharacter.render(gRenderer);
 		SDL_RenderPresent(gRenderer);
 	}
 	close();
