@@ -61,7 +61,12 @@ bool LoadMedia() {
 	bool success = true;
 
 	gLoadBackGround.loadFromFile("image/background/background.jpg", gRenderer);
-	gLoadMainCharacter.loadFromFile("image/character/maincharacter/RUN_STAND.png", gRenderer);
+	gLoadMainCharacter[RUN_RIGHT].loadFromFile("image/character/maincharacter/RUN_RIGHT.png", gRenderer);
+	gLoadMainCharacter[RUN_LEFT].loadFromFile("image/character/maincharacter/RUN_LEFT.png", gRenderer);
+	gLoadMainCharacter[STAND_RIGHT].loadFromFile("image/character/maincharacter/STAND_RIGHT.png", gRenderer);
+	gLoadMainCharacter[STAND_LEFT].loadFromFile("image/character/maincharacter/STAND_LEFT.png", gRenderer);
+	gGameMap.loadMap("map.txt");
+	gGameMap.loadTiles(gRenderer);
 	return success;
 }
 
@@ -91,9 +96,14 @@ int main(int argc, char* args[]) {
 
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF,0xFF);
 		SDL_RenderClear(gRenderer);
+		
 		gLoadBackGround.render(0, 0, gRenderer);
+		
+		gMainCharacter.setClips();
 		gMainCharacter.move();
 		gMainCharacter.render(gRenderer);
+
+		gGameMap.drawMap(gRenderer);
 		SDL_RenderPresent(gRenderer);
 	}
 	close();

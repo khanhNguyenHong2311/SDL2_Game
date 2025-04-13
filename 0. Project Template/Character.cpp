@@ -12,8 +12,15 @@ Character::Character() {
 	mVelY = 0;
 
 	isFacing = FACING_RIGHT ;
+
+	typeMotion.isStanding = true;
+
+	frameWidth = 192;
+	frameHeight = 192;
 	
 	frame = 0;
+
+	frameStand = 0;
 }
 
 void Character::handleMotion(SDL_Event& e) {
@@ -39,17 +46,49 @@ void Character::handleMotion(SDL_Event& e) {
 void Character::move() {
 	
 	mPosX += mVelX;
-	if (mPosX<0 || mPosX + CHARACTER_WIDTH  > SCREEN_WIDTH) {
+	if (mPosX < 0 || mPosX + frameWidth - 96  > SCREEN_WIDTH) {
 		mPosX -= mVelX;
 	}
 
 	mPosY += mVelY;
-	if (mPosY<0 || mPosY + CHARACTER_HEIGHT > SCREEN_HEIGHT) {
+	if (mPosY < 0 || mPosY + frameHeight - 48 > SCREEN_HEIGHT) {
 		mPosY -= mVelY;
 	}
 
 }
 
+
+
+
+void Character::setClips() {
+	
+	if (frameWidth > 0 && frameHeight > 0) {
+		for (int i = 0;i < 8;i++) {
+			frameClipsRunRight[i].x = i * frameWidth + 48 ;
+			frameClipsRunRight[i].y = 0;
+			frameClipsRunRight[i].w = frameWidth - 96  ;
+			frameClipsRunRight[i].h = frameHeight ;
+
+			frameClipsRunLeft[i].x =(7 - i )* frameWidth + 48;
+			frameClipsRunLeft[i].y = 0;
+			frameClipsRunLeft[i].w = frameWidth - 96;
+			frameClipsRunLeft[i].h = frameHeight;
+		}	
+
+		for (int i = 0;i < 7;i++) {
+			frameClipsStandRight[i].x = i * frameWidth + 48;
+			frameClipsStandRight[i].y = 0;
+			frameClipsStandRight[i].w = frameWidth - 96;
+			frameClipsStandRight[i].h = frameHeight;
+
+			frameClipsStandLeft[i].x = (6 - i) * frameWidth + 48;
+			frameClipsStandLeft[i].y = 0;
+			frameClipsStandLeft[i].w = frameWidth - 96;
+			frameClipsStandLeft[i].h = frameHeight;
+		}
+
+	}
+}
 
 
 void Character::render(SDL_Renderer* renderer) {
@@ -58,36 +97,62 @@ void Character::render(SDL_Renderer* renderer) {
 		frame++;
 		if (frame / 8 >= 8) {
 			frame = 0;
-
 		}
 	}
 	else {
+
 		frame = 0;
 	}
+		
+	SDL_Texture* currentTexture = NULL;
 
-	SDL_Rect* currentClip = NULL;
-
-	if (typeMotion.goLeft) {
-		isFacing = FACING_LEFT;
-		currentClip = &goLeftAnimations[frame / 8];
-	}
-	else if (typeMotion.goRight) {
+	if (typeMotion.goRight ) {
+		typeMotion.isStanding = false;
 		isFacing = FACING_RIGHT;
-		currentClip = &goRightAnimations[frame / 8];
+		currentTexture = gLoadMainCharacter[RUN_RIGHT].getTexture();
+	}
+	else if (typeMotion.goLeft) {
+		isFacing = FACING_LEFT;
+		typeMotion.isStanding = false;
+		currentTexture = gLoadMainCharacter[RUN_LEFT].getTexture();
 	}
 	else {
-		x ++;
-		if (x / 7 >= 7) {
-			x = 0;
+		typeMotion.isStanding = true;
+		if (isFacing == FACING_RIGHT) {
+			currentTexture = gLoadMainCharacter[STAND_RIGHT].getTexture();
 		}
 		if (isFacing == FACING_LEFT) {
-			currentClip = &standLeftAnimations[x / 8];
-		}
-		if (isFacing == FACING_RIGHT) {
-			currentClip = &standRightAnimations[x / 8];
+			currentTexture = gLoadMainCharacter[STAND_LEFT].getTexture();
 		}
 	}
-	gLoadMainCharacter.render(mPosX, mPosY,renderer, currentClip);
+	SDL_Rect* currentClip = NULL;
+
+	if (typeMotion.isStanding) {
+		
+		frameStand++;
+		if (frameStand / 7 >= 7) {
+			frameStand = 0;
+		}
+
+		if (isFacing == FACING_RIGHT) {
+			currentClip = &frameClipsStandRight[frameStand / 7];
+		}
+		else {
+			currentClip = &frameClipsStandLeft[frameStand / 7];
+		}
+	}
+	else {
+		if (isFacing == FACING_RIGHT) {
+			currentClip = &frameClipsRunRight[frame / 8];
+		}
+		else {
+			currentClip = &frameClipsRunLeft[frame / 8];
+		}
+	}
+	
+	SDL_Rect renderQuad = { mPosX ,mPosY,currentClip->w, currentClip->h };
+
+	SDL_RenderCopy(renderer, currentTexture, currentClip, &renderQuad);
 }
 
 

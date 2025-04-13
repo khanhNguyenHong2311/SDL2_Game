@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string>
 #include <cmath>
+#include<algorithm>
 #include<sstream>
 #include<fstream>
 using namespace std;
