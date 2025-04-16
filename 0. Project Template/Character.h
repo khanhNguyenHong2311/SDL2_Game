@@ -2,17 +2,24 @@
 #include"Globals.h"
 #include"Library.h"
 #include"LTexture.h"
- 
+#include"Map.h"
+
+#define CHARACTER_WIDTH 96
+#define CHARACTER_HEIGHT 192
+
+#define GRAVITY_SPEED 2
+#define MAX_GRAVITY_SPEED 4
 
 
 typedef struct Motion {
-	bool goUp, goDown, goLeft, goRight ,isStanding;
+	bool goUp, goDown, goLeft, goRight ,isStanding , isStandingOnGround;
 	Motion() {
 		goUp = false;
 		goDown = false;
 		goLeft = false;
 		goRight = false;
 		isStanding = false;
+		isStandingOnGround = false;
 	}
 };
 
@@ -50,9 +57,7 @@ private:
 	SDL_Rect frameClipsStandLeft[7];
 
 public:
-	//static const int CHARACTER_WIDTH = 70;
-	//static const int CHARACTER_HEIGHT = 70;
-	static const int CHARACTER_VEL = 10;
+	static const int CHARACTER_VEL = 8;
 
 
 	Character();
@@ -60,11 +65,11 @@ public:
 	
 	void handleMotion(SDL_Event& e);
 
-	void move();
-
 	void render(SDL_Renderer* renderer);
 	
 	void setClips();
+
+	void checkMapCollision();
 
 	int getPosX();
 	int getPosY();

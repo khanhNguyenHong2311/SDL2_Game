@@ -5,17 +5,14 @@
 
 
 
-#define TILE_SIZE 96
+#define TILE_SIZE 32
 #define MAX_TILES 20
 
 
-#define MAX_MAP_X 13
-#define MAX_MAP_Y 7
+#define MAX_MAP_X 39
+#define MAX_MAP_Y 20
 
-#define TILE_DIRT 0
-#define TILE_SURFACE_GRASS  1
-#define TILE_WALL 2
-#define TILE_BACK_WALL 3
+#define TILE_EMPTY 0
 
 
 
@@ -51,4 +48,8 @@ public:
 
 	void drawMap(SDL_Renderer* renderer);
 
+	int getValueOfTile(int x, int y);
+
+	int getMaxMapX();
+	int getMaxMapy();
 };

@@ -3,6 +3,9 @@
 #include"LTexture.h"
 #include"Map.h"
 
+int GameMap::getValueOfTile(int y , int x ) {
+	return tile[y][x];
+}
 
 void GameMap::loadMap(string pathFile) {
 	fstream fs;
@@ -85,7 +88,9 @@ void GameMap :: drawMap(SDL_Renderer* renderer) {
 }
 
 
-
-
-
-
+int GameMap::getMaxMapX() {
+	return max_map_x;
+}
+int GameMap::getMaxMapy() {
+	return max_map_y;
+}

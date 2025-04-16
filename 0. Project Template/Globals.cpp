@@ -6,4 +6,5 @@
 Character gMainCharacter;
 LTexture gLoadBackGround;
 LTexture gLoadMainCharacter[10];
+LTexture gLoadRunRightCharacter[8];
 GameMap gGameMap;

@@ -94,16 +94,14 @@ int main(int argc, char* args[]) {
 			gMainCharacter.handleMotion(e);
 		}
 
+		gMainCharacter.checkMapCollision();
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF,0xFF);
 		SDL_RenderClear(gRenderer);
-		
 		gLoadBackGround.render(0, 0, gRenderer);
-		
+		gGameMap.drawMap(gRenderer);
 		gMainCharacter.setClips();
-		gMainCharacter.move();
 		gMainCharacter.render(gRenderer);
 
-		gGameMap.drawMap(gRenderer);
 		SDL_RenderPresent(gRenderer);
 	}
 	close();

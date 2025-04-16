@@ -8,6 +8,7 @@
 extern Character gMainCharacter;
 extern LTexture gLoadBackGround;
 extern LTexture gLoadMainCharacter[10];
+extern LTexture gLoadRunRightCharacter[8];
 extern GameMap gGameMap;
 
 static SDL_Window* gWindow = NULL;
@@ -18,7 +19,7 @@ static SDL_Event e;
 // Screen 
 
 const int SCREEN_WIDTH = 1248 ;
-const int SCREEN_HEIGHT = 656;
+const int SCREEN_HEIGHT = 640;
 
 
 
