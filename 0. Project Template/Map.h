@@ -9,7 +9,7 @@
 #define MAX_TILES 20
 
 
-#define MAX_MAP_X 39
+#define MAX_MAP_X 78
 #define MAX_MAP_Y 20
 
 #define TILE_EMPTY 0
@@ -50,6 +50,12 @@ public:
 
 	int getValueOfTile(int x, int y);
 
+	void setCameraX(int val );
+	void setCameraY(int val );
+
+	int getCameraX();
+	int getCameraY();
+
 	int getMaxMapX();
-	int getMaxMapy();
+	int getMaxMapY();
 };

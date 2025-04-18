@@ -87,10 +87,23 @@ void GameMap :: drawMap(SDL_Renderer* renderer) {
 	}
 }
 
+void GameMap::setCameraX(int val ) {
+	camera_x = val;
+}
+void GameMap::setCameraY(int val ) {
+	camera_y = val;
+}
+
+int GameMap::getCameraX() {
+	return camera_x;
+}
+int GameMap::getCameraY() {
+	return camera_y;
+}
 
 int GameMap::getMaxMapX() {
 	return max_map_x;
 }
-int GameMap::getMaxMapy() {
+int GameMap::getMaxMapY() {
 	return max_map_y;
 }

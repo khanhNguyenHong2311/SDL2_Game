@@ -74,6 +74,7 @@ public:
 	int getPosX();
 	int getPosY();
 
+	void CenterEntityOnMap();
 
 };
 

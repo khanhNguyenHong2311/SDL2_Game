@@ -16,7 +16,7 @@ Character::Character() {
 
 	typeMotion.isStanding = true;
 
-	frameWidth = 90;
+	frameWidth = 70;
 	frameHeight = 80 ;
 	
 	frame = 0;
@@ -36,6 +36,7 @@ void Character::handleMotion(SDL_Event& e) {
 		switch (e.key.keysym.sym) {
 		case SDLK_LEFT:mVelX -= CHARACTER_VEL; typeMotion.goLeft = true; break;
 		case SDLK_RIGHT:mVelX += CHARACTER_VEL; typeMotion.goRight = true; break;
+		case SDLK_UP:mVelY -= CHARACTER_VEL;typeMotion.goUp = true;break;
 		}
 	}
 
@@ -43,6 +44,7 @@ void Character::handleMotion(SDL_Event& e) {
 		switch (e.key.keysym.sym) {
 		case SDLK_LEFT:mVelX += CHARACTER_VEL; typeMotion.goLeft = false ; break;
 		case SDLK_RIGHT:mVelX -= CHARACTER_VEL; typeMotion.goRight = false; break;
+		case SDLK_UP: mVelY += CHARACTER_VEL;typeMotion.goUp = false; break;
 		}
 	}
 }
@@ -72,26 +74,19 @@ void Character::checkMapCollision() {
 				mVelX = -8;
 			}
 		}
-	} 
-	//x1y1        x2y1
-  	//
-	//
-	//x1y2        x2y2
+	}
 
-
-	int widthMin = min(frameWidth, TILE_SIZE);
 	x1 = mPosX / TILE_SIZE;
-	x2 = (mPosX + widthMin - 1) / TILE_SIZE;
+	x2 = (mPosX + frameWidth - 1) / TILE_SIZE;
 
 	y1 = (mPosY + mVelY) / TILE_SIZE;
 	y2 = (mPosY + mVelY + frameHeight - 1) / TILE_SIZE;
 
 	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
 		if (mVelY > 0) {
-			cout << x1 << " " << x2 << " " << y1 << " " << y2 << endl;
 			if (gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
 				mPosY = y2 * TILE_SIZE;
-				mPosY -= frameHeight ;
+				mPosY -= frameHeight + 1 ;
 				mVelY = 0;
 				gMainCharacter.typeMotion.isStandingOnGround = true;
 			}
@@ -112,9 +107,8 @@ void Character::checkMapCollision() {
 		mPosX = 0;
 	}
 	else if (mPosX + frameWidth > gGameMap.getMaxMapX()) {
-		mPosX = gGameMap.getMaxMapX() - frameWidth + 1;
+		mPosX = gGameMap.getMaxMapX() - frameWidth - 1;
 	}
-	
 }
 
 
@@ -210,11 +204,31 @@ void Character::render(SDL_Renderer* renderer) {
 		}
 	}
 	
-	SDL_Rect renderQuad = { mPosX ,mPosY,currentClip->w, currentClip->h };
+	SDL_Rect renderQuad = { mPosX - gGameMap.getCameraX(),mPosY - gGameMap.getCameraY(),currentClip->w, currentClip->h};
 
 	SDL_RenderCopy(renderer, currentTexture, currentClip, &renderQuad);
 }
 
+
+void Character::CenterEntityOnMap() {
+	
+	gGameMap.setCameraX(mPosX - (SCREEN_WIDTH / 2));
+	if (gGameMap.getCameraX() < 0) {
+		gGameMap.setCameraX(0);
+	}
+	else if (gGameMap.getCameraX() + SCREEN_WIDTH >= gGameMap.getMaxMapX()) {
+		gGameMap.setCameraX(gGameMap.getMaxMapX() - SCREEN_WIDTH);
+	}
+
+	gGameMap.setCameraY(mPosY - (SCREEN_HEIGHT / 2));
+	if (gGameMap.getCameraY() < 0) {
+		gGameMap.setCameraY(0);
+	}
+	else if (gGameMap.getCameraY() + SCREEN_HEIGHT >= gGameMap.getMaxMapY()) {
+		gGameMap.setCameraY(gGameMap.getMaxMapY()-SCREEN_HEIGHT);
+	}
+
+}
 
 int Character::getPosX() {
 	return mPosX;
