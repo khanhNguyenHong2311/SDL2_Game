@@ -28,14 +28,13 @@ Character::Character() {
 void Character::handleMotion(SDL_Event& e) {
 
 
-
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
 		switch (e.key.keysym.sym) {
 		case SDLK_LEFT:mVelX -= CHARACTER_VEL; typeMotion.goLeft = true; break;
 		case SDLK_RIGHT:mVelX += CHARACTER_VEL; typeMotion.goRight = true; break;
-		case SDLK_UP:typeMotion.goUp = true;
+		case SDLK_UP:
 			if (typeMotion.isStandingOnGround) {
-				mVelY = -CHARACTER_VEL_JUMP; 
+				mVelY = -CHARACTER_VEL_JUMP;
 				typeMotion.isStandingOnGround = false;
 			}
 			break;
@@ -48,10 +47,13 @@ void Character::handleMotion(SDL_Event& e) {
 		case SDLK_RIGHT:mVelX -= CHARACTER_VEL; typeMotion.goRight = false; break;
 		}
 	}
+	cout << typeMotion.goUp << endl;
 }
 
 void Character::checkMapCollision() {
 	
+	typeMotion.isStandingOnGround = false;
+
 	mVelY += GRAVITY_SPEED;
 	if (mVelY > MAX_GRAVITY_SPEED) {
 		mVelY = MAX_GRAVITY_SPEED;
@@ -230,6 +232,22 @@ void Character::CenterEntityOnMap() {
 	}
 
 }
+
+void Character::FallingInTheHole() {
+
+	if (mPosY > gGameMap.getMaxMapY()) {
+		Respawn();
+		CenterEntityOnMap();
+	}
+}
+
+
+void Character::Respawn() {
+	mPosX = mPosX - 3*TILE_SIZE;
+	mPosY = SCREEN_HEIGHT / 5;
+}
+
+
 
 int Character::getPosX() {
 	return mPosX;

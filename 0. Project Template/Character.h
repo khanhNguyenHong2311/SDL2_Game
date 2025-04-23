@@ -16,7 +16,7 @@
 
 
 typedef struct Motion {
-	bool goUp, goDown, goLeft, goRight ,isStanding , isStandingOnGround;
+	bool goUp, goDown, goLeft, goRight ,isStanding ,isStandingOnGround ,attack;
 	Motion() {
 		goUp = false;
 		goDown = false;
@@ -24,6 +24,7 @@ typedef struct Motion {
 		goRight = false;
 		isStanding = false;
 		isStandingOnGround = false;
+		attack = false;
 	}
 };
 
@@ -77,6 +78,9 @@ public:
 	int getPosY();
 
 	void CenterEntityOnMap();
+
+	void FallingInTheHole();
+	void Respawn();
 
 };
 

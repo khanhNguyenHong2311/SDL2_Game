@@ -93,6 +93,7 @@ int main(int argc, char* args[]) {
 		}
 
 		gMainCharacter.checkMapCollision();
+		gMainCharacter.FallingInTheHole();
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF,0xFF);
 		SDL_RenderClear(gRenderer);
 		gLoadBackGround.render(0, 0, gRenderer);
