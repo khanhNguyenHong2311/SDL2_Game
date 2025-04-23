@@ -15,9 +15,10 @@ Character::Character() {
 	isFacing = FACING_RIGHT ;
 
 	typeMotion.isStanding = true;
+	typeMotion.isStandingOnGround = false;
 
-	frameWidth = 70;
-	frameHeight = 80 ;
+	frameWidth = CHARACTER_WIDTH;
+	frameHeight = CHARACTER_HEIGHT;
 	
 	frame = 0;
 
@@ -25,53 +26,54 @@ Character::Character() {
 }
 
 void Character::handleMotion(SDL_Event& e) {
-	
-	mVelY += GRAVITY_SPEED;
-	if (mVelY > MAX_GRAVITY_SPEED) {
-		mVelY = MAX_GRAVITY_SPEED;
-	}
-	
+
+
 
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
 		switch (e.key.keysym.sym) {
 		case SDLK_LEFT:mVelX -= CHARACTER_VEL; typeMotion.goLeft = true; break;
 		case SDLK_RIGHT:mVelX += CHARACTER_VEL; typeMotion.goRight = true; break;
-		case SDLK_UP:mVelY -= CHARACTER_VEL;typeMotion.goUp = true;break;
+		case SDLK_UP:typeMotion.goUp = true;
+			if (typeMotion.isStandingOnGround) {
+				mVelY = -CHARACTER_VEL_JUMP; 
+				typeMotion.isStandingOnGround = false;
+			}
+			break;
 		}
 	}
 
-	else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
+	else if (e.type == SDL_KEYUP && e.key.repeat == 0) {	
 		switch (e.key.keysym.sym) {
-		case SDLK_LEFT:mVelX += CHARACTER_VEL; typeMotion.goLeft = false ; break;
+		case SDLK_LEFT:mVelX += CHARACTER_VEL; typeMotion.goLeft = false; break;
 		case SDLK_RIGHT:mVelX -= CHARACTER_VEL; typeMotion.goRight = false; break;
-		case SDLK_UP: mVelY += CHARACTER_VEL;typeMotion.goUp = false; break;
 		}
 	}
 }
 
 void Character::checkMapCollision() {
-
-
-	int heightMin = min(frameHeight, TILE_SIZE);
+	
+	mVelY += GRAVITY_SPEED;
+	if (mVelY > MAX_GRAVITY_SPEED) {
+		mVelY = MAX_GRAVITY_SPEED;
+	}
 
 	int x1 = (mPosX + mVelX) / TILE_SIZE;
 	int x2 = (mPosX + mVelX + frameWidth - 1) / TILE_SIZE;
 
 	int y1 = mPosY / TILE_SIZE;
-	int y2 = (mPosY + heightMin - 1) / TILE_SIZE;
+	int y2 = (mPosY + frameHeight - 1) / TILE_SIZE;
 
 	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
 		if (mVelX > 0) {
 			if (gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
-				mPosX = x2 * TILE_SIZE;
-				mPosX -= frameWidth +1 ;
-				mVelX = 8;
+				mPosX = x2 * TILE_SIZE - frameWidth - 8;
+				mVelX = CHARACTER_VEL;
 			}
 		}
 		else if (mVelX < 0) {
 			if (gGameMap.getValueOfTile(y1, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY) {
-				mPosX = (x1 + 1) * TILE_SIZE;
-				mVelX = -8;
+				mPosX = (x1 + 1) * TILE_SIZE + 8 ;
+				mVelX = - CHARACTER_VEL;
 			}
 		}
 	}
@@ -85,10 +87,9 @@ void Character::checkMapCollision() {
 	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
 		if (mVelY > 0) {
 			if (gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
-				mPosY = y2 * TILE_SIZE;
-				mPosY -= frameHeight + 1 ;
+				mPosY = y2 * TILE_SIZE - frameHeight ;
 				mVelY = 0;
-				gMainCharacter.typeMotion.isStandingOnGround = true;
+				typeMotion.isStandingOnGround = true;
 			}
 		}
 		else if (mVelY < 0) {

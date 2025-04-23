@@ -5,12 +5,12 @@
 
 
 
-#define TILE_SIZE 32
+#define TILE_SIZE 80
 #define MAX_TILES 20
 
 
-#define MAX_MAP_X 78
-#define MAX_MAP_Y 20
+#define MAX_MAP_X 36
+#define MAX_MAP_Y 8
 
 #define TILE_EMPTY 0
 

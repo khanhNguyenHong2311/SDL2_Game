@@ -18,7 +18,7 @@ static SDL_Event e;
 	
 // Screen 
 
-const int SCREEN_WIDTH = 1248 ;
+const int SCREEN_WIDTH = 1200 ;
 const int SCREEN_HEIGHT = 640;
 
 

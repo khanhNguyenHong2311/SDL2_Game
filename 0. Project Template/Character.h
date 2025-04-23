@@ -4,11 +4,15 @@
 #include"LTexture.h"
 #include"Map.h"
 
-#define CHARACTER_WIDTH 96
-#define CHARACTER_HEIGHT 192
+#define CHARACTER_WIDTH 80
+#define CHARACTER_HEIGHT 80
 
-#define GRAVITY_SPEED 2
-#define MAX_GRAVITY_SPEED 4
+#define CHARACTER_VEL 8
+#define CHARACTER_VEL_JUMP 22
+
+
+#define GRAVITY_SPEED 1
+#define MAX_GRAVITY_SPEED 10
 
 
 typedef struct Motion {
@@ -57,8 +61,6 @@ private:
 	SDL_Rect frameClipsStandLeft[7];
 
 public:
-	static const int CHARACTER_VEL = 8;
-
 
 	Character();
 	~Character() { ; }
