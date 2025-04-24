@@ -7,8 +7,7 @@
 // gClass
 extern Character gMainCharacter;
 extern LTexture gLoadBackGround;
-extern LTexture gLoadMainCharacter[10];
-extern LTexture gLoadRunRightCharacter[8];
+extern LTexture gLoadMainCharacter[15];
 extern GameMap gGameMap;
 
 static SDL_Window* gWindow = NULL;

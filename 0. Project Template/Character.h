@@ -16,15 +16,24 @@
 
 
 typedef struct Motion {
-	bool goUp, goDown, goLeft, goRight ,isStanding ,isStandingOnGround ,attack;
+	bool goLeft, goRight, isStanding;
+
+	bool isStandingOnGround;
+	
+	bool isFallingIntoHole;
+
+	bool isAttacking;
+
 	Motion() {
-		goUp = false;
-		goDown = false;
 		goLeft = false;
 		goRight = false;
 		isStanding = false;
+
 		isStandingOnGround = false;
-		attack = false;
+
+		isFallingIntoHole = false;
+
+		isAttacking = false;
 	}
 };
 
@@ -35,6 +44,10 @@ enum status {
 	RUN_LEFT = 3,
 	STAND_RIGHT = 4 ,
 	STAND_LEFT =5,
+	JUMP_LEFT = 6,
+	JUMP_RIGHT = 7,
+	ATTACK_RIGHT = 8,
+	ATTACK_LEFT = 9
 };
 
 
@@ -53,13 +66,26 @@ private:
 
 	int frameStand;
 
+	int frameJump;
+
+	int frameAttack;
+
 	int frameWidth, frameHeight;
+
+	int timeRespawn;
 
 	SDL_Rect frameClipsRunRight[8];
 	SDL_Rect frameClipsRunLeft[8];
 
 	SDL_Rect frameClipsStandRight[7];
 	SDL_Rect frameClipsStandLeft[7];
+
+	SDL_Rect frameClipsJumpRight[5];
+	SDL_Rect frameClipsJumpLeft[5];
+
+	SDL_Rect frameClipsAttackRight[6];
+	SDL_Rect frameClipsAttackLeft[6];
+
 
 public:
 
@@ -80,7 +106,6 @@ public:
 	void CenterEntityOnMap();
 
 	void FallingInTheHole();
-	void Respawn();
 
 };
 

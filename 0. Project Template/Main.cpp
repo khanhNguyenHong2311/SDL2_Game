@@ -63,6 +63,10 @@ bool LoadMedia() {
 	gLoadMainCharacter[RUN_LEFT].loadFromFile("image/character/maincharacter/RUN_LEFT.png", gRenderer);
 	gLoadMainCharacter[STAND_RIGHT].loadFromFile("image/character/maincharacter/STAND_RIGHT.png", gRenderer);
 	gLoadMainCharacter[STAND_LEFT].loadFromFile("image/character/maincharacter/STAND_LEFT.png", gRenderer);
+	gLoadMainCharacter[JUMP_RIGHT].loadFromFile("image/character/maincharacter/JUMP_RIGHT.png", gRenderer);
+	gLoadMainCharacter[JUMP_LEFT].loadFromFile("image/character/maincharacter/JUMP_LEFT.png", gRenderer);
+	gLoadMainCharacter[ATTACK_RIGHT].loadFromFile("image/character/maincharacter/ATTACK_RIGHT.png", gRenderer);
+	gLoadMainCharacter[ATTACK_LEFT].loadFromFile("image/character/maincharacter/ATTACK_LEFT.png", gRenderer);
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);
 	return success;
