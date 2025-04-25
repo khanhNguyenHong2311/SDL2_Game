@@ -1,7 +1,8 @@
-#define SDL_MAIN_HANDLE
+﻿#define SDL_MAIN_HANDLE
 #include"Library.h"
 #include"Globals.h"
 #include"LTexture.h"
+#include"Enemies.h"
 #include"Map.h"
 using namespace std;
 
@@ -67,9 +68,27 @@ bool LoadMedia() {
 	gLoadMainCharacter[JUMP_LEFT].loadFromFile("image/character/maincharacter/JUMP_LEFT.png", gRenderer);
 	gLoadMainCharacter[ATTACK_RIGHT].loadFromFile("image/character/maincharacter/ATTACK_RIGHT.png", gRenderer);
 	gLoadMainCharacter[ATTACK_LEFT].loadFromFile("image/character/maincharacter/ATTACK_LEFT.png", gRenderer);
+	gLoadEnemiesCD[STAND_RIGHT_E].loadFromFile("image/character/enemies/CD_STAND_RIGHT.png", gRenderer);
+	gLoadEnemiesCD[STAND_LEFT_E].loadFromFile("image/character/enemies/CD_STAND_LEFT.png", gRenderer);
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);
 	return success;
+}
+
+
+vector<Enemies*> MakeEnemiesList() {
+
+	vector<Enemies*> listEnemies;	
+	for (int i = 0; i < 20; ++i) {
+		Enemies* p_enemies = new Enemies(); 
+		p_enemies->setClips();
+		p_enemies->setPosX(300 + i * 300);
+		p_enemies->setPosY(0);
+
+		listEnemies.push_back(p_enemies);
+	}
+
+	return listEnemies;
 }
 
 
@@ -85,7 +104,7 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 
-
+	vector<Enemies*> listEnemies = MakeEnemiesList();
 
 	bool quit = false;
 	while (!quit) {
@@ -104,12 +123,35 @@ int main(int argc, char* args[]) {
 		gGameMap.drawMap(gRenderer);
 		gMainCharacter.setClips();
 		gMainCharacter.CenterEntityOnMap();
+
+
+		for (int i = 0;i < listEnemies.size();i++) {
+			Enemies* p_enemies = listEnemies[i];
+			if (p_enemies != NULL) {
+				p_enemies->setCameraX(gGameMap.getCameraX());
+				p_enemies->setCameraY(gGameMap.getCameraY());
+				p_enemies->checkMapCollision();
+				p_enemies->moveTowardsMainCharacter();  
+				p_enemies->FallingInTheHole();
+				p_enemies->render(gRenderer);
+				
+			}
+		}
+
 		gMainCharacter.render(gRenderer);
 
 
 
 		SDL_RenderPresent(gRenderer);
 	}
+
+
+
+	for (auto x  : listEnemies) {
+		delete x;  
+	}
+
 	close();
+
 	return 0;
 }

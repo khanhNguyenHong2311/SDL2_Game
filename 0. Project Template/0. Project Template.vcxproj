@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemies.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Library.h" />

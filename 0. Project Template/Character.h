@@ -58,8 +58,6 @@ private:
 
 	int mVelX, mVelY;
 
-	int isFacing;
-
 	Motion typeMotion;
 
 	int frame;
@@ -69,6 +67,8 @@ private:
 	int frameJump;
 
 	int frameAttack;
+
+	int isFacing;
 
 	int frameWidth, frameHeight;
 
