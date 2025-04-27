@@ -2,7 +2,7 @@
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(18,16): warning C4091: 'typedef ': ignored on left of 'Motion' when no variable is declared
   (compiling source file 'Enemies.cpp')
   
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\Enemies.h(15,16): warning C4091: 'typedef ': ignored on left of 'MotionE' when no variable is declared
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Enemies.h(17,16): warning C4091: 'typedef ': ignored on left of 'MotionE_CD' when no variable is declared
   (compiling source file 'Enemies.cpp')
   
   0. Project Template.vcxproj -> C:\Users\hp\Documents\SDL2_Game\0. Project Template\x64\Debug\0. Project Template.exe

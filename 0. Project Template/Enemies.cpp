@@ -14,15 +14,19 @@ Enemies::Enemies() {
 
 	isFacing = FACING_LEFT;
 
-	typeMotion.isStanding = true;
-	typeMotion.isStandingOnGround = false;
-
 	frameWidth = ENEMIES_WIDTH;
 	frameHeight = ENEMIES_HEIGHT;
 
 	frame = 0;
+	frameStand = 0;
+	frameAttack = 0;
 
 	timeRespawn = 0;
+
+	timeStand = 200;
+
+	limitPosA = 0;
+	limitPosB = 0;
 }
 
 
@@ -30,6 +34,19 @@ Enemies::Enemies() {
 
 void Enemies::setClips() {
 	if (frameWidth > 0 && frameHeight > 0) {
+
+		for (int i = 0;i < 8;i++) {
+			frameClipsAttackRight[i].x = i * frameWidth;
+			frameClipsAttackRight[i].y = 0;
+			frameClipsAttackRight[i].w = frameWidth;
+			frameClipsAttackRight[i].h = frameHeight;
+
+			frameClipsAttackLeft[i].x = (7 - i) * frameWidth;
+			frameClipsAttackLeft[i].y = 0;
+			frameClipsAttackLeft[i].w = frameWidth;
+			frameClipsAttackLeft[i].h = frameHeight;
+		}
+
 		for (int i = 0;i < 9;i++) {
 			frameClipsStandRight[i].x = i * frameWidth;
 			frameClipsStandRight[i].y = 0;
@@ -41,10 +58,36 @@ void Enemies::setClips() {
 			frameClipsStandLeft[i].w = frameWidth;
 			frameClipsStandLeft[i].h = frameHeight;
 		}
+
+		for (int i = 0;i < 10;i++) {
+			frameClipsRunRight[i].x = i * frameWidth;
+			frameClipsRunRight[i].y = 0;
+			frameClipsRunRight[i].w = frameWidth;
+			frameClipsRunRight[i].h = frameHeight;
+
+			frameClipsRunLeft[i].x = (9 - i) * frameWidth;
+			frameClipsRunLeft[i].y = 0;
+			frameClipsRunLeft[i].w = frameWidth;
+			frameClipsRunLeft[i].h = frameHeight;
+		}
 	}
 }
 
 
+void Enemies::handleMotion() {
+
+	if (typeMotion.goRight) {
+		mVelX = ENEMIES_VEL;
+	}
+	else if (typeMotion.goLeft) {
+		mVelX = -ENEMIES_VEL;
+	}
+	else if (typeMotion.isStanding) {
+		mVelX = 0;
+	}
+
+	moveToCharacterIfInRange(gMainCharacter.getPosX(), gMainCharacter.getPosY());
+}
 
 
 
@@ -57,6 +100,7 @@ void Enemies::checkMapCollision() {
 		if (mVelY > ENEMIES_MAX_GRAVITY_SPEED) {
 			mVelY = ENEMIES_MAX_GRAVITY_SPEED;
 		}
+
 
 		int x1 = (mPosX + mVelX) / TILE_SIZE;
 		int x2 = (mPosX + mVelX + frameWidth - 1) / TILE_SIZE;
@@ -134,79 +178,104 @@ void Enemies::render(SDL_Renderer* renderer) {
 
 	// Use for all typeMotion
 	if (typeMotion.goRight) {
-		isFacing = FACING_RIGHT;
+		isFacing = FACING_RIGHT_E_CD;
 	}
 	else if (typeMotion.goLeft) {
-		isFacing = FACING_LEFT;
+		isFacing = FACING_LEFT_E_CD;
 	}
-	//
-	//if (typeMotion.isAttacking) {
-	//	frameAttack++;
-	//	if (frameAttack / 6 >= 6) {
-	//		frameAttack = 0;
-	//		typeMotion.isAttacking = false;
-	//	}
-
-	//	if (isFacing == FACING_RIGHT) {
-	//		currentTexture = gLoadMainCharacter[ATTACK_RIGHT].getTexture();
-	//		currentClip = &frameClipsAttackRight[frameAttack / 6];
-	//	}
-	//	else {
-	//		currentTexture = gLoadMainCharacter[ATTACK_LEFT].getTexture();
-	//		currentClip = &frameClipsAttackLeft[frameAttack / 6];
-	//	}
-	//}
-
-	//else if (!typeMotion.isStandingOnGround) {
-	//	typeMotion.isStanding = false;
-	//	frameJump++;
-	//	if (frameJump / 5 >= 5) { frameJump = 0; }
-	//	//if (typeMotion.goRight) {
-	//	//	isFacing = FACING_RIGHT;
-	//	//}
-	//	//else if (typeMotion.goLeft) {
-	//	//	isFacing = FACING_LEFT;
-	//	//}
-	//	if (isFacing == FACING_RIGHT) {
-	//		currentTexture = gLoadMainCharacter[JUMP_RIGHT].getTexture();
-	//		currentClip = &frameClipsJumpRight[frameJump / 5];
-	//	}
-	//	else {
-	//		currentTexture = gLoadMainCharacter[JUMP_LEFT].getTexture();
-	//		currentClip = &frameClipsJumpLeft[frameJump / 5];
-	//	}
-	//}
-
-	//else if (typeMotion.goRight) {
-	//	isFacing = FACING_RIGHT;
-	//	typeMotion.isStanding = false;
-	//	frame++;
-	//	if (frame / 8 >= 8) frame = 0;
-	//	currentTexture = gLoadMainCharacter[RUN_RIGHT].getTexture();
-	//	currentClip = &frameClipsRunRight[frame / 8];
-	//}
-	//else if (typeMotion.goLeft) {
-	//	isFacing = FACING_LEFT;
-	//	typeMotion.isStanding = false;
-	//	frame++;
-	//	if (frame / 8 >= 8) frame = 0;
-	//	currentTexture = gLoadMainCharacter[RUN_LEFT].getTexture();
-	//	currentClip = &frameClipsRunLeft[frame / 8];
-	//}
+	
+	if (typeMotion.isStandingOnGround) {
+		
+		
+		frame++;
+		if (frame / 10 >= 10) frame = 0;
 
 
-	if (1) {
-		typeMotion.isStanding = true;
-		frameStand++;
-		if (frameStand / 9 >= 9) frameStand = 0;
+		if (!typeMotion.isColliding) {
+			frameAttack = 0;
+		}
 
-		if (isFacing == FACING_RIGHT) {
-			currentTexture = gLoadEnemiesCD[STAND_RIGHT_E].getTexture();
-			currentClip = &frameClipsStandRight[frameStand / 9];
+
+		if (typeMotion.isColliding) {
+			typeMotion.goLeft = false;
+			typeMotion.goRight = false;
+			frameAttack++;
+			if (frameAttack / 8 >=  8) frameAttack = 0;
+			if (isFacing == FACING_RIGHT_E_CD) {
+				currentTexture = gLoadEnemiesCD[ATTACK_RIGHT_E_CD].getTexture();
+				currentClip = &frameClipsAttackRight[frameAttack / 8];
+			}
+			else if (isFacing == FACING_LEFT_E_CD ) {
+				currentTexture = gLoadEnemiesCD[ATTACK_LEFT_E_CD].getTexture();
+				currentClip = &frameClipsAttackLeft[frameAttack / 8];
+			}
+		}
+		else if ((mPosX == limitPosB && isFacing == FACING_RIGHT_E_CD) || (mPosX == limitPosA && isFacing == FACING_LEFT_E_CD)) {
+			frameStand++;
+			if (frameStand / 9 >= 9) frameStand = 0;
+			typeMotion.isStanding = true;
+			typeMotion.goLeft = false;
+			typeMotion.goRight = false;
+
+			timeStand--;
+			if (timeStand == 0) {
+				typeMotion.isStanding = false;
+				typeMotion.goLeft = (mPosX == limitPosB);
+				typeMotion.goRight = (mPosX == limitPosA);
+				timeStand = 200;
+			}
+			if (mPosX == limitPosB) {
+				currentTexture = gLoadEnemiesCD[STAND_RIGHT_E_CD].getTexture();
+				currentClip = &frameClipsStandRight[frameStand / 9];
+			}
+			else if (mPosX == limitPosA) {
+				currentTexture = gLoadEnemiesCD[STAND_LEFT_E_CD].getTexture();
+				currentClip = &frameClipsStandLeft[frameStand / 9];
+			}
+		}
+
+		else if (mPosX > limitPosB) {
+			typeMotion.goLeft = true;
+			typeMotion.goRight = false;
+			currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
+			currentClip = &frameClipsRunLeft[frame / 10];
+
+		}
+		else if (mPosX < limitPosA) {
+			typeMotion.goRight = true;
+			typeMotion.goLeft = false;
+			currentTexture = gLoadEnemiesCD[RUN_RIGHT_E_CD].getTexture();
+			currentClip = &frameClipsRunRight[frame / 10];
+
 		}
 		else {
-			currentTexture = gLoadEnemiesCD[STAND_LEFT_E].getTexture();
-			currentClip = &frameClipsStandLeft[frameStand / 9];
+			if (isFacing == FACING_LEFT) {
+				typeMotion.goLeft = true;
+				typeMotion.goRight = false;
+				currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
+				currentClip = &frameClipsRunLeft[frame / 10];
+			}
+			else {
+				typeMotion.goRight = true;
+				typeMotion.goLeft = false;
+				currentTexture = gLoadEnemiesCD[RUN_RIGHT_E_CD].getTexture();
+				currentClip = &frameClipsRunRight[frame / 10];
+			}
+		}
+	}
+
+	else {
+		if (isFacing == FACING_LEFT) {
+			typeMotion.goLeft = true;
+			typeMotion.goRight = false;
+			currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
+			currentClip = &frameClipsRunLeft[frame / 10];
+		}
+		else {
+			typeMotion.goRight = true;
+			typeMotion.goLeft = false;
+			currentTexture = gLoadEnemiesCD[RUN_RIGHT_E_CD].getTexture();
+			currentClip = &frameClipsRunRight[frame / 10];
 		}
 	}
 
@@ -217,12 +286,63 @@ void Enemies::render(SDL_Renderer* renderer) {
 }
 
 
+void Enemies::checkEnemyCollisionWithCharacter(int characterPosX , int characterPosY) {
 
-void Enemies::moveTowardsMainCharacter() {
+	SDL_Rect enemyCollider = { mPosX + (frameWidth - COLLIDER_WIDTH) / 2,mPosY + (frameHeight - COLLIDER_HEIGHT) / 2, COLLIDER_WIDTH , COLLIDER_HEIGHT };
+	SDL_Rect characterCollider = { characterPosX, characterPosY , CHARACTER_WIDTH , CHARACTER_HEIGHT };
 
+	int	rightCharacter = characterCollider.x + characterCollider.w;
+	int leftCharacter = characterCollider.x;
+	int topCharacter = characterCollider.y;
+	int bottomCharacter = characterCollider.y + characterCollider.h;
+
+
+	int	rightEnemy = enemyCollider.x + enemyCollider.w;
+	int leftEnemy = enemyCollider.x;
+	int topEnemy = enemyCollider.y;
+	int bottomEnemy = enemyCollider.y + enemyCollider.h;
+
+	if ((bottomCharacter <= topEnemy) || (topCharacter >= bottomEnemy) || (rightCharacter <= leftEnemy) || (leftCharacter >= rightEnemy)) {
+		typeMotion.isColliding = false;
+	}
+	else {
+		typeMotion.isColliding = true;
+	}
 }
 
 
+
+void Enemies::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
+	int enemyRow = mPosY / TILE_SIZE + 1;
+	int characterRow = characterPosY / TILE_SIZE;
+
+	if (!typeMotion.isChasing) {
+		if (characterPosX >= limitPosA && characterPosX <= limitPosB && enemyRow == characterRow) {
+			typeMotion.isChasing = true;
+		}
+	}
+
+	if (typeMotion.isChasing) {
+
+		if (typeMotion.isColliding) {
+			mVelX = 0; 
+		}
+		else if (characterPosX > mPosX) {
+			typeMotion.goRight = true;
+			typeMotion.goLeft = false;
+			mVelX = 3 * ENEMIES_VEL;
+		}
+		else if (characterPosX < mPosX) {
+			typeMotion.goRight = false;
+			typeMotion.goLeft = true;
+			mVelX = -3 * ENEMIES_VEL;
+		}
+	}
+
+	if (characterPosX < limitPosA || characterPosX > limitPosB || enemyRow != characterRow) {
+		typeMotion.isChasing = false;
+	}
+}
 
 void Enemies::FallingInTheHole() {
 	if (!typeMotion.isFallingIntoHole && mPosY > gGameMap.getMaxMapY()) {
@@ -230,6 +350,13 @@ void Enemies::FallingInTheHole() {
 		timeRespawn = 30;
 		isFacing = FACING_LEFT;
 	}
+}
+
+
+
+void Enemies::setLimitPos(int limitposa, int limitposb) {
+	limitPosA = limitposa;
+	limitPosB = limitposb;
 }
 
 

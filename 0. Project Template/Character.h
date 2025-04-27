@@ -8,7 +8,7 @@
 #define CHARACTER_HEIGHT 80
 
 #define CHARACTER_VEL 8
-#define CHARACTER_VEL_JUMP 22
+#define CHARACTER_VEL_JUMP 25
 
 
 #define GRAVITY_SPEED 1
@@ -47,7 +47,7 @@ enum status {
 	JUMP_LEFT = 6,
 	JUMP_RIGHT = 7,
 	ATTACK_RIGHT = 8,
-	ATTACK_LEFT = 9
+	ATTACK_LEFT = 9,
 };
 
 

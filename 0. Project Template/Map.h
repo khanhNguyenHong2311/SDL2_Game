@@ -9,7 +9,7 @@
 #define MAX_TILES 20
 
 
-#define MAX_MAP_X 72
+#define MAX_MAP_X 87
 #define MAX_MAP_Y 8
 
 #define TILE_EMPTY 0

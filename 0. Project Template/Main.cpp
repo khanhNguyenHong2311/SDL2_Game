@@ -68,23 +68,27 @@ bool LoadMedia() {
 	gLoadMainCharacter[JUMP_LEFT].loadFromFile("image/character/maincharacter/JUMP_LEFT.png", gRenderer);
 	gLoadMainCharacter[ATTACK_RIGHT].loadFromFile("image/character/maincharacter/ATTACK_RIGHT.png", gRenderer);
 	gLoadMainCharacter[ATTACK_LEFT].loadFromFile("image/character/maincharacter/ATTACK_LEFT.png", gRenderer);
-	gLoadEnemiesCD[STAND_RIGHT_E].loadFromFile("image/character/enemies/CD_STAND_RIGHT.png", gRenderer);
-	gLoadEnemiesCD[STAND_LEFT_E].loadFromFile("image/character/enemies/CD_STAND_LEFT.png", gRenderer);
+	gLoadEnemiesCD[STAND_RIGHT_E_CD].loadFromFile("image/character/enemies/CD_STAND_RIGHT.png", gRenderer);
+	gLoadEnemiesCD[STAND_LEFT_E_CD].loadFromFile("image/character/enemies/CD_STAND_LEFT.png", gRenderer);
+	gLoadEnemiesCD[RUN_LEFT_E_CD].loadFromFile("image/character/enemies/CD_RUN_LEFT.png", gRenderer);
+	gLoadEnemiesCD[RUN_RIGHT_E_CD].loadFromFile("image/character/enemies/CD_RUN_RIGHT.png", gRenderer);
+	gLoadEnemiesCD[ATTACK_RIGHT_E_CD].loadFromFile("image/character/enemies/CD_ATTACK_RIGHT.png", gRenderer);
+	gLoadEnemiesCD[ATTACK_LEFT_E_CD].loadFromFile("image/character/enemies/CD_ATTACK_LEFT.png", gRenderer);
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);
 	return success;
 }
 
 
-vector<Enemies*> MakeEnemiesList() {
+vector<Enemies*> MakeEnemiesList_CD() {
 
 	vector<Enemies*> listEnemies;	
-	for (int i = 0; i < 20; ++i) {
+	for (int i = 0; i < 1; ++i) {
 		Enemies* p_enemies = new Enemies(); 
 		p_enemies->setClips();
-		p_enemies->setPosX(300 + i * 300);
+		p_enemies->setPosX(0 + i * 2000);
 		p_enemies->setPosY(0);
-
+		p_enemies->setLimitPos(100, i * 500 + 1000);
 		listEnemies.push_back(p_enemies);
 	}
 
@@ -104,7 +108,7 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 
-	vector<Enemies*> listEnemies = MakeEnemiesList();
+	vector<Enemies*> listEnemies = MakeEnemiesList_CD();
 
 	bool quit = false;
 	while (!quit) {
@@ -130,11 +134,11 @@ int main(int argc, char* args[]) {
 			if (p_enemies != NULL) {
 				p_enemies->setCameraX(gGameMap.getCameraX());
 				p_enemies->setCameraY(gGameMap.getCameraY());
+				p_enemies->handleMotion();
 				p_enemies->checkMapCollision();
-				p_enemies->moveTowardsMainCharacter();  
+				p_enemies->checkEnemyCollisionWithCharacter(gMainCharacter.getPosX(), gMainCharacter.getPosY());
 				p_enemies->FallingInTheHole();
 				p_enemies->render(gRenderer);
-				
 			}
 		}
 

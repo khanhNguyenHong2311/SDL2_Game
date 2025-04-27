@@ -23,6 +23,9 @@ static SDL_Event e;
 const int SCREEN_WIDTH = 1200 ;
 const int SCREEN_HEIGHT = 640;
 
+// Collision
+const int COLLIDER_WIDTH = 80;
+const int COLLIDER_HEIGHT = 80;
 
 
 
