@@ -1,7 +1,7 @@
 #pragma once
 #include"Library.h"
 #include"Character.h"
-#include"Enemies.h"
+#include"EnemyCD.h"
 #include"LTexture.h"
 #include"Map.h"
 
@@ -11,7 +11,7 @@ extern LTexture gLoadBackGround;
 extern LTexture gLoadMainCharacter[15];
 extern LTexture gLoadEnemiesCD[15];
 extern GameMap gGameMap;
-extern Enemies gEnemies;
+extern vector<EnemyCD*> listEnemies;
 
 static SDL_Window* gWindow = NULL;
 static SDL_Renderer* gRenderer = NULL;

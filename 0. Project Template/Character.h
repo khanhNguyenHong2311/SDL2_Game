@@ -1,6 +1,7 @@
 #pragma once
 #include"Globals.h"
 #include"Library.h"
+#include"EnemyCD.h"
 #include"LTexture.h"
 #include"Map.h"
 
@@ -24,6 +25,13 @@ typedef struct Motion {
 
 	bool isAttacking;
 
+	bool isHurting;
+
+	bool attackSucces;
+
+	bool isCollidingWithEnemyCD;
+
+
 	Motion() {
 		goLeft = false;
 		goRight = false;
@@ -34,6 +42,12 @@ typedef struct Motion {
 		isFallingIntoHole = false;
 
 		isAttacking = false;
+
+		isHurting = false;
+
+		attackSucces = false;
+
+		isCollidingWithEnemyCD = false;
 	}
 };
 
@@ -48,6 +62,8 @@ enum status {
 	JUMP_RIGHT = 7,
 	ATTACK_RIGHT = 8,
 	ATTACK_LEFT = 9,
+	HURT_RIGHT = 10,
+	HURT_LEFT = 11,
 };
 
 
@@ -60,13 +76,12 @@ private:
 
 	Motion typeMotion;
 
-	int frame;
-
+	int frameRun;
 	int frameStand;
-
 	int frameJump;
-
 	int frameAttack;
+	int frameHurt;
+
 
 	int isFacing;
 
@@ -86,6 +101,8 @@ private:
 	SDL_Rect frameClipsAttackRight[6];
 	SDL_Rect frameClipsAttackLeft[6];
 
+	SDL_Rect frameClipsHurtRight[4];
+	SDL_Rect frameClipsHurtLeft[4];
 
 public:
 
@@ -107,5 +124,19 @@ public:
 
 	void FallingInTheHole();
 
+	void checkCharacterCollisionWithEnemyCD(int emnemyPosX, int enemyPosY);
+
+	void checkCharacterAttackedEnemyCD(EnemyCD* pEnemyCD);
+
+
+	void isHurting();
+
+	bool getAttackSuccess() {
+		return typeMotion.attackSucces;
+	}
+
+	void setAttackSucces(bool check) {
+		typeMotion.attackSucces = check;
+	}
 };
 

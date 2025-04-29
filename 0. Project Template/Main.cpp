@@ -2,7 +2,7 @@
 #include"Library.h"
 #include"Globals.h"
 #include"LTexture.h"
-#include"Enemies.h"
+#include"EnemyCD.h"
 #include"Map.h"
 using namespace std;
 
@@ -68,28 +68,34 @@ bool LoadMedia() {
 	gLoadMainCharacter[JUMP_LEFT].loadFromFile("image/character/maincharacter/JUMP_LEFT.png", gRenderer);
 	gLoadMainCharacter[ATTACK_RIGHT].loadFromFile("image/character/maincharacter/ATTACK_RIGHT.png", gRenderer);
 	gLoadMainCharacter[ATTACK_LEFT].loadFromFile("image/character/maincharacter/ATTACK_LEFT.png", gRenderer);
+	gLoadMainCharacter[HURT_LEFT].loadFromFile("image/character/maincharacter/HURT_LEFT.png", gRenderer);
+	gLoadMainCharacter[HURT_RIGHT].loadFromFile("image/character/maincharacter/HURT_RIGHT.png", gRenderer);
+
+
 	gLoadEnemiesCD[STAND_RIGHT_E_CD].loadFromFile("image/character/enemies/CD_STAND_RIGHT.png", gRenderer);
 	gLoadEnemiesCD[STAND_LEFT_E_CD].loadFromFile("image/character/enemies/CD_STAND_LEFT.png", gRenderer);
 	gLoadEnemiesCD[RUN_LEFT_E_CD].loadFromFile("image/character/enemies/CD_RUN_LEFT.png", gRenderer);
 	gLoadEnemiesCD[RUN_RIGHT_E_CD].loadFromFile("image/character/enemies/CD_RUN_RIGHT.png", gRenderer);
 	gLoadEnemiesCD[ATTACK_RIGHT_E_CD].loadFromFile("image/character/enemies/CD_ATTACK_RIGHT.png", gRenderer);
 	gLoadEnemiesCD[ATTACK_LEFT_E_CD].loadFromFile("image/character/enemies/CD_ATTACK_LEFT.png", gRenderer);
+	gLoadEnemiesCD[HURT_RIGHT_E_CD].loadFromFile("image/character/enemies/CD_HURT_LEFT.png", gRenderer);
+	gLoadEnemiesCD[HURT_LEFT_E_CD].loadFromFile("image/character/enemies/CD_HURT_RIGHT.png", gRenderer);
+
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);
 	return success;
 }
 
 
-vector<Enemies*> MakeEnemiesList_CD() {
+vector<EnemyCD*> MakeEnemyCDList() {
 
-	vector<Enemies*> listEnemies;	
 	for (int i = 0; i < 1; ++i) {
-		Enemies* p_enemies = new Enemies(); 
-		p_enemies->setClips();
-		p_enemies->setPosX(0 + i * 2000);
-		p_enemies->setPosY(0);
-		p_enemies->setLimitPos(100, i * 500 + 1000);
-		listEnemies.push_back(p_enemies);
+		EnemyCD* pEnemyCD = new EnemyCD();
+		pEnemyCD->setClips();
+		pEnemyCD->setPosX(0 + i * 2000);
+		pEnemyCD->setPosY(0);
+		pEnemyCD->setLimitPos(200, i * 500 + 1200);
+		listEnemies.push_back(pEnemyCD);
 	}
 
 	return listEnemies;
@@ -108,7 +114,7 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 
-	vector<Enemies*> listEnemies = MakeEnemiesList_CD();
+	vector<EnemyCD*> listEnemies = MakeEnemyCDList();
 
 	bool quit = false;
 	while (!quit) {
@@ -130,15 +136,17 @@ int main(int argc, char* args[]) {
 
 
 		for (int i = 0;i < listEnemies.size();i++) {
-			Enemies* p_enemies = listEnemies[i];
-			if (p_enemies != NULL) {
-				p_enemies->setCameraX(gGameMap.getCameraX());
-				p_enemies->setCameraY(gGameMap.getCameraY());
-				p_enemies->handleMotion();
-				p_enemies->checkMapCollision();
-				p_enemies->checkEnemyCollisionWithCharacter(gMainCharacter.getPosX(), gMainCharacter.getPosY());
-				p_enemies->FallingInTheHole();
-				p_enemies->render(gRenderer);
+			EnemyCD* pEnemyCD = listEnemies[i];
+			if (pEnemyCD != NULL) {
+				pEnemyCD->setCameraX(gGameMap.getCameraX());
+				pEnemyCD->setCameraY(gGameMap.getCameraY());
+				pEnemyCD->handleMotion();
+				pEnemyCD->checkMapCollision();
+				gMainCharacter.checkCharacterCollisionWithEnemyCD(pEnemyCD->getPosX(), pEnemyCD->getPosY());
+				gMainCharacter.checkCharacterAttackedEnemyCD(pEnemyCD);
+				pEnemyCD->checkEnemyCollisionWithCharacter(gMainCharacter.getPosX(), gMainCharacter.getPosY());
+				pEnemyCD->FallingInTheHole();
+				pEnemyCD->render(gRenderer);
 			}
 		}
 
