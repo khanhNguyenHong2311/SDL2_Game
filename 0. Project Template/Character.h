@@ -1,19 +1,12 @@
 #pragma once
 #include"Globals.h"
 #include"Library.h"
+#include"EnemyAZ.h"
 #include"EnemyCD.h"
 #include"LTexture.h"
 #include"Map.h"
 
-#define CHARACTER_WIDTH 80
-#define CHARACTER_HEIGHT 80
 
-#define CHARACTER_VEL 8
-#define CHARACTER_VEL_JUMP 25
-
-
-#define GRAVITY_SPEED 1
-#define MAX_GRAVITY_SPEED 10
 
 
 typedef struct Motion {
@@ -30,6 +23,8 @@ typedef struct Motion {
 	bool attackSucces;
 
 	bool isCollidingWithEnemyCD;
+
+	bool isCollidingWithEnemyAZ;
 
 
 	Motion() {
@@ -48,6 +43,8 @@ typedef struct Motion {
 		attackSucces = false;
 
 		isCollidingWithEnemyCD = false;
+
+		isCollidingWithEnemyAZ = false;
 	}
 };
 
@@ -124,9 +121,11 @@ public:
 
 	void FallingInTheHole();
 
-	void checkCharacterCollisionWithEnemyCD(int emnemyPosX, int enemyPosY);
+	void checkCharacterCollisionWithEnemy(int emnemyPosX, int enemyPosY);
 
 	void checkCharacterAttackedEnemyCD(EnemyCD* pEnemyCD);
+
+	void checkCharacterAttackedEnemyAZ(EnemyAZ* pEnemyAZ);
 
 
 	void isHurting();

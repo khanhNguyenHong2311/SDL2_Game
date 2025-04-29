@@ -204,25 +204,25 @@ void EnemyCD::render(SDL_Renderer* renderer) {
 		frameRun++;
 		if (frameRun / 10 >= 10) frameRun = 0;
 
-		if (!typeMotion.isColliding) frameAttack = 0;
+		if (!typeMotion.isCollidingWithCharacter) frameAttack = 0;
 
 		if (gMainCharacter.getAttackSuccess()) {
+			frameAttack = 0;
 			frameHurt++;
 			if (frameHurt / 5 >= 5) {
 				frameHurt = 0;
-				frameAttack = 0;
 				gMainCharacter.setAttackSucces(false);
 			}
 			if (isFacing == FACING_LEFT_E_CD) {
-				currentTexture = gLoadEnemiesCD[HURT_RIGHT].getTexture();
+				currentTexture = gLoadEnemiesCD[HURT_RIGHT_E_CD].getTexture();
 				currentClip = &frameClipsHurtRight[frameHurt / 5];
 			}
 			else {
-				currentTexture = gLoadEnemiesCD[HURT_LEFT].getTexture();
+				currentTexture = gLoadEnemiesCD[HURT_LEFT_E_CD].getTexture();
 				currentClip = &frameClipsHurtLeft[frameHurt / 5];
 			}
 		}
-		else if (typeMotion.isColliding) {
+		else if (typeMotion.isCollidingWithCharacter) {
 			typeMotion.goLeft = false;
 			typeMotion.goRight = false;
 			frameAttack++;
@@ -277,7 +277,7 @@ void EnemyCD::render(SDL_Renderer* renderer) {
 
 		}
 		else {
-			if (isFacing == FACING_LEFT) {
+			if (isFacing == FACING_LEFT_E_CD) {
 				typeMotion.goLeft = true;
 				typeMotion.goRight = false;
 				currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
@@ -331,10 +331,10 @@ void EnemyCD::checkEnemyCollisionWithCharacter(int characterPosX , int character
 	int bottomEnemy = enemyCollider.y + enemyCollider.h;
 
 	if ((bottomCharacter <= topEnemy) || (topCharacter >= bottomEnemy) || (rightCharacter <= leftEnemy) || (leftCharacter >= rightEnemy)) {
-		typeMotion.isColliding = false;
+		typeMotion.isCollidingWithCharacter = false;
 	}
 	else {
-		typeMotion.isColliding = true;
+		typeMotion.isCollidingWithCharacter = true;
 	}
 }
 
@@ -360,7 +360,7 @@ void EnemyCD::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 
 	if (typeMotion.isChasing) {
 
-		if (typeMotion.isColliding) {
+		if (typeMotion.isCollidingWithCharacter) {
 			mVelX = 0; 
 		}
 		else if (characterPosX > mPosX) {
@@ -384,7 +384,7 @@ void EnemyCD::FallingInTheHole() {
 	if (!typeMotion.isFallingIntoHole && mPosY > gGameMap.getMaxMapY()) {
 		typeMotion.isFallingIntoHole = true;
 		timeRespawn = 30;
-		isFacing = FACING_LEFT;
+		isFacing = FACING_LEFT_E_CD;
 	}
 }
 
@@ -405,8 +405,8 @@ void EnemyCD::isHurting() {
 	typeMotion.isHurting = true;
 }
 
-bool EnemyCD :: getIsColliding() {
-	return typeMotion.isColliding;
+bool EnemyCD :: getIsCollidingWithCharacter() {
+	return typeMotion.isCollidingWithCharacter;
 }
 
 void EnemyCD::setCameraX(int camerax) {

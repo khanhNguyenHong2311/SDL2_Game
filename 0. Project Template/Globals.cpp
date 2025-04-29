@@ -8,5 +8,7 @@ Character gMainCharacter;
 LTexture gLoadBackGround;
 LTexture gLoadMainCharacter[15];
 LTexture gLoadEnemiesCD[15];
+LTexture gLoadEnemiesAZ[15];
 GameMap gGameMap;
-vector<EnemyCD*> listEnemies;
+vector<EnemyCD*> listEnemiesCD;
+vector<EnemyAZ*> listEnemiesAZ;

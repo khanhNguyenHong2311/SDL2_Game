@@ -209,9 +209,9 @@ void Character::setClips() {
 
 
 
-void Character::checkCharacterCollisionWithEnemyCD(int enemyPosX, int enemyPosY) {
+void Character::checkCharacterCollisionWithEnemy(int enemyPosX, int enemyPosY) {
 
-	SDL_Rect enemyCollider = { enemyPosX  ,enemyPosY , COLLIDER_WIDTH + 20 , COLLIDER_HEIGHT };
+	SDL_Rect enemyCollider = { enemyPosX , enemyPosY, COLLIDER_WIDTH + 40, COLLIDER_HEIGHT};
 	SDL_Rect characterCollider = { mPosX, mPosY , CHARACTER_WIDTH , CHARACTER_HEIGHT };
 
 	int	rightCharacter = characterCollider.x + characterCollider.w;
@@ -232,7 +232,6 @@ void Character::checkCharacterCollisionWithEnemyCD(int enemyPosX, int enemyPosY)
 		typeMotion.isCollidingWithEnemyCD = true;
 	}
 }
-
 
 
 void Character::render(SDL_Renderer* renderer) {
@@ -358,6 +357,10 @@ void Character::checkCharacterAttackedEnemyCD(EnemyCD* pEnemyCD) {
 			else if (pEnemyCD->getIsFacing() == FACING_LEFT_E_CD) typeMotion.attackSucces = ( leftCharacter>= leftEnemyCD - 20  ) && (leftCharacter <=rightEnemyCD - 80 ) ;
 		}
 	}
+}
+
+void Character::checkCharacterAttackedEnemyAZ(EnemyAZ *pEnemyAZ) {
+	;
 }
 
 void Character::CenterEntityOnMap() {

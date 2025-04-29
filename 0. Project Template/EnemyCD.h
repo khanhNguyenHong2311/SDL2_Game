@@ -5,16 +5,6 @@
 #include"Character.h"
 
 
-#define ENEMY_CD_WIDTH 120
-#define ENEMY_CD_HEIGHT 120
-
-#define ENEMY_CD_VEL 2
-
-#define ENEMY_CD_GRAVITY_SPEED 1
-#define ENEMY_CD_MAX_GRAVITY_SPEED 10
-
-#define SAFE_DISTANCE_COLLIDER 100
-
 
 typedef struct MotionE_CD {
 	bool goLeft, goRight, isStanding;
@@ -27,7 +17,7 @@ typedef struct MotionE_CD {
 
 	bool isChasing;
 
-	bool isColliding;
+	bool isCollidingWithCharacter;
 
 	bool isHurting;
 
@@ -44,7 +34,7 @@ typedef struct MotionE_CD {
 
 		isChasing = false;
 
-		isColliding = false;
+		isCollidingWithCharacter = false;
 
 		isHurting = false;
 	}
@@ -68,7 +58,7 @@ enum statusE_CD {
 
 
 
-class EnemyCD : public LTexture {
+class EnemyCD  {
 public:
 
 	EnemyCD();
@@ -107,7 +97,7 @@ public:
 
 	void isHurting();
 
-	bool getIsColliding();
+	bool getIsCollidingWithCharacter();
 
 private:
 
