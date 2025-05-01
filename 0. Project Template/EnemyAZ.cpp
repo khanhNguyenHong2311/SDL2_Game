@@ -1,8 +1,9 @@
-#include"Library.h"
+﻿#include"Library.h"
 #include"Globals.h"
 #include"LTexture.h"
 #include"EnemyAZ.h"
 #include"EnemyCD.h"
+#include"Projectile.h"
 
 
 
@@ -15,7 +16,7 @@ EnemyAZ::EnemyAZ() {
 	mVelX = 0;
 	mVelY = 0;
 
-	isFacing = FACING_LEFT;
+	isFacing = FACING_LEFT_E_AZ;
 
 	frameWidth = ENEMY_AZ_WIDTH;
 	frameHeight = ENEMY_AZ_HEIGHT;
@@ -26,6 +27,8 @@ EnemyAZ::EnemyAZ() {
 	frameHurt = 0;
 
 	timeStand = 200;
+
+	timeCoolDownAttack = 20;
 
 	limitPosA = 0;
 	limitPosB = 0;
@@ -49,29 +52,6 @@ void EnemyAZ::setClips() {
 			frameClipsHurtLeft[i].h = frameHeight;
 		}
 
-		for (int i = 0;i < 8;i++) {
-			frameClipsAttackRight[i].x = i * frameWidth;
-			frameClipsAttackRight[i].y = 0;
-			frameClipsAttackRight[i].w = frameWidth;
-			frameClipsAttackRight[i].h = frameHeight;
-
-			frameClipsAttackLeft[i].x = (7 - i) * frameWidth;
-			frameClipsAttackLeft[i].y = 0;
-			frameClipsAttackLeft[i].w = frameWidth;
-			frameClipsAttackLeft[i].h = frameHeight;
-		}
-
-		for (int i = 0;i < 9;i++) {
-			frameClipsStandRight[i].x = i * frameWidth;
-			frameClipsStandRight[i].y = 0;
-			frameClipsStandRight[i].w = frameWidth;
-			frameClipsStandRight[i].h = frameHeight;
-
-			frameClipsStandLeft[i].x = (8 - i) * frameWidth;
-			frameClipsStandLeft[i].y = 0;
-			frameClipsStandLeft[i].w = frameWidth;
-			frameClipsStandLeft[i].h = frameHeight;
-		}
 
 		for (int i = 0;i < 5;i++) {
 			frameClipsRunRight[i].x = i * frameWidth;
@@ -91,10 +71,10 @@ void EnemyAZ::setClips() {
 void EnemyAZ::handleMotion() {
 
 	if (typeMotion.goRight) {
-		mVelX = ENEMY_CD_VEL;
+		mVelX = ENEMY_AZ_VEL;
 	}
 	else if (typeMotion.goLeft) {
-		mVelX = -ENEMY_CD_VEL;
+		mVelX = -ENEMY_AZ_VEL;
 	}
 	else if (typeMotion.isStanding) {
 		mVelX = 0;
@@ -221,12 +201,12 @@ void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 		else if (characterPosX > mPosX) {
 			typeMotion.goRight = true;
 			typeMotion.goLeft = false;
-			mVelX = 3 * ENEMY_CD_VEL;
+			mVelX = 3 * ENEMY_AZ_VEL;
 		}
 		else if (characterPosX < mPosX) {
 			typeMotion.goRight = false;
 			typeMotion.goLeft = true;
-			mVelX = -3 * ENEMY_CD_VEL;
+			mVelX = -3 * ENEMY_AZ_VEL;
 		}
 	}
 
@@ -235,6 +215,73 @@ void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 	}
 }
 
+
+void EnemyAZ :: createProjectile(SDL_Renderer* renderer) {
+	Projectile* pProjectile = new Projectile();
+	pProjectile->setClips();
+
+	float projectileStartX = 0;
+	float projectileStartY = 0;
+	if (isFacing == FACING_RIGHT_E_AZ) {
+		projectileStartX = mPosX + frameWidth - 20.0f;
+		projectileStartY = mPosY + 40.0f;
+	}
+	else {
+		projectileStartX = mPosX;
+		projectileStartY = mPosY + 40.0f;
+	}
+
+	pProjectile->setPosX(projectileStartX);
+	pProjectile->setPosY(projectileStartY);
+
+	float targetX = gMainCharacter.getPosX() + CHARACTER_WIDTH / 2.0f;  
+	float targetY = gMainCharacter.getPosY() + CHARACTER_HEIGHT / 2.0f; 
+
+	float deltaX = targetX - projectileStartX;
+	float deltaY = targetY - projectileStartY;
+
+	float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+	if (distance == 0.0f) distance = 1.0f;
+
+	if (distance >= 2000.0f) {
+		return;
+	}
+
+	float unitVelX = PROJECTILE_FIRE_BALL_VEL * (deltaX / distance);
+	float unitVelY = PROJECTILE_FIRE_BALL_VEL * (deltaY / distance);
+
+	pProjectile->setVelX(unitVelX);
+	pProjectile->setVelY(unitVelY);
+
+	float angle = atan2(unitVelY, unitVelX) * 180.0f / M_PI;
+
+	pProjectile->setRotationAngle(angle);
+
+	pProjectile->setIsMoving(true);
+
+	ProjectileList.push_back(pProjectile);
+}
+
+
+
+void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer ) {
+	for (int i = 0;i < ProjectileList.size();i++) {
+		Projectile* pProjectile = ProjectileList[i];
+		if (pProjectile != NULL) {
+			if (pProjectile->getIsMoving()) {
+				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT);
+				pProjectile->renderProjectile( renderer );
+			}
+			else {
+				ProjectileList.erase(ProjectileList.begin() + i);
+				if (pProjectile != NULL) {
+					delete pProjectile;
+					pProjectile = NULL;
+				}
+			}
+		}
+	}
+}
 
 
 
@@ -252,22 +299,31 @@ void EnemyAZ::render(SDL_Renderer* renderer) {
 		isFacing = FACING_LEFT_E_AZ;
 	}
 
+	timeCoolDownAttack--;
+	if (timeCoolDownAttack == 0) {	
+		createProjectile(renderer);
+		timeCoolDownAttack =20;
+	}
+	handleAndRenderProjectile(renderer );
+
 	frameRun++;
 	if (frameRun / 5 >= 5) frameRun = 0;
 
-	if (gMainCharacter.getAttackSuccess()) { // TOMORROW FIX THIS , CHANGE TO GETATTACKSUCCESAZ
+	if (gMainCharacter.getAttackSuccessAZ()) { 
 		frameHurt++;
+		if (frameHurt == 1) {
+			createProjectile(renderer);
+		}
 		if (frameHurt / 5 >= 5) {
 			frameHurt = 0;
-			frameAttack = 0;
-			gMainCharacter.setAttackSucces(false);
+			gMainCharacter.setAttackSuccessAZ(false);
 		}
-		if (isFacing == FACING_LEFT_E_CD) {
-			currentTexture = gLoadEnemiesAZ[HURT_RIGHT_E_AZ].getTexture();
+		if (isFacing == FACING_LEFT_E_AZ) {
+			currentTexture = gLoadEnemiesAZ[HURT_LEFT_E_AZ].getTexture();
 			currentClip = &frameClipsHurtRight[frameHurt / 5];
 		}
-		else {
-			currentTexture = gLoadEnemiesAZ[HURT_LEFT_E_AZ].getTexture();
+		else if (isFacing == FACING_RIGHT_E_AZ) {
+			currentTexture = gLoadEnemiesAZ[HURT_RIGHT_E_AZ].getTexture();
 			currentClip = &frameClipsHurtLeft[frameHurt / 5];
 		}
 	}
@@ -344,6 +400,18 @@ void EnemyAZ::isHurting() {
 bool EnemyAZ::getIsColliding() {
 	return typeMotion.isCollidingWithCharacter;
 }
+
+
+void EnemyAZ:: setProjectileList(vector <Projectile*> projectilelist) {
+	ProjectileList = projectilelist;
+}
+
+
+vector <Projectile*> EnemyAZ::getProjectileList() {
+	return ProjectileList;
+}
+
+
 
 void EnemyAZ::setCameraX(int camerax) {
 	cameraX = camerax;

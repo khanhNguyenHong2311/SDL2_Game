@@ -20,10 +20,17 @@ public:
 
 	int getHeight();
 
-	void setRect(int x , int y ) {
-		mRect.x = x;
-		mRect.y = y;
-	}
+	void setRect(int x, int y);
+
+	int getRectX();
+
+	int getRectY();
+
+	void updateRectX(int mVelX);
+
+	void updateRectY(int mVelY);
+
+
 	SDL_Texture* getTexture() {
 		return mTexture;
 	}

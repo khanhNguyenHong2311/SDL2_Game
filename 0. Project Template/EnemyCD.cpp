@@ -206,12 +206,12 @@ void EnemyCD::render(SDL_Renderer* renderer) {
 
 		if (!typeMotion.isCollidingWithCharacter) frameAttack = 0;
 
-		if (gMainCharacter.getAttackSuccess()) {
+		if (gMainCharacter.getAttackSuccessCD()) {
 			frameAttack = 0;
 			frameHurt++;
 			if (frameHurt / 5 >= 5) {
 				frameHurt = 0;
-				gMainCharacter.setAttackSucces(false);
+				gMainCharacter.setAttackSuccessCD(false);
 			}
 			if (isFacing == FACING_LEFT_E_CD) {
 				currentTexture = gLoadEnemiesCD[HURT_RIGHT_E_CD].getTexture();

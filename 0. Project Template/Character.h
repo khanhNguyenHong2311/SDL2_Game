@@ -20,12 +20,15 @@ typedef struct Motion {
 
 	bool isHurting;
 
-	bool attackSucces;
+	bool attackSuccessCD;
 
 	bool isCollidingWithEnemyCD;
 
+	bool attackSuccessAZ;
+
 	bool isCollidingWithEnemyAZ;
 
+	bool isCollidingWithProjectileAZ;
 
 	Motion() {
 		goLeft = false;
@@ -40,11 +43,16 @@ typedef struct Motion {
 
 		isHurting = false;
 
-		attackSucces = false;
+		attackSuccessCD = false;
+
+		attackSuccessAZ = false;
 
 		isCollidingWithEnemyCD = false;
 
 		isCollidingWithEnemyAZ = false;
+
+		isCollidingWithProjectileAZ = false;
+		
 	}
 };
 
@@ -121,21 +129,21 @@ public:
 
 	void FallingInTheHole();
 
-	void checkCharacterCollisionWithEnemy(int emnemyPosX, int enemyPosY);
+	void checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD = NULL, EnemyAZ* pEnemyAZ = NULL);
 
-	void checkCharacterAttackedEnemyCD(EnemyCD* pEnemyCD);
+	void checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ = NULL , EnemyCD* pEnemyCD=NULL);
 
-	void checkCharacterAttackedEnemyAZ(EnemyAZ* pEnemyAZ);
-
+	void checkCharacterAttackedEnemy(EnemyCD* pEnemyCD = NULL, EnemyAZ* pEnemyAZ = NULL );
 
 	void isHurting();
 
-	bool getAttackSuccess() {
-		return typeMotion.attackSucces;
-	}
+	bool getAttackSuccessCD();
 
-	void setAttackSucces(bool check) {
-		typeMotion.attackSucces = check;
-	}
+	void setAttackSuccessCD(bool tmp);
+
+	bool getAttackSuccessAZ();
+
+	void setAttackSuccessAZ(bool tmp);
+
 };
 

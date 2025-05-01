@@ -3,11 +3,11 @@
 #include"Globals.h"
 #include"LTexture.h"
 #include"Character.h"
+#include"Projectile.h"
+#include<vector>
 
 
-
-
-
+class Projectile;
 
 typedef struct MotionE_AZ {
 	bool goLeft, goRight, isStanding;
@@ -48,50 +48,12 @@ enum statusE_AZ {
 	ATTACK_RIGHT_E_AZ = 8,
 	ATTACK_LEFT_E_AZ = 9,
 	HURT_RIGHT_E_AZ = 10,
-	HURT_LEFT_E_AZ = 11
+	HURT_LEFT_E_AZ = 11 
 };
 
 
 
 class EnemyAZ {
-public:
-
-	EnemyAZ();
-	~EnemyAZ() { ; }
-
-	void setVelX(int VelX);
-	void setVelY(int VelY);
-
-	void setPosX(int PosX);
-	void setPosY(int PosY);
-
-	int getPosX();
-	int getPosY();
-
-
-	void handleMotion();
-
-	void render(SDL_Renderer* renderer);
-
-	void setClips();
-
-	void checkMapCollision();
-	void checkEnemyCollisionWithCharacter(int characterPosX, int characterPosY);
-	void checkEnemyAttackedCharacter();
-
-
-	void setCameraX(int camerax);
-	void setCameraY(int cameray);
-
-	void setLimitPos(int limitposa, int limitposb);
-
-	void moveToCharacterIfInRange(int charX, int charY);
-
-	int getIsFacing();
-
-	void isHurting();
-
-	bool getIsColliding();
 
 private:
 
@@ -118,6 +80,8 @@ private:
 
 	int timeStand;
 
+	int timeCoolDownAttack;
+
 	MotionE_AZ typeMotion;
 
 	SDL_Rect frameClipsStandRight[9];
@@ -132,6 +96,56 @@ private:
 	SDL_Rect frameClipsHurtRight[5];
 	SDL_Rect frameClipsHurtLeft[5];
 
+	vector<Projectile*> ProjectileList;
+
 	int limitPosA;
 	int limitPosB;
+
+public:
+
+	EnemyAZ();
+	~EnemyAZ() { ; }
+
+	void setVelX(int VelX);
+	void setVelY(int VelY);
+
+	void setPosX(int PosX);
+	void setPosY(int PosY);
+
+	int getPosX();
+	int getPosY();
+
+
+	void handleMotion();
+
+	void render(SDL_Renderer* renderer);
+
+	void setClips();
+
+	void setProjectileList(vector <Projectile*> projectilelist);
+
+	vector <Projectile*> getProjectileList();
+
+	void createProjectile(SDL_Renderer* renderer);
+
+	void checkMapCollision();
+	void checkEnemyCollisionWithCharacter(int characterPosX, int characterPosY);
+	void checkEnemyAttackedCharacter();
+
+	void moveToCharacterIfInRange(int charX, int charY);
+
+
+	void handleAndRenderProjectile(SDL_Renderer* renderer );
+
+	void isHurting();
+
+	int getIsFacing();
+
+	bool getIsColliding();
+
+	void setLimitPos(int limitposa, int limitposb);
+
+	void setCameraX(int camerax);
+	void setCameraY(int cameray);
+
 };

@@ -137,8 +137,10 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="EnemyAZ.h" />
     <ClInclude Include="EnemyCD.h" />
     <ClInclude Include="LTexture.h" />

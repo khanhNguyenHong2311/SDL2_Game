@@ -4,6 +4,7 @@
 #include"EnemyCD.h"
 #include"EnemyAZ.h"
 #include"LTexture.h"
+#include"Projectile.h"
 #include"Map.h"
 
 // gClass
@@ -16,6 +17,8 @@ extern LTexture gLoadMainCharacter[15];
 extern LTexture gLoadEnemiesCD[15];
 
 extern LTexture gLoadEnemiesAZ[15];
+
+extern LTexture gLoadProjectile[5];
 
 extern vector<EnemyCD*> listEnemiesCD;
 
@@ -47,7 +50,7 @@ const int COLLIDER_HEIGHT = 80;
 #define CHARACTER_HEIGHT 80
 
 #define CHARACTER_VEL 8
-#define CHARACTER_VEL_JUMP 25
+#define CHARACTER_VEL_JUMP 23
 
 
 #define GRAVITY_SPEED 1
@@ -61,7 +64,7 @@ const int COLLIDER_HEIGHT = 80;
 #define ENEMY_AZ_WIDTH 160
 #define ENEMY_AZ_HEIGHT 120
 
-#define ENEMY_AZ_VEL 2
+#define ENEMY_AZ_VEL 0
 
 #define ENEMY_AZ_GRAVITY_SPEED 0
 #define ENEMY_AZ_MAX_GRAVITY_SPEED 0
@@ -78,3 +81,7 @@ const int COLLIDER_HEIGHT = 80;
 #define ENEMY_CD_GRAVITY_SPEED 1
 #define ENEMY_CD_MAX_GRAVITY_SPEED 10
 
+// Projectile
+#define PROJECTILE_FIRE_BALL_WIDTH 120
+#define PROJECTILE_FIRE_BALL_HEIGHT 120
+#define PROJECTILE_FIRE_BALL_VEL 10.0

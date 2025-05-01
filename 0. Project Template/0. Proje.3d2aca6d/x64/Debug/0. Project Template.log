@@ -1,11 +1,11 @@
-﻿  Main.cpp
+﻿  Projectile.cpp
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'MotionE_AZ' when no variable is declared
-  (compiling source file 'Main.cpp')
+  (compiling source file 'Projectile.cpp')
   
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'MotionE_CD' when no variable is declared
-  (compiling source file 'Main.cpp')
+  (compiling source file 'Projectile.cpp')
   
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(12,16): warning C4091: 'typedef ': ignored on left of 'Motion' when no variable is declared
-  (compiling source file 'Main.cpp')
+  (compiling source file 'Projectile.cpp')
   
   0. Project Template.vcxproj -> C:\Users\hp\Documents\SDL2_Game\0. Project Template\x64\Debug\0. Project Template.exe
