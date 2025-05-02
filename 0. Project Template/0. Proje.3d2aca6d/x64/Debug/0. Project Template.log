@@ -1,11 +1,17 @@
-﻿  Projectile.cpp
+﻿  EnemyAZ.cpp
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'MotionE_AZ' when no variable is declared
-  (compiling source file 'Projectile.cpp')
+  (compiling source file 'EnemyAZ.cpp')
   
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'MotionE_CD' when no variable is declared
-  (compiling source file 'Projectile.cpp')
+  (compiling source file 'EnemyAZ.cpp')
   
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(12,16): warning C4091: 'typedef ': ignored on left of 'Motion' when no variable is declared
-  (compiling source file 'Projectile.cpp')
+  (compiling source file 'EnemyAZ.cpp')
   
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(201,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(205,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(206,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(221,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(222,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(224,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   0. Project Template.vcxproj -> C:\Users\hp\Documents\SDL2_Game\0. Project Template\x64\Debug\0. Project Template.exe

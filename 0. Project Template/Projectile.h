@@ -2,9 +2,18 @@
 #include"Globals.h"
 #include"EnemyAZ.h"
 
+struct MotionProjectile {
+	bool isExploding;
+
+	MotionProjectile() {
+		isExploding = false;
+	}
+};
+
 
 enum typeProjectile {
-	FIRE_BALL = 0
+	FIRE_BALL = 0,
+	FIRE_BALL_EXPLOSION = 1
 };
 
 class Projectile  {
@@ -20,9 +29,15 @@ private:
 	
 	bool isMoving;
 
+	bool isExploxing;
+
 	float rotationAngle;
 
 	int frameRun;
+
+	int frameExplosion;
+
+	MotionProjectile typeMotion;
 
 public:
 
@@ -35,6 +50,8 @@ public:
 	void renderProjectile(SDL_Renderer* renderer);
 
 	void checkMapCollision();
+
+	void projectileExploded();
 
 	void setClips();
 
@@ -58,10 +75,13 @@ public:
 	
 	float getRotationAngle();
 
+	MotionProjectile getTypeMotion();
+
 	void setIsMoving(bool ismoving);
 
 	bool getIsMoving();
 
-	SDL_Rect frameClipsFireBallRight[33];
-	SDL_Rect frameClipsFireBallLeft[33];
+	SDL_Rect frameClipsFireBallRun[33];
+
+	SDL_Rect frameClipsFireBallExplosion[8];
 };

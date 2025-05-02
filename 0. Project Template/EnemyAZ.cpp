@@ -18,6 +18,8 @@ EnemyAZ::EnemyAZ() {
 
 	isFacing = FACING_LEFT_E_AZ;
 
+	typeMotion.goLeft = true;
+
 	frameWidth = ENEMY_AZ_WIDTH;
 	frameHeight = ENEMY_AZ_HEIGHT;
 
@@ -26,7 +28,7 @@ EnemyAZ::EnemyAZ() {
 	frameAttack = 0;
 	frameHurt = 0;
 
-	timeStand = 200;
+	timeStand = 60;
 
 	timeCoolDownAttack = 20;
 
@@ -184,37 +186,6 @@ void EnemyAZ::checkEnemyAttackedCharacter() {
 }
 
 
-void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
-	int enemyRow = mPosY / TILE_SIZE + 1;
-	int characterRow = characterPosY / TILE_SIZE;
-	if (!typeMotion.isChasing) {
-		if (characterPosX >= limitPosA && characterPosX <= limitPosB && enemyRow == characterRow) {
-			typeMotion.isChasing = true;
-		}
-	}
-
-	if (typeMotion.isChasing) {
-
-		if (typeMotion.isCollidingWithCharacter) {
-			mVelX = 0;
-		}
-		else if (characterPosX > mPosX) {
-			typeMotion.goRight = true;
-			typeMotion.goLeft = false;
-			mVelX = 3 * ENEMY_AZ_VEL;
-		}
-		else if (characterPosX < mPosX) {
-			typeMotion.goRight = false;
-			typeMotion.goLeft = true;
-			mVelX = -3 * ENEMY_AZ_VEL;
-		}
-	}
-
-	if (characterPosX < limitPosA || characterPosX > limitPosB || enemyRow != characterRow) {
-		typeMotion.isChasing = false;
-	}
-}
-
 
 void EnemyAZ :: createProjectile(SDL_Renderer* renderer) {
 	Projectile* pProjectile = new Projectile();
@@ -243,9 +214,6 @@ void EnemyAZ :: createProjectile(SDL_Renderer* renderer) {
 	float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 	if (distance == 0.0f) distance = 1.0f;
 
-	if (distance >= 2000.0f) {
-		return;
-	}
 
 	float unitVelX = PROJECTILE_FIRE_BALL_VEL * (deltaX / distance);
 	float unitVelY = PROJECTILE_FIRE_BALL_VEL * (deltaY / distance);
@@ -268,7 +236,7 @@ void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer ) {
 	for (int i = 0;i < ProjectileList.size();i++) {
 		Projectile* pProjectile = ProjectileList[i];
 		if (pProjectile != NULL) {
-			if (pProjectile->getIsMoving()) {
+			if (pProjectile->getIsMoving() || ( pProjectile->getTypeMotion().isExploding) ) {
 				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT);
 				pProjectile->renderProjectile( renderer );
 			}
@@ -282,6 +250,54 @@ void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer ) {
 		}
 	}
 }
+
+
+
+void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
+
+
+	int attackRangeA = mPosX + frameWidth / 2 - 500;
+	int attackRangeB = mPosX + frameWidth / 2 + 500;
+	if (!typeMotion.isChasing) {
+		if (characterPosX > limitPosA - 500 && characterPosX < limitPosB + 500) {
+			typeMotion.isChasing = true;
+			typeMotion.isAttacking = true;
+		}
+	}
+
+	if (typeMotion.isChasing) {
+		if (characterPosX >= attackRangeA && characterPosX <= attackRangeB) {
+			typeMotion.isAttacking = true;
+			mVelX = 0;
+			if (characterPosX <= mPosX + frameWidth / 2) {
+				typeMotion.goRight = false;
+				typeMotion.goLeft = true;
+			}
+			else {
+				typeMotion.goRight = true;
+				typeMotion.goLeft = false;
+			}
+		}
+		else if (!(characterPosX >= attackRangeA && characterPosX <= attackRangeB)) {
+			if (characterPosX <= attackRangeA) {
+				typeMotion.goRight = false;
+				typeMotion.goLeft = true;
+				mVelX = -2 * ENEMY_AZ_VEL;
+
+			}
+			else if (characterPosX >= attackRangeB) {
+				typeMotion.goRight = true;
+				typeMotion.goLeft = false;
+				mVelX = 2 * ENEMY_AZ_VEL;	
+			}
+		}
+	}
+	if (characterPosX < limitPosA - 500 || characterPosX > limitPosB + 500) {
+		typeMotion.isChasing = false;
+		typeMotion.isAttacking = false;
+	}
+}
+
 
 
 
@@ -299,21 +315,20 @@ void EnemyAZ::render(SDL_Renderer* renderer) {
 		isFacing = FACING_LEFT_E_AZ;
 	}
 
-	timeCoolDownAttack--;
-	if (timeCoolDownAttack == 0) {	
-		createProjectile(renderer);
-		timeCoolDownAttack =20;
+	if (typeMotion.isAttacking) {
+		timeCoolDownAttack--;
+		if (timeCoolDownAttack == 0) {
+			createProjectile(renderer);
+			timeCoolDownAttack = 20;
+		}
 	}
-	handleAndRenderProjectile(renderer );
+	handleAndRenderProjectile(renderer);
 
 	frameRun++;
 	if (frameRun / 5 >= 5) frameRun = 0;
 
 	if (gMainCharacter.getAttackSuccessAZ()) { 
 		frameHurt++;
-		if (frameHurt == 1) {
-			createProjectile(renderer);
-		}
 		if (frameHurt / 5 >= 5) {
 			frameHurt = 0;
 			gMainCharacter.setAttackSuccessAZ(false);
@@ -327,41 +342,51 @@ void EnemyAZ::render(SDL_Renderer* renderer) {
 			currentClip = &frameClipsHurtLeft[frameHurt / 5];
 		}
 	}
-	else if ((mPosX == limitPosB && isFacing == FACING_RIGHT_E_AZ) || (mPosX == limitPosA && isFacing == FACING_LEFT_E_AZ)) {
-		typeMotion.isStanding = true;
-		typeMotion.goLeft = false;
-		typeMotion.goRight = false;
-
-		timeStand--;
-		if (timeStand == 0) {
-			typeMotion.isStanding = false;
-			typeMotion.goLeft = (mPosX == limitPosB);
-			typeMotion.goRight = (mPosX == limitPosA);
-			timeStand = 200;
+	else if (!typeMotion.isChasing) {
+		if ((mPosX >= limitPosB && isFacing == FACING_RIGHT_E_AZ) || (mPosX <= limitPosA && isFacing == FACING_LEFT_E_AZ)) {
+			typeMotion.isStanding = true;
+			typeMotion.goLeft = false;
+			typeMotion.goRight = false;
+			timeStand--;
+			if (timeStand == 0) {
+				typeMotion.isStanding = false;
+				typeMotion.goLeft = (mPosX >= limitPosB);
+				typeMotion.goRight = (mPosX <= limitPosA);
+				timeStand = 60;
+			}
+			if (mPosX >= limitPosB) {
+				currentTexture = gLoadEnemiesAZ[RUN_RIGHT_E_AZ].getTexture();
+				currentClip = &frameClipsRunRight[frameRun / 5];
+			}
+			else if (mPosX <= limitPosA) {
+				currentTexture = gLoadEnemiesAZ[RUN_LEFT_E_AZ].getTexture();
+				currentClip = &frameClipsRunLeft[frameRun / 5];
+			}
 		}
-		if (mPosX == limitPosB) {
+
+		else if (mPosX > limitPosB) {
+			typeMotion.goLeft = true;
+			typeMotion.goRight = false;
+			currentTexture = gLoadEnemiesAZ[RUN_LEFT_E_AZ].getTexture();
+			currentClip = &frameClipsRunLeft[frameRun / 5];
+
+		}
+		else if (mPosX < limitPosA) {
+			typeMotion.goRight = true;
+			typeMotion.goLeft = false;
 			currentTexture = gLoadEnemiesAZ[RUN_RIGHT_E_AZ].getTexture();
 			currentClip = &frameClipsRunRight[frameRun / 5];
 		}
-		else if (mPosX == limitPosA) {
-			currentTexture = gLoadEnemiesAZ[RUN_LEFT_E_AZ].getTexture();
-			currentClip = &frameClipsRunLeft[frameRun / 5];
+		else {
+			if (isFacing == FACING_RIGHT_E_AZ) {
+				currentTexture = gLoadEnemiesAZ[RUN_RIGHT_E_AZ].getTexture();
+				currentClip = &frameClipsRunRight[frameRun / 5];
+			}
+			else {
+				currentTexture = gLoadEnemiesAZ[RUN_LEFT_E_AZ].getTexture();
+				currentClip = &frameClipsRunLeft[frameRun / 5];
+			}
 		}
-	}
-
-	else if (mPosX > limitPosB) {
-		typeMotion.goLeft = true;
-		typeMotion.goRight = false;
-		currentTexture = gLoadEnemiesAZ[RUN_LEFT_E_AZ].getTexture();
-		currentClip = &frameClipsRunLeft[frameRun / 5];
-
-	}
-	else if (mPosX < limitPosA) {
-		typeMotion.goRight = true;
-		typeMotion.goLeft = false;
-		currentTexture = gLoadEnemiesAZ[RUN_RIGHT_E_AZ].getTexture();
-		currentClip = &frameClipsRunRight[frameRun / 5];
-
 	}
 	else {
 		if (isFacing == FACING_RIGHT_E_AZ) {
@@ -378,6 +403,8 @@ void EnemyAZ::render(SDL_Renderer* renderer) {
 	SDL_Rect renderQuad = { mPosX - gGameMap.getCameraX(),mPosY - gGameMap.getCameraY(),currentClip->w,currentClip->h };
 
 	SDL_RenderCopy(renderer, currentTexture, currentClip, &renderQuad);
+
+	cout << mPosX << " limitA" << limitPosA << " limitB" << limitPosB << endl;
 }
 
 

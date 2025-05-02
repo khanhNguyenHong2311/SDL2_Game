@@ -3,44 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Projectile.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:EnemyAZ.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Character.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Character.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Character.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Character.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:EnemyAZ.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Projectile.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyCD.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:EnemyCD.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\LTexture.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:LTexture.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:EnemyAZ.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyCD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:EnemyCD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Globals.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Character.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Character.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Globals.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Projectile.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\LTexture.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:LTexture.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyCD.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:EnemyCD.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Projectile.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Library.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -51,20 +55,12 @@
       "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:LTexture.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Globals.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Map.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Map.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Map.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Map.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{3D2ACA6D-EA4D-4E73-BCF3-1E3DA9204DEC}|0. Project Template.vcxproj|solutionrelative:Globals.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -74,17 +70,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Character.h",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Character.h",
               "RelativeDocumentMoniker": "Character.h",
               "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Character.h",
               "RelativeToolTip": "Character.h",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-04-09T07:00:46.115Z",
               "IsPinned": true,
@@ -92,27 +88,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Globals.h",
-              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.h",
-              "RelativeDocumentMoniker": "Globals.h",
-              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.h",
-              "RelativeToolTip": "Globals.h",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAAAFQAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-29T02:06:43.988Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 3,
               "Title": "EnemyAZ.h",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.h",
               "RelativeDocumentMoniker": "EnemyAZ.h",
               "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.h",
               "RelativeToolTip": "EnemyAZ.h",
-              "ViewState": "AgIAAG8AAAAAAAAAAAAAAEIAAAALAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAIYAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-04-29T07:44:07.842Z",
               "IsPinned": true,
@@ -129,12 +111,11 @@
               "ViewState": "AgIAABgAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-04-23T01:21:58.656Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "LTexture.h",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\LTexture.h",
               "RelativeDocumentMoniker": "LTexture.h",
@@ -143,18 +124,17 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-04-06T01:56:00.321Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "Projectile.h",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.h",
               "RelativeDocumentMoniker": "Projectile.h",
               "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.h",
               "RelativeToolTip": "Projectile.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAACYAAAAAAAAAAAAAADUAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-04-30T04:04:38.134Z",
               "IsPinned": true,
@@ -162,72 +142,84 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
+              "Title": "EnemyAZ.cpp",
+              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.cpp",
+              "RelativeDocumentMoniker": "EnemyAZ.cpp",
+              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.cpp",
+              "RelativeToolTip": "EnemyAZ.cpp",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-05-02T08:37:04.634Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Globals.h",
+              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.h",
+              "RelativeDocumentMoniker": "Globals.h",
+              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.h",
+              "RelativeToolTip": "Globals.h",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAEYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-29T02:06:43.988Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "EnemyCD.h",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyCD.h",
               "RelativeDocumentMoniker": "EnemyCD.h",
               "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyCD.h",
               "RelativeToolTip": "EnemyCD.h",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAE8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-05-01T15:00:38.37Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Character.cpp",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Character.cpp",
               "RelativeDocumentMoniker": "Character.cpp",
               "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Character.cpp",
               "RelativeToolTip": "Character.cpp",
-              "ViewState": "AgIAADwAAAAAAAAAAAAAAIEAAAACAAAAAAAAAA==",
+              "ViewState": "AgIAAIQAAAAAAAAAAAAAAA8BAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-05-01T14:47:15.414Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 10,
               "Title": "Projectile.cpp",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.cpp",
               "RelativeDocumentMoniker": "Projectile.cpp",
-              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.cpp*",
-              "RelativeToolTip": "Projectile.cpp*",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Projectile.cpp",
+              "RelativeToolTip": "Projectile.cpp",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAAD4AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-04-30T04:05:32.688Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-30T04:05:32.688Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "EnemyAZ.cpp",
-              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.cpp",
-              "RelativeDocumentMoniker": "EnemyAZ.cpp",
-              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyAZ.cpp",
-              "RelativeToolTip": "EnemyAZ.cpp",
-              "ViewState": "AgIAAAIBAAAAAAAAAAAAAPgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-04-29T07:44:29.405Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Main.cpp",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Main.cpp",
               "RelativeDocumentMoniker": "Main.cpp",
               "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Main.cpp",
               "RelativeToolTip": "Main.cpp",
-              "ViewState": "AgIAAKUAAAAAAAAAAAAAALwAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAAHQAAAAAAAAAAAAmwIIAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-04-29T00:40:07.132Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Library.h",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Library.h",
               "RelativeDocumentMoniker": "Library.h",
@@ -235,25 +227,11 @@
               "RelativeToolTip": "Library.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-04-13T08:06:07.151Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-13T08:06:07.151Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "EnemyCD.cpp",
-              "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyCD.cpp",
-              "RelativeDocumentMoniker": "EnemyCD.cpp",
-              "ToolTip": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\EnemyCD.cpp",
-              "RelativeToolTip": "EnemyCD.cpp",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-05-01T04:10:44.319Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "LTexture.cpp",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\LTexture.cpp",
               "RelativeDocumentMoniker": "LTexture.cpp",
@@ -266,7 +244,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 6,
               "Title": "Globals.cpp",
               "DocumentMoniker": "C:\\Users\\hp\\Documents\\SDL2_Game\\0. Project Template\\Globals.cpp",
               "RelativeDocumentMoniker": "Globals.cpp",
@@ -287,8 +265,7 @@
               "RelativeToolTip": "Map.cpp",
               "ViewState": "AgIAAF0AAAAAAAAAAAAAAFEAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-04-08T09:42:52.277Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-08T09:42:52.277Z"
             }
           ]
         }

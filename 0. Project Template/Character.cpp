@@ -270,6 +270,7 @@ void Character::checkCharacterCollisionWithProjectile( EnemyAZ* pEnemyAZ , Enemy
 				if (!(bottomCharacter <= topEnemyProjectile || topCharacter >= bottomEnemyProjectile || rightCharacter <= leftEnemyProjectile || leftCharacter >= rightEnemyProjectile)) {
 					typeMotion.isHurting = true;
 					projectileAZ[i]->setIsMoving(false);
+					projectileAZ[i]->projectileExploded();
 				}
 			}
 		}

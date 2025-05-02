@@ -90,9 +90,9 @@ bool LoadMedia() {
 	gLoadEnemiesAZ[HURT_LEFT_E_AZ].loadFromFile("image/character/enemies/AZ_HURT_LEFT.png", gRenderer);
 
 	gLoadProjectile[FIRE_BALL].loadFromFile("image/projectile/fireball/FIRE_BALL.png", gRenderer);
+	gLoadProjectile[FIRE_BALL_EXPLOSION].loadFromFile("image/projectile/fireball/FIRE_BALL_EXPLOSION.png", gRenderer);
 
 
-	
 
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);
@@ -118,9 +118,9 @@ vector<EnemyAZ*> MakeEnemyAZList() {
 	for (int i = 0; i < 1; ++i) {
 		EnemyAZ* pEnemyAZ= new EnemyAZ();
 		pEnemyAZ->setClips();
-		pEnemyAZ->setPosX(400 + i * 2000);
+		pEnemyAZ->setPosX(950 + i * 2000);
 		pEnemyAZ->setPosY(96);
-		pEnemyAZ->setLimitPos(200, i * 500 + 1200);
+		pEnemyAZ->setLimitPos(800 , i * 500 + 1000);
 		listEnemiesAZ.push_back(pEnemyAZ);
 	}
 
