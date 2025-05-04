@@ -1,6 +1,7 @@
 ﻿#include"Library.h"
 #include"Globals.h"
 #include"EnemyAZ.h"
+#include"EnemyBOSS.h"
 #include"Projectile.h"
 
 Projectile::Projectile() {

@@ -20,6 +20,11 @@ typedef struct MotionE_AZ {
 
 	bool isHurting;
 
+	bool isDead;
+
+	bool hasShot;
+
+	bool gotHitByCharacter;
 	MotionE_AZ() {
 		goLeft = false;
 		goRight = false;
@@ -32,11 +37,17 @@ typedef struct MotionE_AZ {
 		isCollidingWithCharacter = false;
 
 		isHurting = false;
+
+		hasShot = false;
+
+		gotHitByCharacter = false;
+
+		isDead = false;
 	}
 };
 
 
-enum statusE_AZ {
+enum Action_AZ {
 	FACING_LEFT_E_AZ = 0,
 	FACING_RIGHT_E_AZ = 1,
 	RUN_RIGHT_E_AZ = 2,
@@ -48,7 +59,9 @@ enum statusE_AZ {
 	ATTACK_RIGHT_E_AZ = 8,
 	ATTACK_LEFT_E_AZ = 9,
 	HURT_RIGHT_E_AZ = 10,
-	HURT_LEFT_E_AZ = 11 
+	HURT_LEFT_E_AZ = 11 ,
+	DEAD_RIGHT_E_AZ= 12,
+	DEAD_LEFT_E_AZ= 13
 };
 
 
@@ -73,6 +86,7 @@ private:
 	int frameStand;
 	int frameAttack;
 	int frameHurt;
+	int frameDeath;
 
 	int isFacing;
 
@@ -84,17 +98,23 @@ private:
 
 	MotionE_AZ typeMotion;
 
+	HealthBar healthBar;
+
 	SDL_Rect frameClipsStandRight[9];
 	SDL_Rect frameClipsStandLeft[9];
 
 	SDL_Rect frameClipsRunRight[5];
 	SDL_Rect frameClipsRunLeft[5];
 
-	SDL_Rect frameClipsAttackRight[8];
-	SDL_Rect frameClipsAttackLeft[8];
+	SDL_Rect frameClipsAttackRight[4];
+	SDL_Rect frameClipsAttackLeft[4];
 
 	SDL_Rect frameClipsHurtRight[5];
 	SDL_Rect frameClipsHurtLeft[5];
+
+	SDL_Rect frameClipsDeadRight[6];
+	SDL_Rect frameClipsDeadLeft[6];
+
 
 	vector<Projectile*> ProjectileList;
 
@@ -147,5 +167,15 @@ public:
 
 	void setCameraX(int camerax);
 	void setCameraY(int cameray);
+
+	void setGotHit(bool value) { typeMotion.gotHitByCharacter = value; }
+
+	bool getGotHit() { return typeMotion.gotHitByCharacter; }
+
+	void handleDamage(int damage);
+
+	HealthBar& getHealthBar() {
+		return healthBar;
+	}
 
 };

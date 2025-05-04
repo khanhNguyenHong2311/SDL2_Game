@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include"Globals.h"
 #include"EnemyAZ.h"
+#include"EnemyBOSS.h"
 
 struct MotionProjectile {
 	bool isExploding;

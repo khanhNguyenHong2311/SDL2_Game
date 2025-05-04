@@ -132,14 +132,19 @@
   <ItemGroup>
     <ClCompile Include="EnemyAZ.cpp" />
     <ClCompile Include="EnemyCD.cpp" />
+    <ClCompile Include="EnemyBOSS.cpp" />
+    <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyBOSS.h" />
+    <ClInclude Include="HealthBar.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="EnemyAZ.h" />
     <ClInclude Include="EnemyCD.h" />
@@ -148,6 +153,7 @@
     <ClInclude Include="Library.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Text.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

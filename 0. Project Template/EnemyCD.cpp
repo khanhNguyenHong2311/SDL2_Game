@@ -4,6 +4,11 @@
 #include"EnemyCD.h"
 
 
+void EnemyCD::handleDamage(int damage) {
+	int newHealth = healthBar.getCurrentHealth() - damage;
+	healthBar.setHealth(newHealth);
+	typeMotion.isHurting = true;
+}
 
 
 EnemyCD::EnemyCD() {
@@ -22,6 +27,7 @@ EnemyCD::EnemyCD() {
 	frameStand = 0;
 	frameAttack = 0;
 	frameHurt = 0;
+	frameDeath = 0;
 
 	timeRespawn = 0;
 
@@ -59,6 +65,18 @@ void EnemyCD::setClips() {
 			frameClipsAttackLeft[i].y = 0;
 			frameClipsAttackLeft[i].w = frameWidth;
 			frameClipsAttackLeft[i].h = frameHeight;
+
+
+			frameClipsDeadRight[i].x = i * frameWidth;
+			frameClipsDeadRight[i].y = 0;
+			frameClipsDeadRight[i].w = frameWidth;
+			frameClipsDeadRight[i].h = frameHeight;
+
+			frameClipsDeadLeft[i].x = (7 - i) * frameWidth;
+			frameClipsDeadLeft[i].y = 0;
+			frameClipsDeadLeft[i].w = frameWidth;
+			frameClipsDeadLeft[i].h = frameHeight;
+
 		}
 
 		for (int i = 0;i < 9;i++) {
@@ -198,86 +216,105 @@ void EnemyCD::render(SDL_Renderer* renderer) {
 		isFacing = FACING_LEFT_E_CD;
 	}
 
-	if (typeMotion.isStandingOnGround) {
-		
-		
-		frameRun++;
-		if (frameRun / 10 >= 10) frameRun = 0;
+	if (healthBar.getCurrentHealth() > 0) {
 
-		if (!typeMotion.isCollidingWithCharacter) frameAttack = 0;
+		if (typeMotion.isStandingOnGround) {
 
-		if (gMainCharacter.getAttackSuccessCD()) {
-			frameAttack = 0;
-			frameHurt++;
-			if (frameHurt / 5 >= 5) {
-				frameHurt = 0;
-				gMainCharacter.setAttackSuccessCD(false);
+
+			frameRun++;
+			if (frameRun / 10 >= 10) frameRun = 0;
+
+			if (!typeMotion.isCollidingWithCharacter) frameAttack = 0;
+
+			if (typeMotion.gotHitByCharacter) {
+				frameAttack = 0;
+				frameHurt++;
+				if (frameHurt / 5 >= 5) {
+					handleDamage(CHARACTER_DAMAGE);
+					frameHurt = 0;
+					typeMotion.gotHitByCharacter = false;
+				}
+				if (isFacing == FACING_LEFT_E_CD) {
+					currentTexture = gLoadEnemiesCD[HURT_RIGHT_E_CD].getTexture();
+					currentClip = &frameClipsHurtRight[frameHurt / 5];
+				}
+				else {
+					currentTexture = gLoadEnemiesCD[HURT_LEFT_E_CD].getTexture();
+					currentClip = &frameClipsHurtLeft[frameHurt / 5];
+				}
 			}
-			if (isFacing == FACING_LEFT_E_CD) {
-				currentTexture = gLoadEnemiesCD[HURT_RIGHT_E_CD].getTexture();
-				currentClip = &frameClipsHurtRight[frameHurt / 5];
+			else if (typeMotion.isCollidingWithCharacter) {
+				typeMotion.goLeft = false;
+				typeMotion.goRight = false;
+				frameAttack++;
+				if (frameAttack / 8 >= 8) frameAttack = 0;
+				checkEnemyAttackedCharacter();
+				if (isFacing == FACING_RIGHT_E_CD) {
+					currentTexture = gLoadEnemiesCD[ATTACK_RIGHT_E_CD].getTexture();
+					currentClip = &frameClipsAttackRight[frameAttack / 8];
+				}
+				else if (isFacing == FACING_LEFT_E_CD) {
+
+					currentTexture = gLoadEnemiesCD[ATTACK_LEFT_E_CD].getTexture();
+					currentClip = &frameClipsAttackLeft[frameAttack / 8];
+				}
+			}
+			else if ((mPosX == limitPosB && isFacing == FACING_RIGHT_E_CD) || (mPosX == limitPosA && isFacing == FACING_LEFT_E_CD)) {
+				frameStand++;
+				if (frameStand / 9 >= 9) frameStand = 0;
+				typeMotion.isStanding = true;
+				typeMotion.goLeft = false;
+				typeMotion.goRight = false;
+
+				timeStand--;
+				if (timeStand == 0) {
+					typeMotion.isStanding = false;
+					typeMotion.goLeft = (mPosX == limitPosB);
+					typeMotion.goRight = (mPosX == limitPosA);
+					timeStand = 200;
+				}
+				if (mPosX == limitPosB) {
+					currentTexture = gLoadEnemiesCD[STAND_RIGHT_E_CD].getTexture();
+					currentClip = &frameClipsStandRight[frameStand / 9];
+				}
+				else if (mPosX == limitPosA) {
+					currentTexture = gLoadEnemiesCD[STAND_LEFT_E_CD].getTexture();
+					currentClip = &frameClipsStandLeft[frameStand / 9];
+				}
+			}
+
+			else if (mPosX > limitPosB) {
+				typeMotion.goLeft = true;
+				typeMotion.goRight = false;
+				currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
+				currentClip = &frameClipsRunLeft[frameRun / 10];
+
+			}
+			else if (mPosX < limitPosA) {
+				typeMotion.goRight = true;
+				typeMotion.goLeft = false;
+				currentTexture = gLoadEnemiesCD[RUN_RIGHT_E_CD].getTexture();
+				currentClip = &frameClipsRunRight[frameRun / 10];
+
 			}
 			else {
-				currentTexture = gLoadEnemiesCD[HURT_LEFT_E_CD].getTexture();
-				currentClip = &frameClipsHurtLeft[frameHurt / 5];
-			}
-		}
-		else if (typeMotion.isCollidingWithCharacter) {
-			typeMotion.goLeft = false;
-			typeMotion.goRight = false;
-			frameAttack++;
-			if (frameAttack / 8 >=  8) frameAttack = 0;
-			checkEnemyAttackedCharacter();
-			if (isFacing == FACING_RIGHT_E_CD) {
-				currentTexture = gLoadEnemiesCD[ATTACK_RIGHT_E_CD].getTexture();
-				currentClip = &frameClipsAttackRight[frameAttack / 8];
-			}
-			else if (isFacing == FACING_LEFT_E_CD ) {
-
-				currentTexture = gLoadEnemiesCD[ATTACK_LEFT_E_CD].getTexture();
-				currentClip = &frameClipsAttackLeft[frameAttack / 8];
-			}
-		}
-		else if ((mPosX == limitPosB && isFacing == FACING_RIGHT_E_CD) || (mPosX == limitPosA && isFacing == FACING_LEFT_E_CD)) {
-			frameStand++;
-			if (frameStand / 9 >= 9) frameStand = 0;
-			typeMotion.isStanding = true;
-			typeMotion.goLeft = false;
-			typeMotion.goRight = false;
-
-			timeStand--;
-			if (timeStand == 0) {
-				typeMotion.isStanding = false;
-				typeMotion.goLeft = (mPosX == limitPosB);
-				typeMotion.goRight = (mPosX == limitPosA);
-				timeStand = 200;
-			}
-			if (mPosX == limitPosB) {
-				currentTexture = gLoadEnemiesCD[STAND_RIGHT_E_CD].getTexture();
-				currentClip = &frameClipsStandRight[frameStand / 9];
-			}
-			else if (mPosX == limitPosA) {
-				currentTexture = gLoadEnemiesCD[STAND_LEFT_E_CD].getTexture();
-				currentClip = &frameClipsStandLeft[frameStand / 9];
+				if (isFacing == FACING_LEFT_E_CD) {
+					typeMotion.goLeft = true;
+					typeMotion.goRight = false;
+					currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
+					currentClip = &frameClipsRunLeft[frameRun / 10];
+				}
+				else {
+					typeMotion.goRight = true;
+					typeMotion.goLeft = false;
+					currentTexture = gLoadEnemiesCD[RUN_RIGHT_E_CD].getTexture();
+					currentClip = &frameClipsRunRight[frameRun / 10];
+				}
 			}
 		}
 
-		else if (mPosX > limitPosB) {
-			typeMotion.goLeft = true;
-			typeMotion.goRight = false;
-			currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
-			currentClip = &frameClipsRunLeft[frameRun / 10];
-
-		}
-		else if (mPosX < limitPosA) {
-			typeMotion.goRight = true;
-			typeMotion.goLeft = false;
-			currentTexture = gLoadEnemiesCD[RUN_RIGHT_E_CD].getTexture();
-			currentClip = &frameClipsRunRight[frameRun / 10];
-
-		}
 		else {
-			if (isFacing == FACING_LEFT_E_CD) {
+			if (isFacing == FACING_LEFT) {
 				typeMotion.goLeft = true;
 				typeMotion.goRight = false;
 				currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
@@ -291,26 +328,28 @@ void EnemyCD::render(SDL_Renderer* renderer) {
 			}
 		}
 	}
-
 	else {
-		if (isFacing == FACING_LEFT) {
-			typeMotion.goLeft = true;
-			typeMotion.goRight = false;
-			currentTexture = gLoadEnemiesCD[RUN_LEFT_E_CD].getTexture();
-			currentClip = &frameClipsRunLeft[frameRun / 10];
+		mVelX = 0;
+		if (frameDeath / 5 <= 8) {
+			frameDeath++;
+		}
+
+		if (isFacing == FACING_RIGHT_E_CD) {
+			currentTexture = gLoadEnemiesCD[DEAD_RIGHT_E_CD].getTexture();
+			currentClip = &frameClipsDeadRight[frameDeath / 6];
 		}
 		else {
-			typeMotion.goRight = true;
-			typeMotion.goLeft = false;
-			currentTexture = gLoadEnemiesCD[RUN_RIGHT_E_CD].getTexture();
-			currentClip = &frameClipsRunRight[frameRun / 10];
+			currentTexture = gLoadEnemiesCD[DEAD_LEFT_E_CD].getTexture();
+			currentClip = &frameClipsDeadLeft[frameDeath / 6];
 		}
 	}
 
+	healthBar.render(renderer, mPosX - gGameMap.getCameraX(), mPosY - 10 - -gGameMap.getCameraY());
 
 	SDL_Rect renderQuad = { mPosX - gGameMap.getCameraX(),mPosY - gGameMap.getCameraY(),currentClip->w,currentClip->h };
 
 	SDL_RenderCopy(renderer, currentTexture, currentClip, &renderQuad);
+
 }
 
 
@@ -344,8 +383,20 @@ void EnemyCD::checkEnemyAttackedCharacter() {
 	int rightCharacter = gMainCharacter.getPosX() + CHARACTER_WIDTH;
 	int rightEnemyCD = mPosX + (ENEMY_CD_WIDTH) * 3 / 4;
 
-	if (isFacing == FACING_RIGHT_E_CD && ( frameAttack / 8 == 6 ) && (rightCharacter >= rightEnemyCD )) gMainCharacter.isHurting();
-	else if (isFacing==FACING_LEFT_E_CD && ( frameAttack / 8 == 6 ) && (rightCharacter <= rightEnemyCD )) gMainCharacter.isHurting();
+	if (frameAttack / 8 == 6) {
+		if (!typeMotion.hasAttacked) { 
+			if (isFacing == FACING_RIGHT_E_CD && rightCharacter >= rightEnemyCD) {
+				gMainCharacter.handleDamage(ENEMY_CD_DAMAGE);
+			}
+			else if (isFacing == FACING_LEFT_E_CD && rightCharacter <= rightEnemyCD) {
+				gMainCharacter.handleDamage(ENEMY_CD_DAMAGE);
+			}
+			typeMotion.hasAttacked = true; 
+		}
+	}
+	else {
+		typeMotion.hasAttacked = false; 
+	}
 }
 
 
@@ -408,6 +459,7 @@ void EnemyCD::isHurting() {
 bool EnemyCD :: getIsCollidingWithCharacter() {
 	return typeMotion.isCollidingWithCharacter;
 }
+
 
 void EnemyCD::setCameraX(int camerax) {
 	cameraX = camerax;

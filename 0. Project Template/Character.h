@@ -1,4 +1,5 @@
 #pragma once
+#include"HealthBar.h"
 #include"Globals.h"
 #include"Library.h"
 #include"EnemyAZ.h"
@@ -20,15 +21,15 @@ typedef struct Motion {
 
 	bool isHurting;
 
-	bool attackSuccessCD;
-
 	bool isCollidingWithEnemyCD;
-
-	bool attackSuccessAZ;
 
 	bool isCollidingWithEnemyAZ;
 
+	bool isCollidingWithEnemyBOSS;
+
 	bool isCollidingWithProjectileAZ;
+
+	bool isCollidingWithProjectileBOSS;
 
 	Motion() {
 		goLeft = false;
@@ -43,20 +44,18 @@ typedef struct Motion {
 
 		isHurting = false;
 
-		attackSuccessCD = false;
-
-		attackSuccessAZ = false;
-
 		isCollidingWithEnemyCD = false;
 
 		isCollidingWithEnemyAZ = false;
+
+		isCollidingWithEnemyBOSS = false;
 
 		isCollidingWithProjectileAZ = false;
 		
 	}
 };
 
-enum status {
+enum Action {
 	FACING_LEFT = 0,
 	FACING_RIGHT = 1,
 	RUN_RIGHT = 2 ,
@@ -69,6 +68,8 @@ enum status {
 	ATTACK_LEFT = 9,
 	HURT_RIGHT = 10,
 	HURT_LEFT = 11,
+	DEAD_RIGHT = 12,
+	DEAD_LEFT = 13,
 };
 
 
@@ -86,13 +87,15 @@ private:
 	int frameJump;
 	int frameAttack;
 	int frameHurt;
-
+	int frameDeath;
 
 	int isFacing;
 
 	int frameWidth, frameHeight;
 
 	int timeRespawn;
+
+	HealthBar healthBar;
 
 	SDL_Rect frameClipsRunRight[8];
 	SDL_Rect frameClipsRunLeft[8];
@@ -108,6 +111,10 @@ private:
 
 	SDL_Rect frameClipsHurtRight[4];
 	SDL_Rect frameClipsHurtLeft[4];
+
+	SDL_Rect frameClipsDeadRight[12];
+	SDL_Rect frameClipsDeadLeft[12];
+
 
 public:
 
@@ -129,21 +136,18 @@ public:
 
 	void FallingInTheHole();
 
-	void checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD = NULL, EnemyAZ* pEnemyAZ = NULL);
+	void checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD = NULL , EnemyAZ* pEnemyAZ = NULL ,EnemyBOSS* pEnemyBOSS = NULL);
 
-	void checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ = NULL , EnemyCD* pEnemyCD=NULL);
+	void checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ = NULL, EnemyBOSS* pEnemyBOSS = NULL);
 
-	void checkCharacterAttackedEnemy(EnemyCD* pEnemyCD = NULL, EnemyAZ* pEnemyAZ = NULL );
+	void checkCharacterAttackedEnemy(EnemyCD* pEnemyCD = NULL, EnemyAZ* pEnemyAZ = NULL, EnemyBOSS* pEnemyBOSS = NULL);
 
-	void isHurting();
+	void handleDamage(int damage);
 
-	bool getAttackSuccessCD();
+	HealthBar& getHealthBar() {
+		return healthBar;
+	}
 
-	void setAttackSuccessCD(bool tmp);
-
-	bool getAttackSuccessAZ();
-
-	void setAttackSuccessAZ(bool tmp);
 
 };
 

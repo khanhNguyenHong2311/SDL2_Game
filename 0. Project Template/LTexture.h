@@ -1,6 +1,5 @@
 #pragma once
 #include"Library.h"
-#include"Globals.h"
 class LTexture{
 private:
 	SDL_Texture* mTexture;
