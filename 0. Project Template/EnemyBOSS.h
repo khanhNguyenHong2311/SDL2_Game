@@ -20,8 +20,6 @@ typedef struct MotionE_BOSS {
 
 	bool isHurting;
 
-	bool hasShot;
-
 	bool gotHitByCharacter;
 	MotionE_BOSS() {
 		goLeft = false;
@@ -35,8 +33,6 @@ typedef struct MotionE_BOSS {
 		isCollidingWithCharacter = false;
 
 		isHurting = false;
-
-		hasShot = false;
 
 		gotHitByCharacter = false;
 

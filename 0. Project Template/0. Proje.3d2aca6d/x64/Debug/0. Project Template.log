@@ -1,23 +1,4 @@
-﻿  EnemyAZ.cpp
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(12,16): warning C4091: 'typedef ': ignored on left of 'MotionE_BOSS' when no variable is declared
-  (compiling source file 'EnemyAZ.cpp')
-  
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'MotionE_AZ' when no variable is declared
-  (compiling source file 'EnemyAZ.cpp')
-  
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'MotionE_CD' when no variable is declared
-  (compiling source file 'EnemyAZ.cpp')
-  
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(13,16): warning C4091: 'typedef ': ignored on left of 'Motion' when no variable is declared
-  (compiling source file 'EnemyAZ.cpp')
-  
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(238,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(242,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(243,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(258,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(259,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(261,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  EnemyBOSS.cpp
+﻿  EnemyBOSS.cpp
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(12,16): warning C4091: 'typedef ': ignored on left of 'MotionE_BOSS' when no variable is declared
   (compiling source file 'EnemyBOSS.cpp')
   
@@ -36,5 +17,4 @@ C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(243,23): warni
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(258,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(259,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(261,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
   0. Project Template.vcxproj -> C:\Users\hp\Documents\SDL2_Game\0. Project Template\x64\Debug\0. Project Template.exe

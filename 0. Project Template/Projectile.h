@@ -14,11 +14,16 @@ struct MotionProjectile {
 
 enum typeProjectile {
 	FIRE_BALL = 0,
-	FIRE_BALL_EXPLOSION = 1
+	FIRE_BALL_EXPLOSION = 1,
+	METEORITE = 3, 
+	METEORITE_EXPLOSION = 4
 };
 
 class Projectile  {
 private:
+	bool isAZ;
+
+	bool isBOSS;
 
 	int mVelX;
 
@@ -48,7 +53,7 @@ public:
 
 	void handleMotion(int limitX, int limitY);
 
-	void renderProjectile(SDL_Renderer* renderer);
+	void renderProjectile(SDL_Renderer* renderer , bool isEnemyAZ , bool isEnemyBOSS  );
 
 	void checkMapCollision();
 
@@ -72,6 +77,8 @@ public:
 
 	int getVelY();
 
+	void EnemyIs(bool enemy);
+
 	void setRotationAngle(float rotationangle);
 	
 	float getRotationAngle();
@@ -83,6 +90,8 @@ public:
 	bool getIsMoving();
 
 	SDL_Rect frameClipsFireBallRun[33];
-
 	SDL_Rect frameClipsFireBallExplosion[8];
+
+	SDL_Rect frameClipsMeteoriteRun[19];
+	SDL_Rect frameClipsMeteoriteExplosion[14];
 };

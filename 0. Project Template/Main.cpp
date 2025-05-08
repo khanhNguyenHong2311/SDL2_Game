@@ -118,7 +118,8 @@ bool LoadMedia() {
 
 	gLoadProjectile[FIRE_BALL].loadFromFile("image/projectile/fireball/FIRE_BALL.png", gRenderer);
 	gLoadProjectile[FIRE_BALL_EXPLOSION].loadFromFile("image/projectile/fireball/FIRE_BALL_EXPLOSION.png", gRenderer);
-
+	gLoadProjectile[METEORITE].loadFromFile("image/projectile/meteorite/METEORITE_RUN.png", gRenderer);
+	gLoadProjectile[METEORITE_EXPLOSION].loadFromFile("image/projectile/meteorite/METEORITE_EXPLOSION.png", gRenderer);
 
 
 	gGameMap.loadMap("map.txt");
@@ -129,7 +130,7 @@ bool LoadMedia() {
 
 vector<EnemyCD*> MakeEnemyCDList() {
 
-	for (int i = 0; i < 0; ++i) {
+	for (int i = 0; i < 1; ++i) {
 		EnemyCD* pEnemyCD = new EnemyCD();
 		pEnemyCD->getHealthBar().setMaxHealth(ENEMY_BOSS_HEALTH);
 		pEnemyCD->getHealthBar().setHealth(ENEMY_BOSS_HEALTH);
@@ -144,7 +145,7 @@ vector<EnemyCD*> MakeEnemyCDList() {
 }	
 
 vector<EnemyAZ*> MakeEnemyAZList() {
-	for (int i = 0; i < 0; ++i) {
+	for (int i = 0; i < 1; ++i) {
 		EnemyAZ* pEnemyAZ= new EnemyAZ();
 		pEnemyAZ->getHealthBar().setMaxHealth(ENEMY_AZ_HEALTH);
 		pEnemyAZ->getHealthBar().setHealth(ENEMY_AZ_HEALTH);
@@ -159,14 +160,14 @@ vector<EnemyAZ*> MakeEnemyAZList() {
 }
 
 vector<EnemyBOSS*> MakeEnemyBOSSList() {
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i <1; ++i) {
 		EnemyBOSS* pEnemyBOSS = new EnemyBOSS();
 		pEnemyBOSS->getHealthBar().setMaxHealth(ENEMY_BOSS_HEALTH);
 		pEnemyBOSS->getHealthBar().setHealth(ENEMY_BOSS_HEALTH);
 		pEnemyBOSS->setClips();
-		pEnemyBOSS->setPosX(2000 + i * 2000);
+		pEnemyBOSS->setPosX(800 + i * 2000);
 		pEnemyBOSS->setPosY(96);
-		pEnemyBOSS->setLimitPos(1500, 3000);
+		pEnemyBOSS->setLimitPos(700, 2000);
 		if (pEnemyBOSS !=NULL) listEnemiesBOSS.push_back(pEnemyBOSS);
 	}
 

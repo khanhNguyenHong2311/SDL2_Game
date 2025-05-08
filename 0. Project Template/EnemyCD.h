@@ -21,8 +21,6 @@ typedef struct MotionE_CD {
 
 	bool isHurting;
 
-	bool hasAttacked;
-
 	bool gotHitByCharacter;
 
 	MotionE_CD() {
@@ -41,8 +39,6 @@ typedef struct MotionE_CD {
 		isCollidingWithCharacter = false;
 
 		isHurting = false;
-
-		hasAttacked = false;
 
 		gotHitByCharacter = false;
 	}

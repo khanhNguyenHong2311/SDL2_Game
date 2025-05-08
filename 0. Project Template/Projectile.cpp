@@ -70,7 +70,7 @@ void Projectile::checkMapCollision() {
 
 void Projectile::setClips() {
 
-	if (PROJECTILE_FIRE_BALL_WIDTH > 0 && PROJECTILE_FIRE_BALL_HEIGHT > 0) {
+	if (PROJECTILE_FIRE_BALL_WIDTH > 0 && PROJECTILE_FIRE_BALL_HEIGHT > 0 && PROJECTILE_FIRE_BALL_EXPLOSION_WIDTH > 0 && PROJECTILE_FIRE_BALL_EXPLOSION_HEIGHT > 0) {
 		for (int i = 0;i < 33;i++) {
 			frameClipsFireBallRun[i].x = i * PROJECTILE_FIRE_BALL_WIDTH;
 			frameClipsFireBallRun[i].y = 0;
@@ -85,6 +85,23 @@ void Projectile::setClips() {
 			frameClipsFireBallExplosion[i].h = PROJECTILE_FIRE_BALL_EXPLOSION_HEIGHT;
 		}
 	}
+
+	if (PROJECTILE_METEORITE_WIDTH > 0 && PROJECTILE_METEORITE_HEIGHT > 0 && PROJECTILE_METEORITE_EXPLOSION_WIDTH > 0 && PROJECTILE_METEORITE_EXPLOSION_HEIGHT > 0) {
+		for (int i = 0;i < 19;i++) {
+			frameClipsMeteoriteRun[i].x = i * PROJECTILE_METEORITE_WIDTH;
+			frameClipsMeteoriteRun[i].y = 0;
+			frameClipsMeteoriteRun[i].w = PROJECTILE_METEORITE_WIDTH;
+			frameClipsMeteoriteRun[i].h = PROJECTILE_METEORITE_HEIGHT;
+		}
+
+		for (int i = 0;i < 14;i++) {
+			frameClipsMeteoriteExplosion[i].x = i * PROJECTILE_METEORITE_EXPLOSION_WIDTH;
+			frameClipsMeteoriteExplosion[i].y = 0;
+			frameClipsMeteoriteExplosion[i].w = PROJECTILE_METEORITE_EXPLOSION_WIDTH;
+			frameClipsMeteoriteExplosion[i].h = PROJECTILE_METEORITE_EXPLOSION_HEIGHT;
+		}
+	}
+
 }
 
 
@@ -101,31 +118,52 @@ void Projectile::handleMotion(int limitX, int limitY) {
 
 
 
-void Projectile::renderProjectile(SDL_Renderer* renderer ) {
+void Projectile::renderProjectile(SDL_Renderer* renderer, bool isEnemyAZ, bool isEnemyBOSS) {
 	SDL_Rect* currentClip = nullptr;
 
 	SDL_Texture* currentTexture = nullptr;
 
 	SDL_Rect renderQuad = { 0,0,0,0 };
+	if (isEnemyAZ) {
+		frameRun++;
+		if (frameRun / 4 >= 33) frameRun = 0;
 
-	frameRun++;
-	if (frameRun / 4 >= 33) frameRun = 0;
-
-	if (typeMotion.isExploding) {
-		frameExplosion++;
-		if (frameExplosion / 4 >= 8) {
-			frameExplosion = 0;
-			typeMotion.isExploding = false;
+		if (typeMotion.isExploding) {
+			frameExplosion++;
+			if (frameExplosion / 4 >= 8) {
+				frameExplosion = 0;
+				typeMotion.isExploding = false;
+			}
+			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), PROJECTILE_FIRE_BALL_EXPLOSION_WIDTH, PROJECTILE_FIRE_BALL_EXPLOSION_HEIGHT };
+			currentTexture = gLoadProjectile[FIRE_BALL_EXPLOSION].getTexture();
+			currentClip = &frameClipsFireBallExplosion[frameExplosion / 4];
 		}
-		renderQuad = { mPosX - gGameMap.getCameraX(), mPosY  - gGameMap.getCameraY(), PROJECTILE_FIRE_BALL_EXPLOSION_WIDTH, PROJECTILE_FIRE_BALL_EXPLOSION_HEIGHT };
-		currentTexture = gLoadProjectile[FIRE_BALL_EXPLOSION].getTexture();
-		currentClip = &frameClipsFireBallExplosion[frameExplosion / 4];
+		else {
+			renderQuad = { mPosX - PROJECTILE_FIRE_BALL_WIDTH / 2 - gGameMap.getCameraX(), mPosY - PROJECTILE_FIRE_BALL_HEIGHT / 2 - gGameMap.getCameraY(), PROJECTILE_FIRE_BALL_WIDTH, PROJECTILE_FIRE_BALL_HEIGHT };
+			currentTexture = gLoadProjectile[FIRE_BALL].getTexture();
+			currentClip = &frameClipsFireBallRun[frameRun / 4];
+		}
 	}
-	else {
-		renderQuad = { mPosX - PROJECTILE_FIRE_BALL_WIDTH / 2 - gGameMap.getCameraX(), mPosY - PROJECTILE_FIRE_BALL_HEIGHT / 2 - gGameMap.getCameraY(), PROJECTILE_FIRE_BALL_WIDTH, PROJECTILE_FIRE_BALL_HEIGHT };
-		currentTexture = gLoadProjectile[FIRE_BALL].getTexture();
-		currentClip = &frameClipsFireBallRun[frameRun / 4];
+	else if (isEnemyBOSS) {
+		frameRun++;
+		if (frameRun / 4 >= 19) frameRun = 0;
+		if (typeMotion.isExploding) {
+			frameExplosion++;
+			if (frameExplosion / 4 >= 14) {
+				frameExplosion = 0;
+				typeMotion.isExploding = false;
+			}
+			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), PROJECTILE_METEORITE_EXPLOSION_WIDTH, PROJECTILE_METEORITE_EXPLOSION_HEIGHT };
+			currentTexture = gLoadProjectile[METEORITE_EXPLOSION].getTexture();
+			currentClip = &frameClipsMeteoriteExplosion[frameExplosion / 4];
+		}
+		else {
+			renderQuad = { mPosX - PROJECTILE_METEORITE_WIDTH / 2 - gGameMap.getCameraX(), mPosY - PROJECTILE_METEORITE_HEIGHT / 2 - gGameMap.getCameraY(), PROJECTILE_METEORITE_WIDTH, PROJECTILE_METEORITE_HEIGHT };
+			currentTexture = gLoadProjectile[METEORITE].getTexture();
+			currentClip = &frameClipsMeteoriteRun[frameRun / 4];
+		}
 	}
+
 
 	SDL_RenderCopyEx(renderer, currentTexture, currentClip, &renderQuad,rotationAngle,NULL,SDL_FLIP_NONE);
 }

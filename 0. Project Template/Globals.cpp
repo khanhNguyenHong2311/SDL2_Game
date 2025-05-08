@@ -14,7 +14,7 @@ LTexture gLoadMainCharacter[15];
 LTexture gLoadEnemiesCD[15];
 LTexture gLoadEnemiesAZ[15];
 LTexture gLoadEnemiesBOSS[15];
-LTexture gLoadProjectile[5];
+LTexture gLoadProjectile[10];
 GameMap gGameMap;
 vector<EnemyCD*> listEnemiesCD;
 vector<EnemyAZ*> listEnemiesAZ;

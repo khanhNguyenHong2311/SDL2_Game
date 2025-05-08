@@ -269,33 +269,35 @@ void EnemyBOSS::createProjectile(SDL_Renderer* renderer) {
 
 
 
+
 void EnemyBOSS::handleAndRenderProjectile(SDL_Renderer* renderer) {
-	for (int i = 0;i < ProjectileList.size();i++) {
+	for (int i = 0; i < ProjectileList.size();) {
 		Projectile* pProjectile = ProjectileList[i];
 		if (pProjectile != NULL) {
-			if (pProjectile->getIsMoving() || (pProjectile->getTypeMotion().isExploding)) {
+			if (pProjectile->getIsMoving() || pProjectile->getTypeMotion().isExploding) {
 				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT);
-				pProjectile->renderProjectile(renderer);
+				pProjectile->renderProjectile(renderer, false, true); 
+				++i;
 			}
 			else {
-				ProjectileList.erase(ProjectileList.begin() + i);
-				if (pProjectile != NULL) {
-					delete pProjectile;
-					pProjectile = NULL;
-				}
+				delete pProjectile;
+				pProjectile = NULL;
+				ProjectileList.erase(ProjectileList.begin() + i); 
 			}
+		}
+		else {
+			++i;
 		}
 	}
 }
 
 
-
 void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 
-	int attackRangeA = mPosX + frameWidth / 2 - 500;
-	int attackRangeB = mPosX + frameWidth / 2 + 500;
+	int attackRangeA = mPosX + frameWidth / 2 - ENEMY_BOSS_ATTACK_RANGE;
+	int attackRangeB = mPosX + frameWidth / 2 + ENEMY_BOSS_ATTACK_RANGE;
 	if (!typeMotion.isChasing) {
-		if (characterPosX > limitPosA - 500 && characterPosX < limitPosB + 500) {
+		if (characterPosX > limitPosA - ENEMY_BOSS_ATTACK_RANGE && characterPosX < limitPosB + ENEMY_BOSS_ATTACK_RANGE) {
 			typeMotion.isChasing = true;
 		}
 	}
@@ -304,20 +306,18 @@ void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 		if (characterPosX >= attackRangeA && characterPosX <= attackRangeB) {
 			if (timeCoolDownAttack == 0) {
 				typeMotion.isAttacking = true;
-
 				frameAttack++;
-
-				if (frameAttack / 6 >= 4) {
+				if (frameAttack / 6 >= 4) frameAttack = 0;
+				if (frameAttack / 6 >= 2) {
 					frameAttack = 0;
 					typeMotion.isAttacking = false;
 					timeCoolDownAttack = 20;
-					typeMotion.hasShot = false;
+					createProjectile(gRenderer);
 				}
 			}
 			else {
 				timeCoolDownAttack--;
 				typeMotion.isAttacking = false;
-				frameAttack = 0;
 			}
 
 			mVelX = 0;
@@ -346,7 +346,7 @@ void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 			}
 		}
 	}
-	if (characterPosX < limitPosA - 500 || characterPosX > limitPosB + 500) {
+	if (characterPosX < limitPosA - ENEMY_BOSS_ATTACK_RANGE || characterPosX > limitPosB + ENEMY_BOSS_ATTACK_RANGE) {
 		typeMotion.isChasing = false;
 		typeMotion.isAttacking = false;
 		frameAttack = 0;
@@ -393,10 +393,6 @@ void EnemyBOSS::render(SDL_Renderer* renderer) {
 			}
 		}
 		else if (typeMotion.isAttacking) {
-			if (!typeMotion.hasShot) {
-				createProjectile(renderer);
-				typeMotion.hasShot = true;
-			}
 			if (isFacing == FACING_RIGHT_E_BOSS) {
 				currentTexture = gLoadEnemiesBOSS[ATTACK_RIGHT_E_BOSS].getTexture();
 				currentClip = &frameClipsAttackRight[frameAttack / 6];
@@ -466,7 +462,7 @@ void EnemyBOSS::render(SDL_Renderer* renderer) {
 		healthBar.render(renderer, mPosX - gGameMap.getCameraX(), mPosY - 10 - -gGameMap.getCameraY());
 	}
 	else {
-
+		mVelX = 0;
 		if (frameDeath / 4 <= 5) {
 			frameDeath++;
 		}

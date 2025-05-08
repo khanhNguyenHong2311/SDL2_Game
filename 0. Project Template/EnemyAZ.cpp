@@ -269,21 +269,23 @@ void EnemyAZ :: createProjectile(SDL_Renderer* renderer) {
 
 
 
-void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer ) {
-	for (int i = 0;i < ProjectileList.size();i++) {
+void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer) {
+	for (int i = 0; i < ProjectileList.size();) {
 		Projectile* pProjectile = ProjectileList[i];
 		if (pProjectile != NULL) {
-			if (pProjectile->getIsMoving() || ( pProjectile->getTypeMotion().isExploding) ) {
+			if (pProjectile->getIsMoving() || pProjectile->getTypeMotion().isExploding) {
 				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT);
-				pProjectile->renderProjectile( renderer );
+				pProjectile->renderProjectile(renderer, true, false); 
+				++i;
 			}
 			else {
-				ProjectileList.erase(ProjectileList.begin() + i);
-				if (pProjectile != NULL) {
-					delete pProjectile;
-					pProjectile = NULL;
-				}
+				delete pProjectile;
+				pProjectile = NULL;
+				ProjectileList.erase(ProjectileList.begin() + i); 
 			}
+		}
+		else {
+			++i;
 		}
 	}
 }
@@ -292,8 +294,8 @@ void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer ) {
 
 void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 
-	int attackRangeA = mPosX + frameWidth / 2 - 500;
-	int attackRangeB = mPosX + frameWidth / 2 + 500;
+	int attackRangeA = mPosX + frameWidth / 2 - ENEMY_AZ_ATTACK_RANGE;
+	int attackRangeB = mPosX + frameWidth / 2 + ENEMY_AZ_ATTACK_RANGE;
 	if (!typeMotion.isChasing) {
 		if (characterPosX > limitPosA - 500 && characterPosX < limitPosB + 500) {
 			typeMotion.isChasing = true;
@@ -367,9 +369,6 @@ void EnemyAZ::render(SDL_Renderer* renderer) {
 	else if (typeMotion.goLeft) {
 		isFacing = FACING_LEFT_E_AZ;
 	}
-
-
-
 	frameRun++;
 	if (frameRun / 5 >= 5) frameRun = 0;
 	if (healthBar.getCurrentHealth() > 0) {
@@ -463,7 +462,7 @@ void EnemyAZ::render(SDL_Renderer* renderer) {
 		}
 	}
 	else {
-
+		mVelX = 0;
 		if (frameDeath / 5 <= 6) {
 			frameDeath++;
 		}

@@ -234,14 +234,14 @@ void Character::checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD , EnemyAZ* pE
 
 	SDL_Rect enemyCollider = { 0,0,0,0 };
 	if (pEnemyCD != NULL) {
-		enemyCollider = { pEnemyCD->getPosX() , pEnemyCD->getPosY() , COLLIDER_WIDTH + 40, COLLIDER_HEIGHT };
+		enemyCollider = { pEnemyCD->getPosX() , pEnemyCD->getPosY() , ENEMY_CD_COLLIDER_WIDTH, ENEMY_CD_COLLIDER_HEIGHT };
 	}
 	else if (pEnemyAZ != NULL) {
-		enemyCollider = { pEnemyAZ->getPosX() , pEnemyAZ->getPosY() , COLLIDER_WIDTH + 40, COLLIDER_HEIGHT };
+		enemyCollider = { pEnemyAZ->getPosX() , pEnemyAZ->getPosY() , ENEMY_AZ_COLLIDER_WIDTH, ENEMY_AZ_COLLIDER_HEIGHT };
 
 	}
 	else if (pEnemyBOSS != NULL) {
-		enemyCollider = { pEnemyBOSS->getPosX() , pEnemyBOSS->getPosY() , COLLIDER_WIDTH + 40, COLLIDER_HEIGHT };
+		enemyCollider = { pEnemyBOSS->getPosX() , pEnemyBOSS->getPosY() ,ENEMY_BOSS_COLLIDER_WIDTH,ENEMY_BOSS_COLLIDER_HEIGHT };
 	}
 
 	SDL_Rect characterCollider = { mPosX, mPosY , CHARACTER_WIDTH , CHARACTER_HEIGHT };
@@ -265,6 +265,10 @@ void Character::checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD , EnemyAZ* pE
 	}
 	else if (pEnemyBOSS != NULL) {
 		typeMotion.isCollidingWithEnemyBOSS = !((bottomCharacter <= topEnemy) || (topCharacter >= bottomEnemy) || (rightCharacter <= leftEnemy) || (leftCharacter >= rightEnemy));
+		if (typeMotion.isCollidingWithEnemyBOSS) {
+			cout << 1 << endl;
+
+		}
 	}
 }
 
@@ -332,7 +336,7 @@ void Character::checkCharacterAttackedEnemy(EnemyCD* pEnemyCD, EnemyAZ* pEnemyAZ
 		int leftEnemy= pEnemyCD->getPosX();
 		int rightEnemy = leftEnemy + ENEMY_CD_WIDTH;
 
-		if (typeMotion.isAttacking == true && ( frameAttack / 6 == 4  ) && typeMotion.isCollidingWithEnemyCD) {
+		if (typeMotion.isAttacking == true && ( frameAttack == 24  ) && typeMotion.isCollidingWithEnemyCD) {
 			if (isFacing == FACING_RIGHT) {
 				if (pEnemyCD->getIsFacing() == FACING_RIGHT_E_CD) pEnemyCD->setGotHit( (rightCharacter >= leftEnemy + ENEMY_CD_WIDTH / 2) && (rightCharacter <= rightEnemy + 20) );
 				else if (pEnemyCD->getIsFacing() == FACING_LEFT_E_CD) pEnemyCD->setGotHit ( (rightCharacter >= leftEnemy) && (rightCharacter <= rightEnemy - 20) );
@@ -347,7 +351,7 @@ void Character::checkCharacterAttackedEnemy(EnemyCD* pEnemyCD, EnemyAZ* pEnemyAZ
 		int leftEnemy = pEnemyAZ->getPosX();
 		int rightEnemy = leftEnemy + ENEMY_AZ_WIDTH;
 
-		if (typeMotion.isAttacking == true && frameAttack / 6 == 4 && typeMotion.isCollidingWithEnemyAZ) {
+		if (typeMotion.isAttacking == true && frameAttack == 24 && typeMotion.isCollidingWithEnemyAZ) {
 			if (isFacing == FACING_RIGHT) {
 				if (pEnemyAZ->getIsFacing() == FACING_RIGHT_E_AZ) pEnemyAZ->setGotHit ( (rightCharacter >= leftEnemy + ENEMY_CD_WIDTH / 2) && (rightCharacter <= rightEnemy + 20) );
 				else if (pEnemyAZ->getIsFacing() == FACING_LEFT_E_CD) pEnemyAZ->setGotHit ( (rightCharacter >= leftEnemy) && (rightCharacter <= rightEnemy - 20) );
@@ -362,7 +366,7 @@ void Character::checkCharacterAttackedEnemy(EnemyCD* pEnemyCD, EnemyAZ* pEnemyAZ
 		int leftEnemy = pEnemyBOSS->getPosX();
 		int rightEnemy = leftEnemy + ENEMY_BOSS_WIDTH;
 
-		if (typeMotion.isAttacking == true && frameAttack / 6 == 4 && typeMotion.isCollidingWithEnemyBOSS) {
+		if (typeMotion.isAttacking == true && frameAttack == 24 && typeMotion.isCollidingWithEnemyBOSS) {
 			if (isFacing == FACING_RIGHT) {
 				if (pEnemyBOSS->getIsFacing() == FACING_RIGHT_E_AZ) pEnemyBOSS->setGotHit((rightCharacter >= leftEnemy + ENEMY_BOSS_WIDTH / 2) && (rightCharacter <= rightEnemy + 20));
 				else if (pEnemyBOSS->getIsFacing() == FACING_LEFT_E_CD) pEnemyBOSS->setGotHit((rightCharacter >= leftEnemy) && (rightCharacter <= rightEnemy - 20));
@@ -394,6 +398,7 @@ void Character::render(SDL_Renderer* renderer) {
 	if (healthBar.getCurrentHealth() > 0) {
 
 		if (typeMotion.isHurting) {
+			typeMotion.isAttacking = false;
 			frameHurt++;
 			if (frameHurt / 4 >= 4) {
 				frameHurt = 0;

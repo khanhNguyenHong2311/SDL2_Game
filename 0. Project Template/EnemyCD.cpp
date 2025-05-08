@@ -383,19 +383,13 @@ void EnemyCD::checkEnemyAttackedCharacter() {
 	int rightCharacter = gMainCharacter.getPosX() + CHARACTER_WIDTH;
 	int rightEnemyCD = mPosX + (ENEMY_CD_WIDTH) * 3 / 4;
 
-	if (frameAttack / 8 == 6) {
-		if (!typeMotion.hasAttacked) { 
-			if (isFacing == FACING_RIGHT_E_CD && rightCharacter >= rightEnemyCD) {
-				gMainCharacter.handleDamage(ENEMY_CD_DAMAGE);
-			}
-			else if (isFacing == FACING_LEFT_E_CD && rightCharacter <= rightEnemyCD) {
-				gMainCharacter.handleDamage(ENEMY_CD_DAMAGE);
-			}
-			typeMotion.hasAttacked = true; 
+	if (frameAttack == 48 ) {
+		if (isFacing == FACING_RIGHT_E_CD && rightCharacter >= rightEnemyCD) {
+			gMainCharacter.handleDamage(ENEMY_CD_DAMAGE);
 		}
-	}
-	else {
-		typeMotion.hasAttacked = false; 
+		else if (isFacing == FACING_LEFT_E_CD && rightCharacter <= rightEnemyCD) {
+			gMainCharacter.handleDamage(ENEMY_CD_DAMAGE);
+		}
 	}
 }
 
