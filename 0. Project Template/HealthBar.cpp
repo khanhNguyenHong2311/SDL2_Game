@@ -12,7 +12,7 @@ HealthBar::~HealthBar() {
 
 
 
-void HealthBar:: setHealth(int health) {
+void HealthBar:: setHealth(float health) {
     currentHealth = health;
     if (currentHealth > maxHealth) currentHealth = maxHealth;
     if (currentHealth < 0) currentHealth = 0;
@@ -39,12 +39,12 @@ void  HealthBar::render(SDL_Renderer* renderer, int x, int y) {
 
 }
 
-int HealthBar::getCurrentHealth() {
+float HealthBar::getCurrentHealth() {
     return currentHealth;
 }
 
 
-void HealthBar::setMaxHealth(int health) {
+void HealthBar::setMaxHealth(float health) {
     maxHealth = health;
     if (currentHealth > maxHealth) currentHealth = maxHealth;
 }

@@ -224,26 +224,17 @@ void EnemyAZ::checkEnemyAttackedCharacter() {
 
 
 
-void EnemyAZ :: createProjectile(SDL_Renderer* renderer) {
-	Projectile* pProjectile = new Projectile();
-	pProjectile->setClips();
-
-	float projectileStartX = 0;
-	float projectileStartY = 0;
-	if (isFacing == FACING_RIGHT_E_AZ) {
-		projectileStartX = mPosX + frameWidth - 20.0f;
-		projectileStartY = mPosY + 100.0f;
-	}
-	else {
-		projectileStartX = mPosX;
-		projectileStartY = mPosY + 100.0f;
+void EnemyAZ::createProjectile(SDL_Renderer* renderer) {
+	int numBullets = 1;
+	if (getHealthBar().getCurrentHealth() <= ENEMY_AZ_HEALTH / 2) {
+		numBullets = 3;
 	}
 
-	pProjectile->setPosX(projectileStartX);
-	pProjectile->setPosY(projectileStartY);
+	float projectileStartX = isFacing == FACING_RIGHT_E_BOSS ? mPosX + frameWidth - 20.0f : mPosX;
+	float projectileStartY = mPosY + 100.0f;
 
-	float targetX = gMainCharacter.getPosX() + CHARACTER_WIDTH / 2.0f;  
-	float targetY = gMainCharacter.getPosY() + CHARACTER_HEIGHT / 2.0f; 
+	float targetX = gMainCharacter.getPosX() + CHARACTER_WIDTH / 2.0f;
+	float targetY = gMainCharacter.getPosY() + CHARACTER_HEIGHT / 2.0f;
 
 	float deltaX = targetX - projectileStartX;
 	float deltaY = targetY - projectileStartY;
@@ -251,21 +242,33 @@ void EnemyAZ :: createProjectile(SDL_Renderer* renderer) {
 	float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 	if (distance == 0.0f) distance = 1.0f;
 
+	float baseAngle = atan2(deltaY, deltaX);
 
-	float unitVelX = PROJECTILE_FIRE_BALL_VEL * (deltaX / distance);
-	float unitVelY = PROJECTILE_FIRE_BALL_VEL * (deltaY / distance);
+	for (int i = 0; i < numBullets; ++i) {
+		float angleOffSetDegrees = 0.0f;
+		if (numBullets == 3) {
+			angleOffSetDegrees = (i - 1) * 15.0f;
+		}
 
-	pProjectile->setVelX(unitVelX);
-	pProjectile->setVelY(unitVelY);
+		float angleOffSetRadian = angleOffSetDegrees * M_PI / 180.0f;
+		float finalAngle = baseAngle + angleOffSetRadian;
 
-	float angle = atan2(unitVelY, unitVelX) * 180.0f / M_PI;
+		float velX = PROJECTILE_FIRE_BALL_VEL * cos(finalAngle);
+		float velY = PROJECTILE_FIRE_BALL_VEL * sin(finalAngle);
 
-	pProjectile->setRotationAngle(angle);
+		Projectile* pProjectile = new Projectile();
+		pProjectile->setClips();
+		pProjectile->setPosX(projectileStartX);
+		pProjectile->setPosY(projectileStartY);
+		pProjectile->setVelX(velX);
+		pProjectile->setVelY(velY);
+		pProjectile->setRotationAngle(finalAngle * 180.0f / M_PI);
+		pProjectile->setIsMoving(true);
 
-	pProjectile->setIsMoving(true);
-
-	ProjectileList.push_back(pProjectile);
+		ProjectileList.push_back(pProjectile);
+	}
 }
+
 
 
 
@@ -274,7 +277,7 @@ void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer) {
 		Projectile* pProjectile = ProjectileList[i];
 		if (pProjectile != NULL) {
 			if (pProjectile->getIsMoving() || pProjectile->getTypeMotion().isExploding) {
-				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT);
+				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT,true,false);
 				pProjectile->renderProjectile(renderer, true, false); 
 				++i;
 			}
@@ -291,13 +294,12 @@ void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer) {
 }
 
 
-
 void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 
 	int attackRangeA = mPosX + frameWidth / 2 - ENEMY_AZ_ATTACK_RANGE;
 	int attackRangeB = mPosX + frameWidth / 2 + ENEMY_AZ_ATTACK_RANGE;
 	if (!typeMotion.isChasing) {
-		if (characterPosX > limitPosA - 500 && characterPosX < limitPosB + 500) {
+		if (characterPosX > limitPosA - ENEMY_AZ_ATTACK_RANGE && characterPosX < limitPosB + ENEMY_AZ_ATTACK_RANGE) {
 			typeMotion.isChasing = true;
 		}
 	}
@@ -307,17 +309,17 @@ void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 			if (timeCoolDownAttack == 0) {
 				typeMotion.isAttacking = true;
 				frameAttack++;
-				if (frameAttack / 6 >= 4) {
+				if (frameAttack / 6 >= 4) frameAttack = 0;
+				if (frameAttack / 6 >= 2) {
 					frameAttack = 0;
 					typeMotion.isAttacking = false;
-					timeCoolDownAttack = 20;
-					typeMotion.hasShot = false;
+					timeCoolDownAttack = 100;
+					createProjectile(gRenderer);
 				}
 			}
 			else {
 				timeCoolDownAttack--;
 				typeMotion.isAttacking = false;
-				frameAttack = 0;
 			}
 
 			mVelX = 0;
@@ -337,21 +339,22 @@ void EnemyAZ::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 			if (characterPosX <= attackRangeA) {
 				typeMotion.goRight = false;
 				typeMotion.goLeft = true;
-				mVelX = -2 * ENEMY_BOSS_VEL;
+				mVelX = -2 * ENEMY_AZ_VEL;
 			}
 			else if (characterPosX >= attackRangeB) {
 				typeMotion.goRight = true;
 				typeMotion.goLeft = false;
-				mVelX = 2 * ENEMY_BOSS_VEL;
+				mVelX = 2 * ENEMY_AZ_VEL;
 			}
 		}
 	}
-
-	if (characterPosX < limitPosA - 500 || characterPosX > limitPosB + 500) {
+	if (characterPosX < limitPosA - ENEMY_AZ_ATTACK_RANGE || characterPosX > limitPosB + ENEMY_AZ_ATTACK_RANGE) {
 		typeMotion.isChasing = false;
 		typeMotion.isAttacking = false;
+		frameAttack = 0;
 	}
 }
+
 
 
 

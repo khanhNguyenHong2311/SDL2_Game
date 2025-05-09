@@ -27,7 +27,7 @@
 			cout << "Unable to load image " << path.c_str() << " ! SDL_Image Error : " << IMG_GetError() << endl;
 		}
 		else {
-			SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0, 255));
+			SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 255, 255));
 			newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 			if (newTexture == NULL) {
 				cout << "Unable to create texture from " << path.c_str() << " ! SDL_Error : " << SDL_GetError()<<endl;

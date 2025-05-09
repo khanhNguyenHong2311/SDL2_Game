@@ -29,25 +29,34 @@ EnemyBOSS::EnemyBOSS() {
 	frameHurt = 0;
 	frameDeath = 0;
 
-	timeStand = 60;
+	timeStand = 200;
 
+	timeReturn = 3;
 	timeCoolDownAttack = 20;
+	timeSummonMeteorite = 50;
 
 	limitPosA = 0;
 	limitPosB = 0;
 }
 
 
-void EnemyBOSS::handleDamage(int damage) {
-	int newHealth = healthBar.getCurrentHealth() - damage;
+void EnemyBOSS::handleDamage(float damage) {
+	float newHealth = healthBar.getCurrentHealth() - damage;
 	healthBar.setHealth(newHealth);
 	typeMotion.isHurting = true;
+
 }
 
 
 void EnemyBOSS::setClips() {
 	if (frameWidth > 0 && frameHeight > 0) {
 
+		for (int i = 0;i < 7;i++) {
+			frameClipsStand[i].x = (6 - i) * (frameWidth - 100);
+			frameClipsStand[i].y = 0;
+			frameClipsStand[i].w = frameWidth - 100;
+			frameClipsStand[i].h = frameHeight;
+		}
 
 		for (int i = 0;i < 5;i++) {
 			frameClipsDeadRight[i].x = i * frameWidth;
@@ -102,15 +111,16 @@ void EnemyBOSS::setClips() {
 
 void EnemyBOSS::handleMotion() {
 
-	if (typeMotion.goRight) {	
-		mVelX = ENEMY_BOSS_VEL;
+	if (typeMotion.isStanding) {
+		mVelX = 0;
 	}
 	else if (typeMotion.goLeft) {
 		mVelX = -ENEMY_BOSS_VEL;
 	}
-	else if (typeMotion.isStanding) {
-		mVelX = 0;
+	else if (typeMotion.goRight) {
+		mVelX = ENEMY_BOSS_VEL;
 	}
+
 	moveToCharacterIfInRange(gMainCharacter.getPosX(), gMainCharacter.getPosY());
 }
 
@@ -213,34 +223,25 @@ void EnemyBOSS::checkEnemyCollisionWithCharacter(int characterPosX, int characte
 }
 
 // Useless
-void EnemyBOSS::checkEnemyAttackedCharacter() {
-
-	int rightCharacter = gMainCharacter.getPosX() + CHARACTER_WIDTH;
-	int rightEnemyCD = mPosX + (ENEMY_CD_WIDTH) * 3 / 4;
-
-	if (isFacing == FACING_RIGHT_E_CD && (frameAttack / 8 == 6) && (rightCharacter >= rightEnemyCD)) gMainCharacter.handleDamage(ENEMY_BOSS_DAMAGE);
-	else if (isFacing == FACING_LEFT_E_CD && (frameAttack / 8 == 6) && (rightCharacter <= rightEnemyCD)) gMainCharacter.handleDamage(ENEMY_BOSS_DAMAGE);
-}
-
+//void EnemyBOSS::checkEnemyAttackedCharacter() {
+//
+//	int rightCharacter = gMainCharacter.getPosX() + CHARACTER_WIDTH;
+//	int rightEnemyCD = mPosX + (ENEMY_CD_WIDTH) * 3 / 4;
+//
+//	if (isFacing == FACING_RIGHT_E_CD && (frameAttack / 8 == 6) && (rightCharacter >= rightEnemyCD)) gMainCharacter.handleDamage(ENEMY_BOSS_DAMAGE);
+//	else if (isFacing == FACING_LEFT_E_CD && (frameAttack / 8 == 6) && (rightCharacter <= rightEnemyCD)) gMainCharacter.handleDamage(ENEMY_BOSS_DAMAGE);
+//}
+//
 
 
 void EnemyBOSS::createProjectile(SDL_Renderer* renderer) {
-	Projectile* pProjectile = new Projectile();
-	pProjectile->setClips();
-
-	float projectileStartX = 0;
-	float projectileStartY = 0;
-	if (isFacing == FACING_RIGHT_E_BOSS) {
-		projectileStartX = mPosX + frameWidth - 20.0f;
-		projectileStartY = mPosY + 100.0f;
-	}
-	else {
-		projectileStartX = mPosX;
-		projectileStartY = mPosY + 100.0f;
+	int numBullets = 4; 
+	if (getHealthBar().getCurrentHealth() <= ENEMY_BOSS_HEALTH / 2) {
+		numBullets = 6;
 	}
 
-	pProjectile->setPosX(projectileStartX);
-	pProjectile->setPosY(projectileStartY);
+	float projectileStartX = isFacing == FACING_RIGHT_E_BOSS ? mPosX + frameWidth - 20.0f : mPosX;
+	float projectileStartY = mPosY + 100.0f;
 
 	float targetX = gMainCharacter.getPosX() + CHARACTER_WIDTH / 2.0f;
 	float targetY = gMainCharacter.getPosY() + CHARACTER_HEIGHT / 2.0f;
@@ -251,31 +252,49 @@ void EnemyBOSS::createProjectile(SDL_Renderer* renderer) {
 	float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
 	if (distance == 0.0f) distance = 1.0f;
 
+	float baseAngle = atan2(deltaY, deltaX);
 
-	float unitVelX = PROJECTILE_FIRE_BALL_VEL * (deltaX / distance);
-	float unitVelY = PROJECTILE_FIRE_BALL_VEL * (deltaY / distance);
+	for (int i = 0; i < numBullets; ++i) {
+		float angleOffSetDegrees = 0.0f;
+		if (numBullets == 4 || numBullets == 6) {
+			angleOffSetDegrees = (i - 1) * 15.0f; 
+		}
 
-	pProjectile->setVelX(unitVelX);
-	pProjectile->setVelY(unitVelY);
+		float angleOffSetRadian = angleOffSetDegrees * M_PI / 180.0f;
+		float finalAngle = baseAngle + angleOffSetRadian;
 
-	float angle = atan2(unitVelY, unitVelX) * 180.0f / M_PI;
+		float velX = PROJECTILE_FIRE_BALL_VEL * cos(finalAngle);
+		float velY = PROJECTILE_FIRE_BALL_VEL * sin(finalAngle);
 
-	pProjectile->setRotationAngle(angle);
+		Projectile* pProjectile = new Projectile();
+		pProjectile->setClips();
+		pProjectile->setPosX(projectileStartX);
+		pProjectile->setPosY(projectileStartY);
+		pProjectile->setVelX(velX);
+		pProjectile->setVelY(velY);
+		pProjectile->setRotationAngle(finalAngle * 180.0f / M_PI);
+		pProjectile->setIsMoving(true);
 
-	pProjectile->setIsMoving(true);
-
-	ProjectileList.push_back(pProjectile);
+		ProjectileList.push_back(pProjectile);
+	}
 }
 
 
-
-
 void EnemyBOSS::handleAndRenderProjectile(SDL_Renderer* renderer) {
+	timeSummonMeteorite++;
+	if (timeSummonMeteorite >= 200) {
+		timeSummonMeteorite = 0;
+
+		Projectile* pMeteor = new Projectile();
+		pMeteor->setClips();
+		pMeteor->startMeteorFall(gMainCharacter.getPosX(), 60);  // delay 60 frame = 1s
+		ProjectileList.push_back(pMeteor);
+	}
 	for (int i = 0; i < ProjectileList.size();) {
 		Projectile* pProjectile = ProjectileList[i];
 		if (pProjectile != NULL) {
 			if (pProjectile->getIsMoving() || pProjectile->getTypeMotion().isExploding) {
-				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT);
+				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT,false , true);
 				pProjectile->renderProjectile(renderer, false, true); 
 				++i;
 			}
@@ -296,63 +315,121 @@ void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 
 	int attackRangeA = mPosX + frameWidth / 2 - ENEMY_BOSS_ATTACK_RANGE;
 	int attackRangeB = mPosX + frameWidth / 2 + ENEMY_BOSS_ATTACK_RANGE;
-	if (!typeMotion.isChasing) {
+
+	if (timeReturn == 0) {
+		timeReturn = 3;
+		typeMotion.isReturning = true;
+	}
+	typeMotion.isStanding = false;
+	if (!typeMotion.isReturning) {
 		if (characterPosX > limitPosA - ENEMY_BOSS_ATTACK_RANGE && characterPosX < limitPosB + ENEMY_BOSS_ATTACK_RANGE) {
 			typeMotion.isChasing = true;
 		}
-	}
-
-	if (typeMotion.isChasing) {
-		if (characterPosX >= attackRangeA && characterPosX <= attackRangeB) {
-			if (timeCoolDownAttack == 0) {
-				typeMotion.isAttacking = true;
-				frameAttack++;
-				if (frameAttack / 6 >= 4) frameAttack = 0;
-				if (frameAttack / 6 >= 2) {
-					frameAttack = 0;
+		if (typeMotion.isChasing) {
+			if (characterPosX >= attackRangeA && characterPosX <= attackRangeB) {
+				if (timeCoolDownAttack == 0) {
+					typeMotion.isAttacking = true;
+					frameAttack++;
+					if (frameAttack / 6 >= 4) frameAttack = 0;
+					if (frameAttack / 6 >= 2) {
+						frameAttack = 0;
+						typeMotion.isAttacking = false;
+						timeCoolDownAttack = 20;
+						createProjectile(gRenderer);
+						timeReturn--;
+					}
+				}
+				else {
+					timeCoolDownAttack--;
 					typeMotion.isAttacking = false;
-					timeCoolDownAttack = 20;
-					createProjectile(gRenderer);
+				}
+
+				mVelX = 0;
+				if (characterPosX <= mPosX + frameWidth / 2) {
+					typeMotion.goRight = false;
+					typeMotion.goLeft = true;
+				}
+				else {
+					typeMotion.goRight = true;
+					typeMotion.goLeft = false;
 				}
 			}
 			else {
-				timeCoolDownAttack--;
 				typeMotion.isAttacking = false;
-			}
+				frameAttack = 0;
 
-			mVelX = 0;
-			if (characterPosX <= mPosX + frameWidth / 2) {
-				typeMotion.goRight = false;
-				typeMotion.goLeft = true;
-			}
-			else {
-				typeMotion.goRight = true;
-				typeMotion.goLeft = false;
+				if (characterPosX <= attackRangeA) {
+					typeMotion.goRight = false;
+					typeMotion.goLeft = true;
+					mVelX = -2 * ENEMY_BOSS_VEL;
+				}
+				else if (characterPosX >= attackRangeB) {
+					typeMotion.goRight = true;
+					typeMotion.goLeft = false;
+					mVelX = 2 * ENEMY_BOSS_VEL;
+				}
 			}
 		}
-		else {
+		if (characterPosX < limitPosA - ENEMY_BOSS_ATTACK_RANGE || characterPosX > limitPosB + ENEMY_BOSS_ATTACK_RANGE) {
+			typeMotion.isChasing = false;
 			typeMotion.isAttacking = false;
+			typeMotion.isReturning = true;
+			timeReturn = 3;
 			frameAttack = 0;
-
-			if (characterPosX <= attackRangeA) {
-				typeMotion.goRight = false;
-				typeMotion.goLeft = true;
-				mVelX = -2 * ENEMY_BOSS_VEL;
-			}
-			else if (characterPosX >= attackRangeB) {
-				typeMotion.goRight = true;
-				typeMotion.goLeft = false;
-				mVelX = 2 * ENEMY_BOSS_VEL;
-			}
 		}
 	}
-	if (characterPosX < limitPosA - ENEMY_BOSS_ATTACK_RANGE || characterPosX > limitPosB + ENEMY_BOSS_ATTACK_RANGE) {
-		typeMotion.isChasing = false;
-		typeMotion.isAttacking = false;
-		frameAttack = 0;
+	else {
+		if (timeStand == 0) {
+			typeMotion.isStanding = false;
+			typeMotion.isReturning = false;
+			typeMotion.isChasing = true;
+			typeMotion.hasSummoned = false;
+			timeStand = 200;
+		}
+		typeMotion.goRight = true;
+		typeMotion.goLeft = false;
+		mVelX = 2 * ENEMY_BOSS_VEL;
+		if (mPosX >= 2000  ) {
+			timeStand--;
+			if (isFacing == FACING_RIGHT_E_BOSS) summonAlly();
+			handleDamage(-0.05);
+			typeMotion.isStanding = true;
+			typeMotion.goLeft = true;
+			typeMotion.goRight = false;
+			mVelX = 0;
+			typeMotion.isChasing = false;
+		}
 	}
+
 }
 
+
+void EnemyBOSS::summonAlly() {
+	if ( !typeMotion.hasSummoned) {
+
+		EnemyAZ* pEnemyAZ = new EnemyAZ();
+		pEnemyAZ->getHealthBar().setMaxHealth(ENEMY_AZ_HEALTH);
+		pEnemyAZ->getHealthBar().setHealth(ENEMY_AZ_HEALTH);
+		pEnemyAZ->setClips();
+		pEnemyAZ->setPosX(mPosX - 100);
+		pEnemyAZ->setPosY(96);
+		pEnemyAZ->setLimitPos(0,2000);
+		listEnemiesAZ.push_back(pEnemyAZ);
+
+		EnemyCD* pEnemyCD = new EnemyCD();
+		pEnemyCD->getHealthBar().setMaxHealth(ENEMY_BOSS_HEALTH);
+		pEnemyCD->getHealthBar().setHealth(ENEMY_BOSS_HEALTH);
+		pEnemyCD->setClips();
+		pEnemyCD->setPosX(mPosX );
+		pEnemyCD->setPosY(0);
+		pEnemyCD->setLimitPos(0,2000);
+		listEnemiesCD.push_back(pEnemyCD);
+
+		typeMotion.hasSummoned = true;
+	}
+
+
+}	
 
 
 
@@ -404,27 +481,12 @@ void EnemyBOSS::render(SDL_Renderer* renderer) {
 
 		}
 		else if (!typeMotion.isChasing) {
-			if ((mPosX >= limitPosB && isFacing == FACING_RIGHT_E_BOSS) || (mPosX <= limitPosA && isFacing == FACING_LEFT_E_BOSS)) {
-				typeMotion.isStanding = true;
-				typeMotion.goLeft = false;
-				typeMotion.goRight = false;
-				timeStand--;
-				if (timeStand == 0) {
-					typeMotion.isStanding = false;
-					typeMotion.goLeft = (mPosX >= limitPosB);
-					typeMotion.goRight = (mPosX <= limitPosA);
-					timeStand = 60;
-				}
-				if (mPosX >= limitPosB) {
-					currentTexture = gLoadEnemiesBOSS[RUN_RIGHT_E_BOSS].getTexture();
-					currentClip = &frameClipsRunRight[frameRun / 5];
-				}
-				else if (mPosX <= limitPosA) {
-					currentTexture = gLoadEnemiesBOSS[RUN_LEFT_E_BOSS].getTexture();
-					currentClip = &frameClipsRunLeft[frameRun / 5];
-				}
+			if (typeMotion.isStanding) {
+				frameStand++;
+				if (frameStand / 7 >= 7) frameStand = 0;
+				currentTexture = gLoadEnemiesBOSS[STAND_LEFT_E_BOSS].getTexture();
+				currentClip = &frameClipsStand[frameStand / 7];
 			}
-
 			else if (mPosX > limitPosB) {
 				typeMotion.goLeft = true;
 				typeMotion.goRight = false;

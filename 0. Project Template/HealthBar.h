@@ -11,9 +11,9 @@ private:
 
 	int mPosY;
 	
-	int currentHealth;
+	float currentHealth;
 
-	int maxHealth;
+	float maxHealth;
 
 	SDL_Texture* healthBarTexture;
 
@@ -21,9 +21,9 @@ private:
 public:
 	HealthBar();
 	~HealthBar();
-	void setHealth(int health);
+	void setHealth(float health);
 	void render(SDL_Renderer* renderer , int posX , int posY);
 	void loadFromFile(string path, SDL_Renderer* renderer);
-	int getCurrentHealth();
-	void setMaxHealth(int health);
+	float getCurrentHealth();
+	void setMaxHealth(float health);
 };

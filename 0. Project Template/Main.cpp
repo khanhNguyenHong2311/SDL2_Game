@@ -115,6 +115,7 @@ bool LoadMedia() {
 	gLoadEnemiesBOSS[ATTACK_LEFT_E_BOSS].loadFromFile("image/character/enemies/BOSS_ATTACK_LEFT.png", gRenderer);
 	gLoadEnemiesBOSS[DEAD_RIGHT_E_BOSS].loadFromFile("image/character/enemies/BOSS_DEAD_RIGHT.png", gRenderer);
 	gLoadEnemiesBOSS[DEAD_LEFT_E_BOSS].loadFromFile("image/character/enemies/BOSS_DEAD_LEFT.png", gRenderer);
+	gLoadEnemiesBOSS[STAND_LEFT_E_BOSS].loadFromFile("image/character/enemies/BOSS_STAND.png", gRenderer);
 
 	gLoadProjectile[FIRE_BALL].loadFromFile("image/projectile/fireball/FIRE_BALL.png", gRenderer);
 	gLoadProjectile[FIRE_BALL_EXPLOSION].loadFromFile("image/projectile/fireball/FIRE_BALL_EXPLOSION.png", gRenderer);
@@ -130,7 +131,7 @@ bool LoadMedia() {
 
 vector<EnemyCD*> MakeEnemyCDList() {
 
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < 0; ++i) {
 		EnemyCD* pEnemyCD = new EnemyCD();
 		pEnemyCD->getHealthBar().setMaxHealth(ENEMY_BOSS_HEALTH);
 		pEnemyCD->getHealthBar().setHealth(ENEMY_BOSS_HEALTH);
@@ -145,7 +146,7 @@ vector<EnemyCD*> MakeEnemyCDList() {
 }	
 
 vector<EnemyAZ*> MakeEnemyAZList() {
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < 0; ++i) {
 		EnemyAZ* pEnemyAZ= new EnemyAZ();
 		pEnemyAZ->getHealthBar().setMaxHealth(ENEMY_AZ_HEALTH);
 		pEnemyAZ->getHealthBar().setHealth(ENEMY_AZ_HEALTH);
@@ -160,7 +161,7 @@ vector<EnemyAZ*> MakeEnemyAZList() {
 }
 
 vector<EnemyBOSS*> MakeEnemyBOSSList() {
-	for (int i = 0; i <1; ++i) {
+	for (int i = 0; i < 1; ++i) {
 		EnemyBOSS* pEnemyBOSS = new EnemyBOSS();
 		pEnemyBOSS->getHealthBar().setMaxHealth(ENEMY_BOSS_HEALTH);
 		pEnemyBOSS->getHealthBar().setHealth(ENEMY_BOSS_HEALTH);
@@ -191,9 +192,9 @@ int main(int argc, char* args[]) {
 	gMainCharacter.getHealthBar().setMaxHealth(CHARACTER_HEALTH);
 	gMainCharacter.getHealthBar().setHealth(CHARACTER_HEALTH);
 
-	vector<EnemyCD*> listEnemiesCD = MakeEnemyCDList();
-	vector<EnemyAZ*> listEnemiesAZ = MakeEnemyAZList();
-	vector<EnemyBOSS*> listEnemiesBOSS = MakeEnemyBOSSList();
+	listEnemiesCD = MakeEnemyCDList();
+	listEnemiesAZ = MakeEnemyAZList();
+	listEnemiesBOSS = MakeEnemyBOSSList();
 
 	bool quit = false;
 	while (!quit) {
@@ -280,7 +281,7 @@ int main(int argc, char* args[]) {
 	}
 
 
-
+	cout << listEnemiesAZ.size() << endl;
 	for (auto x  : listEnemiesCD) {
 		delete x;  
 	}

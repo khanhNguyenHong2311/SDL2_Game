@@ -344,7 +344,7 @@ void EnemyCD::render(SDL_Renderer* renderer) {
 		}
 	}
 
-	healthBar.render(renderer, mPosX - gGameMap.getCameraX(), mPosY - 10 - -gGameMap.getCameraY());
+	healthBar.render(renderer, mPosX - gGameMap.getCameraX(), mPosY - 10 - gGameMap.getCameraY());
 
 	SDL_Rect renderQuad = { mPosX - gGameMap.getCameraX(),mPosY - gGameMap.getCameraY(),currentClip->w,currentClip->h };
 

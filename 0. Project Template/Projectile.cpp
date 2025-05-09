@@ -15,6 +15,8 @@ Projectile::Projectile() {
 	
 	frameExplosion = 0;
 
+	timeDelayBeforeFalling = 50;
+
 }
 
 void Projectile:: projectileExploded() {
@@ -24,44 +26,85 @@ void Projectile:: projectileExploded() {
 	mVelY = 0;
 }
 
-void Projectile::checkMapCollision() {
+void Projectile::checkMapCollision(bool isEnemyAZ , bool isEnemyBOSS) {
 
-	int x1 = (mPosX + mVelX) / TILE_SIZE;
-	int x2 = (mPosX + mVelX + PROJECTILE_FIRE_BALL_WIDTH - 100) / TILE_SIZE;
+	if (isEnemyAZ) {
+		int x1 = (mPosX + mVelX) / TILE_SIZE;
+		int x2 = (mPosX + mVelX + PROJECTILE_FIRE_BALL_WIDTH - 80) / TILE_SIZE  ;
 
-	int y1 = mPosY / TILE_SIZE;
-	int y2 = (mPosY + PROJECTILE_FIRE_BALL_HEIGHT - 100) / TILE_SIZE;
+		int y1 = mPosY / TILE_SIZE;
+		int y2 = (mPosY + PROJECTILE_FIRE_BALL_HEIGHT - 100 ) / TILE_SIZE ;
+		if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
+			if (mVelX > 0) {
+				if (gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
+					projectileExploded();
+				}
+			}
+			else if (mVelX < 0) {
+				if (gGameMap.getValueOfTile(y1, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY) {
+					projectileExploded();
 
-	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
-		if (mVelX > 0) {
-			if (gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
-				projectileExploded();
+				}
 			}
 		}
-		else if (mVelX < 0) {
-			if (gGameMap.getValueOfTile(y1, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY) {
-				projectileExploded();
 
+		x1 = mPosX / TILE_SIZE;
+		x2 = (mPosX + PROJECTILE_FIRE_BALL_WIDTH - 90) / TILE_SIZE;
+
+
+		y1 = (mPosY + mVelY) / TILE_SIZE;
+		y2 = (mPosY + mVelY + PROJECTILE_FIRE_BALL_HEIGHT - 90) / TILE_SIZE;
+
+		if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
+			if (mVelY > 0) {
+				if (gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
+					projectileExploded();
+				}
+			}
+			else if (mVelY < 0) {
+				if (gGameMap.getValueOfTile(y1, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY) {
+					projectileExploded();
+				}
 			}
 		}
 	}
+	else if (isEnemyBOSS) {
+		int x1 = (mPosX + mVelX) / TILE_SIZE;
+		int x2 = (mPosX + mVelX + PROJECTILE_FIRE_BALL_WIDTH - 80) / TILE_SIZE;
 
-	x1 = mPosX / TILE_SIZE;
-	x2 = (mPosX + PROJECTILE_FIRE_BALL_WIDTH - 90 ) / TILE_SIZE;
+		int y1 = mPosY / TILE_SIZE;
+		int y2 = (mPosY + PROJECTILE_FIRE_BALL_HEIGHT - 100) / TILE_SIZE;
+		if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
+			if (mVelX > 0) {
+				if (gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
+					projectileExploded();
+				}
+			}
+			else if (mVelX < 0) {
+				if (gGameMap.getValueOfTile(y1, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY) {
+					projectileExploded();
 
-
-	y1 = (mPosY + mVelY) / TILE_SIZE;
-	y2 = (mPosY + mVelY + PROJECTILE_FIRE_BALL_HEIGHT - 90 ) / TILE_SIZE;
-
-	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
-		if (mVelY > 0) {
-			if (gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
-				projectileExploded();
+				}
 			}
 		}
-		else if (mVelY < 0) {
-			if (gGameMap.getValueOfTile(y1, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY) {
-				projectileExploded();
+
+		x1 = mPosX / TILE_SIZE;
+		x2 = (mPosX + PROJECTILE_FIRE_BALL_WIDTH - 90) / TILE_SIZE;
+
+
+		y1 = (mPosY + mVelY) / TILE_SIZE;
+		y2 = (mPosY + mVelY + PROJECTILE_FIRE_BALL_HEIGHT - 90) / TILE_SIZE;
+
+		if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
+			if (mVelY > 0) {
+				if (gGameMap.getValueOfTile(y2, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
+					projectileExploded();
+				}
+			}
+			else if (mVelY < 0) {
+				if (gGameMap.getValueOfTile(y1, x1) != TILE_EMPTY || gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY) {
+					projectileExploded();
+				}
 			}
 		}
 	}
@@ -87,14 +130,14 @@ void Projectile::setClips() {
 	}
 
 	if (PROJECTILE_METEORITE_WIDTH > 0 && PROJECTILE_METEORITE_HEIGHT > 0 && PROJECTILE_METEORITE_EXPLOSION_WIDTH > 0 && PROJECTILE_METEORITE_EXPLOSION_HEIGHT > 0) {
-		for (int i = 0;i < 19;i++) {
+		for (int i = 0;i < 15;i++) {
 			frameClipsMeteoriteRun[i].x = i * PROJECTILE_METEORITE_WIDTH;
 			frameClipsMeteoriteRun[i].y = 0;
 			frameClipsMeteoriteRun[i].w = PROJECTILE_METEORITE_WIDTH;
 			frameClipsMeteoriteRun[i].h = PROJECTILE_METEORITE_HEIGHT;
 		}
 
-		for (int i = 0;i < 14;i++) {
+		for (int i = 0;i < 15;i++) {
 			frameClipsMeteoriteExplosion[i].x = i * PROJECTILE_METEORITE_EXPLOSION_WIDTH;
 			frameClipsMeteoriteExplosion[i].y = 0;
 			frameClipsMeteoriteExplosion[i].w = PROJECTILE_METEORITE_EXPLOSION_WIDTH;
@@ -107,8 +150,21 @@ void Projectile::setClips() {
 
 
 
-void Projectile::handleMotion(int limitX, int limitY) {
-	checkMapCollision();
+void Projectile::handleMotion(int limitX, int limitY , bool isEnemyAZ , bool isEnemyBOSS) {
+	if (isEnemyAZ) {
+		checkMapCollision(true, false);
+	}
+	else if (isEnemyBOSS) {
+		if (!hasStartedFalling) {
+			timeDelayBeforeFalling++;
+			if (timeDelayBeforeFalling == 60) {
+				hasStartedFalling = true;
+				mVelY = 10; 
+				timeDelayBeforeFalling = 0;
+			}
+		}
+		checkMapCollision(false, true);
+	}
 	mPosX+=mVelX;
 	mPosY += mVelY;
 	if (mPosX > limitX) {
@@ -116,6 +172,18 @@ void Projectile::handleMotion(int limitX, int limitY) {
 	}
 }
 
+
+void Projectile::startMeteorFall(int x, int timeDelayBeforeFalling) {
+	mPosX = x;
+	mPosY = -PROJECTILE_METEORITE_HEIGHT; 
+	mVelX = 0;
+	mVelY = 0;
+
+	isMoving = true;
+	typeMotion.isExploding = false;
+
+	hasStartedFalling = false;
+}
 
 
 void Projectile::renderProjectile(SDL_Renderer* renderer, bool isEnemyAZ, bool isEnemyBOSS) {
@@ -146,14 +214,14 @@ void Projectile::renderProjectile(SDL_Renderer* renderer, bool isEnemyAZ, bool i
 	}
 	else if (isEnemyBOSS) {
 		frameRun++;
-		if (frameRun / 4 >= 19) frameRun = 0;
+		if (frameRun / 4 >= 15) frameRun = 0;
 		if (typeMotion.isExploding) {
 			frameExplosion++;
-			if (frameExplosion / 4 >= 14) {
+			if (frameExplosion / 4 >= 16) {
 				frameExplosion = 0;
 				typeMotion.isExploding = false;
 			}
-			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), PROJECTILE_METEORITE_EXPLOSION_WIDTH, PROJECTILE_METEORITE_EXPLOSION_HEIGHT };
+			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), PROJECTILE_METEORITE_EXPLOSION_WIDTH , PROJECTILE_METEORITE_EXPLOSION_HEIGHT };
 			currentTexture = gLoadProjectile[METEORITE_EXPLOSION].getTexture();
 			currentClip = &frameClipsMeteoriteExplosion[frameExplosion / 4];
 		}

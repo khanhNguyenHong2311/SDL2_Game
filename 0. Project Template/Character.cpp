@@ -265,10 +265,6 @@ void Character::checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD , EnemyAZ* pE
 	}
 	else if (pEnemyBOSS != NULL) {
 		typeMotion.isCollidingWithEnemyBOSS = !((bottomCharacter <= topEnemy) || (topCharacter >= bottomEnemy) || (rightCharacter <= leftEnemy) || (leftCharacter >= rightEnemy));
-		if (typeMotion.isCollidingWithEnemyBOSS) {
-			cout << 1 << endl;
-
-		}
 	}
 }
 
@@ -288,7 +284,7 @@ void Character::checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ, EnemyBO
 		for (int i = 0;i < projectileAZ.size();i++) {
 			Projectile* pProjectile = projectileAZ[i];
 			if (pProjectile->getIsMoving()) {
-				enemyProjectileRect = { pProjectile->getPosX(),pProjectile->getPosY(),PROJECTILE_FIRE_BALL_WIDTH - 100,PROJECTILE_FIRE_BALL_HEIGHT - 100 };
+				enemyProjectileRect = { pProjectile->getPosX(),pProjectile->getPosY(),PROJECTILE_FIRE_BALL_WIDTH - 100  ,PROJECTILE_FIRE_BALL_HEIGHT - 100};
 
 				int rightEnemyProjectile = enemyProjectileRect.x + enemyProjectileRect.w;
 				int leftEnemyProjectile = enemyProjectileRect.x;
@@ -308,7 +304,7 @@ void Character::checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ, EnemyBO
 		for (int i = 0;i < projectileBOSS.size();i++) {
 			Projectile* pProjectile = projectileBOSS[i];
 			if (pProjectile->getIsMoving()) {
-				enemyProjectileRect = { pProjectile->getPosX(),pProjectile->getPosY(),PROJECTILE_FIRE_BALL_WIDTH - 100,PROJECTILE_FIRE_BALL_HEIGHT - 100 };
+				enemyProjectileRect = { pProjectile->getPosX(),pProjectile->getPosY(),PROJECTILE_METEORITE_WIDTH - 100 ,PROJECTILE_METEORITE_HEIGHT - 100 };
 
 				int rightEnemyProjectile = enemyProjectileRect.x + enemyProjectileRect.w;
 				int leftEnemyProjectile = enemyProjectileRect.x;

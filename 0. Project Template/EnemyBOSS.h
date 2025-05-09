@@ -21,6 +21,11 @@ typedef struct MotionE_BOSS {
 	bool isHurting;
 
 	bool gotHitByCharacter;
+
+	bool isReturning;
+
+	bool hasSummoned;
+
 	MotionE_BOSS() {
 		goLeft = false;
 		goRight = false;
@@ -36,6 +41,9 @@ typedef struct MotionE_BOSS {
 
 		gotHitByCharacter = false;
 
+		isReturning = false;
+
+		hasSummoned = false;
 	}
 };
 
@@ -89,6 +97,10 @@ private:
 
 	int timeCoolDownAttack;
 
+	int timeReturn;
+
+	int timeSummonMeteorite; 
+
 	MotionE_BOSS typeMotion;
 
 	HealthBar healthBar;
@@ -104,6 +116,8 @@ private:
 
 	SDL_Rect frameClipsDeadRight[5];
 	SDL_Rect frameClipsDeadLeft[5];
+
+	SDL_Rect frameClipsStand[7];
 
 
 	vector<Projectile*> ProjectileList;
@@ -144,6 +158,7 @@ public:
 
 	void moveToCharacterIfInRange(int charX, int charY);
 
+	void summonAlly();
 
 	void handleAndRenderProjectile(SDL_Renderer* renderer);
 
@@ -162,7 +177,7 @@ public:
 
 	bool getGotHit() { return typeMotion.gotHitByCharacter; }
 
-	void handleDamage(int damage);
+	void handleDamage(float damage);
 
 	HealthBar& getHealthBar() {
 		return healthBar;

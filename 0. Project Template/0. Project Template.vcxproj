@@ -143,7 +143,9 @@
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Effects.h" />
     <ClInclude Include="EnemyBOSS.h" />
+    <ClInclude Include="EnemyBOSSPLUS.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="EnemyAZ.h" />

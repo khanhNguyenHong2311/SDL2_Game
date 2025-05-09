@@ -43,6 +43,11 @@ private:
 
 	int frameExplosion;
 
+	int timeDelayBeforeFalling;
+
+	bool hasStartedFalling;
+
+
 	MotionProjectile typeMotion;
 
 public:
@@ -51,13 +56,15 @@ public:
 
 	~Projectile() { ; }
 
-	void handleMotion(int limitX, int limitY);
+	void handleMotion(int limitX, int limitY , bool isEnemyAZ , bool isEnemyBOSS);
 
 	void renderProjectile(SDL_Renderer* renderer , bool isEnemyAZ , bool isEnemyBOSS  );
 
-	void checkMapCollision();
+	void checkMapCollision(bool isEnemyAZ , bool isEnemyBOSS);
 
 	void projectileExploded();
+
+	void startMeteorFall(int x, int timeDelayBeforeFalling);
 
 	void setClips();
 
@@ -77,8 +84,6 @@ public:
 
 	int getVelY();
 
-	void EnemyIs(bool enemy);
-
 	void setRotationAngle(float rotationangle);
 	
 	float getRotationAngle();
@@ -92,6 +97,6 @@ public:
 	SDL_Rect frameClipsFireBallRun[33];
 	SDL_Rect frameClipsFireBallExplosion[8];
 
-	SDL_Rect frameClipsMeteoriteRun[19];
-	SDL_Rect frameClipsMeteoriteExplosion[14];
+	SDL_Rect frameClipsMeteoriteRun[15];
+	SDL_Rect frameClipsMeteoriteExplosion[15];
 };
