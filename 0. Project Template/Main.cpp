@@ -117,11 +117,22 @@ bool LoadMedia() {
 	gLoadEnemiesBOSS[DEAD_LEFT_E_BOSS].loadFromFile("image/character/enemies/BOSS_DEAD_LEFT.png", gRenderer);
 	gLoadEnemiesBOSS[STAND_LEFT_E_BOSS].loadFromFile("image/character/enemies/BOSS_STAND.png", gRenderer);
 
+	gLoadEnemiesBOSS[RUN_RIGHT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_RUN_RIGHT.png", gRenderer);
+	gLoadEnemiesBOSS[RUN_LEFT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_RUN_LEFT.png", gRenderer);
+	gLoadEnemiesBOSS[HURT_RIGHT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_HURT_RIGHT.png", gRenderer);
+	gLoadEnemiesBOSS[HURT_LEFT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_HURT_LEFT.png", gRenderer);
+	gLoadEnemiesBOSS[ATTACK_RIGHT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_ATTACK_RIGHT.png", gRenderer);
+	gLoadEnemiesBOSS[ATTACK_LEFT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_ATTACK_LEFT.png", gRenderer);
+	gLoadEnemiesBOSS[DEAD_RIGHT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_DEAD_RIGHT.png", gRenderer);
+	gLoadEnemiesBOSS[DEAD_LEFT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_DEAD_LEFT.png", gRenderer);
+	gLoadEnemiesBOSS[STAND_LEFT_E_BOSS_PHASE2].loadFromFile("image/character/enemies/BOSSPLUS_STAND.png", gRenderer);
+
+
 	gLoadProjectile[FIRE_BALL].loadFromFile("image/projectile/fireball/FIRE_BALL.png", gRenderer);
 	gLoadProjectile[FIRE_BALL_EXPLOSION].loadFromFile("image/projectile/fireball/FIRE_BALL_EXPLOSION.png", gRenderer);
 	gLoadProjectile[METEORITE].loadFromFile("image/projectile/meteorite/METEORITE_RUN.png", gRenderer);
 	gLoadProjectile[METEORITE_EXPLOSION].loadFromFile("image/projectile/meteorite/METEORITE_EXPLOSION.png", gRenderer);
-
+	gLoadProjectile[STAR].loadFromFile("image/projectile/star/STAR.png", gRenderer);
 
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);

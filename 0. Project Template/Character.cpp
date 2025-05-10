@@ -300,7 +300,8 @@ void Character::checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ, EnemyBO
 		}
 	}
 	else if (pEnemyBOSS != NULL) {
-		vector<Projectile*> projectileBOSS = pEnemyBOSS->getProjectileList();
+		vector<Projectile*> projectileBOSS = pEnemyBOSS->getProjectileListMeteorite();
+		vector<Projectile*> projectileBOSSS = pEnemyBOSS->getProjectileListStar();
 		for (int i = 0;i < projectileBOSS.size();i++) {
 			Projectile* pProjectile = projectileBOSS[i];
 			if (pProjectile->getIsMoving()) {
@@ -318,6 +319,23 @@ void Character::checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ, EnemyBO
 				}
 			}
 		}
+
+		for (int i = 0;i < projectileBOSSS.size();i++) {
+			Projectile* pProjectile = projectileBOSSS[i];
+			if (pProjectile->getIsMoving()) {
+				enemyProjectileRect = { pProjectile->getPosX(),pProjectile->getPosY(),PROJECTILE_METEORITE_WIDTH - 100 ,PROJECTILE_METEORITE_HEIGHT - 100 };
+
+				int rightEnemyProjectile = enemyProjectileRect.x + enemyProjectileRect.w;
+				int leftEnemyProjectile = enemyProjectileRect.x;
+				int topEnemyProjectile = enemyProjectileRect.y;
+				int bottomEnemyProjectile = enemyProjectileRect.y + enemyProjectileRect.h;
+
+				if (!(bottomCharacter <= topEnemyProjectile || topCharacter >= bottomEnemyProjectile || rightCharacter <= leftEnemyProjectile || leftCharacter >= rightEnemyProjectile)) {
+					handleDamage(ENEMY_BOSS_DAMAGE);
+				}
+			}
+		}
+
 	}
 }
 

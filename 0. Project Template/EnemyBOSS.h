@@ -24,7 +24,11 @@ typedef struct MotionE_BOSS {
 
 	bool isReturning;
 
-	bool hasSummoned;
+	bool hasSummonedAlly;
+
+	bool hasSummonedStar;
+
+	bool isPhase2;
 
 	MotionE_BOSS() {
 		goLeft = false;
@@ -43,7 +47,11 @@ typedef struct MotionE_BOSS {
 
 		isReturning = false;
 
-		hasSummoned = false;
+		hasSummonedAlly = false;
+
+		hasSummonedStar = false;
+
+		isPhase2 = false;
 	}
 };
 
@@ -62,7 +70,23 @@ enum Action_BOSS {
 	HURT_RIGHT_E_BOSS = 10,
 	HURT_LEFT_E_BOSS = 11,
 	DEAD_RIGHT_E_BOSS = 12,
-	DEAD_LEFT_E_BOSS = 13
+	DEAD_LEFT_E_BOSS = 13,
+
+	FACING_LEFT_E_BOSS_PHASE2 = 14,
+	FACING_RIGHT_E_BOSS_PHASE2 = 15,
+	RUN_RIGHT_E_BOSS_PHASE2 = 16,
+	RUN_LEFT_E_BOSS_PHASE2 = 17,
+	STAND_RIGHT_E_BOSS_PHASE2 = 18,
+	STAND_LEFT_E_BOSS_PHASE2 = 19,
+	JUMP_LEFT_E_BOSS_PHASE2 = 20,
+	JUMP_RIGHT_E_BOSS_PHASE2 = 21,
+	ATTACK_RIGHT_E_BOSS_PHASE2 = 22,
+	ATTACK_LEFT_E_BOSS_PHASE2 = 23,
+	HURT_RIGHT_E_BOSS_PHASE2 = 24,
+	HURT_LEFT_E_BOSS_PHASE2 = 25,
+	DEAD_RIGHT_E_BOSS_PHASE2 = 26,
+	DEAD_LEFT_E_BOSS_PHASE2 = 27
+
 };
 
 
@@ -99,7 +123,7 @@ private:
 
 	int timeReturn;
 
-	int timeSummonMeteorite; 
+	int timeSummonStar;
 
 	MotionE_BOSS typeMotion;
 
@@ -120,7 +144,9 @@ private:
 	SDL_Rect frameClipsStand[7];
 
 
-	vector<Projectile*> ProjectileList;
+	vector<Projectile*> ProjectileListMeteorite;
+
+	vector<Projectile*> ProjectileListStar;
 
 	int limitPosA;
 	int limitPosB;
@@ -148,17 +174,25 @@ public:
 
 	void setProjectileList(vector <Projectile*> projectilelist);
 
-	vector <Projectile*> getProjectileList();
+	vector <Projectile*> getProjectileListMeteorite();
 
-	void createProjectile(SDL_Renderer* renderer);
+	vector<Projectile*> getProjectileListStar();
+
+	void createProjectileMeteorite(SDL_Renderer* renderer);
+
+	void createProjectileStar(SDL_Renderer* renderer);
 
 	void checkMapCollision();
+
 	void checkEnemyCollisionWithCharacter(int characterPosX, int characterPosY);
+
 	void checkEnemyAttackedCharacter();
 
 	void moveToCharacterIfInRange(int charX, int charY);
 
 	void summonAlly();
+
+	void summonStar();
 
 	void handleAndRenderProjectile(SDL_Renderer* renderer);
 

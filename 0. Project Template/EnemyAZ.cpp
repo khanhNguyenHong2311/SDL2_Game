@@ -225,10 +225,8 @@ void EnemyAZ::checkEnemyAttackedCharacter() {
 
 
 void EnemyAZ::createProjectile(SDL_Renderer* renderer) {
-	int numBullets = 1;
-	if (getHealthBar().getCurrentHealth() <= ENEMY_AZ_HEALTH / 2) {
-		numBullets = 3;
-	}
+	int numBullets = 3;
+
 
 	float projectileStartX = isFacing == FACING_RIGHT_E_BOSS ? mPosX + frameWidth - 20.0f : mPosX;
 	float projectileStartY = mPosY + 100.0f;
@@ -245,10 +243,9 @@ void EnemyAZ::createProjectile(SDL_Renderer* renderer) {
 	float baseAngle = atan2(deltaY, deltaX);
 
 	for (int i = 0; i < numBullets; ++i) {
-		float angleOffSetDegrees = 0.0f;
-		if (numBullets == 3) {
-			angleOffSetDegrees = (i - 1) * 15.0f;
-		}
+		float angleOffSetDegrees = 0.0f;		
+		
+		angleOffSetDegrees = (i - 1) * 15.0f;
 
 		float angleOffSetRadian = angleOffSetDegrees * M_PI / 180.0f;
 		float finalAngle = baseAngle + angleOffSetRadian;
@@ -277,8 +274,8 @@ void EnemyAZ::handleAndRenderProjectile(SDL_Renderer* renderer) {
 		Projectile* pProjectile = ProjectileList[i];
 		if (pProjectile != NULL) {
 			if (pProjectile->getIsMoving() || pProjectile->getTypeMotion().isExploding) {
-				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT,true,false);
-				pProjectile->renderProjectile(renderer, true, false); 
+				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT , false);
+				pProjectile->renderProjectile(renderer, true, false,false); 
 				++i;
 			}
 			else {

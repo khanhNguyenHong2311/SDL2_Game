@@ -16,14 +16,12 @@ enum typeProjectile {
 	FIRE_BALL = 0,
 	FIRE_BALL_EXPLOSION = 1,
 	METEORITE = 3, 
-	METEORITE_EXPLOSION = 4
+	METEORITE_EXPLOSION = 4 ,
+	STAR = 5
 };
 
 class Projectile  {
 private:
-	bool isAZ;
-
-	bool isBOSS;
 
 	int mVelX;
 
@@ -45,8 +43,9 @@ private:
 
 	int timeDelayBeforeFalling;
 
-	bool hasStartedFalling;
+	bool hasStartedStarFalling;
 
+	bool isStar;
 
 	MotionProjectile typeMotion;
 
@@ -56,15 +55,14 @@ public:
 
 	~Projectile() { ; }
 
-	void handleMotion(int limitX, int limitY , bool isEnemyAZ , bool isEnemyBOSS);
+	void handleMotion(int limitX, int limitY , bool isStar);
 
-	void renderProjectile(SDL_Renderer* renderer , bool isEnemyAZ , bool isEnemyBOSS  );
+	void renderProjectile(SDL_Renderer* renderer , bool isFireBall, bool isMeteorite, bool isStar);
 
-	void checkMapCollision(bool isEnemyAZ , bool isEnemyBOSS);
+	void checkMapCollision();
 
 	void projectileExploded();
 
-	void startMeteorFall(int x, int timeDelayBeforeFalling);
 
 	void setClips();
 
@@ -99,4 +97,6 @@ public:
 
 	SDL_Rect frameClipsMeteoriteRun[15];
 	SDL_Rect frameClipsMeteoriteExplosion[15];
+
+	SDL_Rect frameClipsStarRun[10];
 };

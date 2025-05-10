@@ -33,7 +33,7 @@ EnemyBOSS::EnemyBOSS() {
 
 	timeReturn = 3;
 	timeCoolDownAttack = 20;
-	timeSummonMeteorite = 50;
+	timeSummonStar = 50;
 
 	limitPosA = 0;
 	limitPosB = 0;
@@ -44,7 +44,11 @@ void EnemyBOSS::handleDamage(float damage) {
 	float newHealth = healthBar.getCurrentHealth() - damage;
 	healthBar.setHealth(newHealth);
 	typeMotion.isHurting = true;
-
+	if (!typeMotion.isPhase2 && healthBar.getCurrentHealth() <= 0) {
+		typeMotion.isPhase2 = true;
+		float newHealth = healthBar.getCurrentHealth() + 100;
+		healthBar.setHealth(newHealth);
+	}
 }
 
 
@@ -234,7 +238,7 @@ void EnemyBOSS::checkEnemyCollisionWithCharacter(int characterPosX, int characte
 //
 
 
-void EnemyBOSS::createProjectile(SDL_Renderer* renderer) {
+void EnemyBOSS::createProjectileMeteorite(SDL_Renderer* renderer) {
 	int numBullets = 4; 
 	if (getHealthBar().getCurrentHealth() <= ENEMY_BOSS_HEALTH / 2) {
 		numBullets = 6;
@@ -275,33 +279,74 @@ void EnemyBOSS::createProjectile(SDL_Renderer* renderer) {
 		pProjectile->setRotationAngle(finalAngle * 180.0f / M_PI);
 		pProjectile->setIsMoving(true);
 
-		ProjectileList.push_back(pProjectile);
+		ProjectileListMeteorite.push_back(pProjectile);
 	}
 }
 
 
-void EnemyBOSS::handleAndRenderProjectile(SDL_Renderer* renderer) {
-	timeSummonMeteorite++;
-	if (timeSummonMeteorite >= 200) {
-		timeSummonMeteorite = 0;
 
-		Projectile* pMeteor = new Projectile();
-		pMeteor->setClips();
-		pMeteor->startMeteorFall(gMainCharacter.getPosX(), 60);  // delay 60 frame = 1s
-		ProjectileList.push_back(pMeteor);
+
+void EnemyBOSS::createProjectileStar(SDL_Renderer* renderer) {
+	for (int i = 0;i < 3;i++) {
+		float projectileStartX = gMainCharacter.getPosX() + (i-1)*50;
+		float projectileStartY = -PROJECTILE_METEORITE_HEIGHT + (i-1)*50;
+
+		float targetX = gMainCharacter.getPosX() + CHARACTER_WIDTH / 2.0f;
+		float targetY = gMainCharacter.getPosY() + CHARACTER_HEIGHT / 2.0f;
+
+		float velX = 0;
+		float velY = PROJECTILE_FIRE_BALL_VEL;
+		Projectile* pProjectile = new Projectile();
+		pProjectile->setClips();
+		pProjectile->setPosX(projectileStartX);
+		pProjectile->setPosY(projectileStartY);
+		pProjectile->setVelX(velX);
+		pProjectile->setVelY(velY);
+		pProjectile->setIsMoving(true);
+
+		ProjectileListStar.push_back(pProjectile);
 	}
-	for (int i = 0; i < ProjectileList.size();) {
-		Projectile* pProjectile = ProjectileList[i];
+}
+
+
+
+
+
+void EnemyBOSS::handleAndRenderProjectile(SDL_Renderer* renderer) {
+
+
+	for (int i = 0; i < ProjectileListStar.size();) {
+		Projectile* pProjectile = ProjectileListStar[i];
 		if (pProjectile != NULL) {
 			if (pProjectile->getIsMoving() || pProjectile->getTypeMotion().isExploding) {
-				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT,false , true);
-				pProjectile->renderProjectile(renderer, false, true); 
+				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT, true);
+				pProjectile->renderProjectile(renderer, false, false, true);
 				++i;
 			}
 			else {
 				delete pProjectile;
 				pProjectile = NULL;
-				ProjectileList.erase(ProjectileList.begin() + i); 
+				ProjectileListStar.erase(ProjectileListStar.begin() + i);
+			}
+		}
+		else {
+			++i;
+		}
+	}
+
+
+	for (int i = 0; i < ProjectileListMeteorite.size();) {
+		Projectile* pProjectile = ProjectileListMeteorite[i];
+		if (pProjectile != NULL) {
+			if (pProjectile->getIsMoving() || pProjectile->getTypeMotion().isExploding) {
+				pProjectile->handleMotion(SCREEN_WIDTH + gGameMap.getCameraX(), SCREEN_HEIGHT,false);
+				pProjectile->renderProjectile(renderer, false, true,false); 
+				++i;
+			}
+			else {
+				delete pProjectile;
+				pProjectile = NULL;
+				ProjectileListMeteorite.erase(ProjectileListMeteorite.begin() + i);
 			}
 		}
 		else {
@@ -312,7 +357,11 @@ void EnemyBOSS::handleAndRenderProjectile(SDL_Renderer* renderer) {
 
 
 void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
-
+	//timeSummonStar--;
+	//if (timeSummonStar == 0) {
+	//	timeSummonStar = 10;
+	//	createProjectileStar(gRenderer);
+	//}
 	int attackRangeA = mPosX + frameWidth / 2 - ENEMY_BOSS_ATTACK_RANGE;
 	int attackRangeB = mPosX + frameWidth / 2 + ENEMY_BOSS_ATTACK_RANGE;
 
@@ -335,7 +384,7 @@ void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 						frameAttack = 0;
 						typeMotion.isAttacking = false;
 						timeCoolDownAttack = 20;
-						createProjectile(gRenderer);
+						createProjectileMeteorite(gRenderer);
 						timeReturn--;
 					}
 				}
@@ -370,20 +419,20 @@ void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 				}
 			}
 		}
-		if (characterPosX < limitPosA - ENEMY_BOSS_ATTACK_RANGE || characterPosX > limitPosB + ENEMY_BOSS_ATTACK_RANGE) {
-			typeMotion.isChasing = false;
-			typeMotion.isAttacking = false;
-			typeMotion.isReturning = true;
-			timeReturn = 3;
-			frameAttack = 0;
-		}
+		//if (characterPosX < limitPosA - ENEMY_BOSS_ATTACK_RANGE || characterPosX > limitPosB + ENEMY_BOSS_ATTACK_RANGE) {
+		//	typeMotion.isChasing = false;
+		//	typeMotion.isAttacking = false;
+		//	typeMotion.isReturning = true;
+		//	timeReturn = 3;
+		//	frameAttack = 0;
+		//}
 	}
 	else {
 		if (timeStand == 0) {
 			typeMotion.isStanding = false;
 			typeMotion.isReturning = false;
 			typeMotion.isChasing = true;
-			typeMotion.hasSummoned = false;
+			typeMotion.hasSummonedAlly = false;
 			timeStand = 200;
 		}
 		typeMotion.goRight = true;
@@ -405,7 +454,7 @@ void EnemyBOSS::moveToCharacterIfInRange(int characterPosX, int characterPosY) {
 
 
 void EnemyBOSS::summonAlly() {
-	if ( !typeMotion.hasSummoned) {
+	if ( !typeMotion.hasSummonedAlly) {
 
 		EnemyAZ* pEnemyAZ = new EnemyAZ();
 		pEnemyAZ->getHealthBar().setMaxHealth(ENEMY_AZ_HEALTH);
@@ -425,12 +474,17 @@ void EnemyBOSS::summonAlly() {
 		pEnemyCD->setLimitPos(0,2000);
 		listEnemiesCD.push_back(pEnemyCD);
 
-		typeMotion.hasSummoned = true;
+		typeMotion.hasSummonedAlly = true;
 	}
-
-
 }	
 
+void EnemyBOSS::summonStar() {
+	timeSummonStar--;
+	if (timeSummonStar == 0) {
+		typeMotion.hasSummonedStar = true;
+		timeSummonStar = 50;
+	}
+}
 
 
 void EnemyBOSS::render(SDL_Renderer* renderer) {
@@ -447,11 +501,9 @@ void EnemyBOSS::render(SDL_Renderer* renderer) {
 		isFacing = FACING_LEFT_E_BOSS;
 	}
 
-
-
-	frameRun++;
-	if (frameRun / 5 >= 3) frameRun = 0;
-	if (healthBar.getCurrentHealth() > 0) {
+	if (!typeMotion.isPhase2) {
+		frameRun++;
+		if (frameRun / 5 >= 3) frameRun = 0;
 
 		if (typeMotion.gotHitByCharacter) {
 			frameHurt++;
@@ -523,31 +575,111 @@ void EnemyBOSS::render(SDL_Renderer* renderer) {
 		}
 		healthBar.render(renderer, mPosX - gGameMap.getCameraX(), mPosY - 10 - -gGameMap.getCameraY());
 	}
-	else {
-		mVelX = 0;
-		if (frameDeath / 4 <= 5) {
-			frameDeath++;
-		}
 
-		if (isFacing == FACING_RIGHT_E_BOSS) {
-			currentTexture = gLoadEnemiesBOSS[DEAD_RIGHT_E_BOSS].getTexture();
-			currentClip = &frameClipsDeadRight[frameDeath / 5];
+	else {
+
+		if (healthBar.getCurrentHealth() > 0) {
+			frameRun++;
+			if (frameRun / 5 >= 3) frameRun = 0;
+
+			if (typeMotion.gotHitByCharacter) {
+				frameHurt++;
+				if (frameHurt / 4 >= 4) {
+					handleDamage(CHARACTER_DAMAGE);
+					frameHurt = 0;
+					typeMotion.gotHitByCharacter = false;
+				}
+				if (isFacing == FACING_LEFT_E_BOSS) {
+					currentTexture = gLoadEnemiesBOSS[HURT_LEFT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsHurtRight[frameHurt / 4];
+				}
+				else if (isFacing == FACING_RIGHT_E_BOSS) {
+					currentTexture = gLoadEnemiesBOSS[HURT_RIGHT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsHurtLeft[frameHurt / 4];
+				}
+			}
+			else if (typeMotion.isAttacking) {
+				if (isFacing == FACING_RIGHT_E_BOSS) {
+					currentTexture = gLoadEnemiesBOSS[ATTACK_RIGHT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsAttackRight[frameAttack / 6];
+				}
+				else if (isFacing == FACING_LEFT_E_BOSS) {
+					currentTexture = gLoadEnemiesBOSS[ATTACK_LEFT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsAttackLeft[frameAttack / 6];
+				}
+
+			}
+			else if (!typeMotion.isChasing) {
+				if (typeMotion.isStanding) {
+					frameStand++;
+					if (frameStand / 7 >= 7) frameStand = 0;
+					currentTexture = gLoadEnemiesBOSS[STAND_LEFT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsStand[frameStand / 7];
+				}
+				else if (mPosX > limitPosB) {
+					typeMotion.goLeft = true;
+					typeMotion.goRight = false;
+					currentTexture = gLoadEnemiesBOSS[RUN_LEFT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsRunLeft[frameRun / 5];
+
+				}
+				else if (mPosX < limitPosA) {
+					typeMotion.goRight = true;
+					typeMotion.goLeft = false;
+					currentTexture = gLoadEnemiesBOSS[RUN_RIGHT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsRunRight[frameRun / 5];
+				}
+				else {
+					if (isFacing == FACING_RIGHT_E_BOSS) {
+						currentTexture = gLoadEnemiesBOSS[RUN_RIGHT_E_BOSS_PHASE2].getTexture();
+						currentClip = &frameClipsRunRight[frameRun / 5];
+					}
+					else {
+						currentTexture = gLoadEnemiesBOSS[RUN_LEFT_E_BOSS_PHASE2].getTexture();
+						currentClip = &frameClipsRunLeft[frameRun / 5];
+					}
+				}
+			}
+			else {
+				if (isFacing == FACING_RIGHT_E_BOSS) {
+					currentTexture = gLoadEnemiesBOSS[RUN_RIGHT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsRunRight[frameRun / 5];
+				}
+				else {
+					currentTexture = gLoadEnemiesBOSS[RUN_LEFT_E_BOSS_PHASE2].getTexture();
+					currentClip = &frameClipsRunLeft[frameRun / 5];
+				}
+			}
+			healthBar.render(renderer, mPosX - gGameMap.getCameraX(), mPosY - 10 - -gGameMap.getCameraY());
 		}
 		else {
-			currentTexture = gLoadEnemiesBOSS[DEAD_LEFT_E_BOSS].getTexture();
-			currentClip = &frameClipsDeadLeft[frameDeath / 5];
+			mVelX = 0;
+			if (frameDeath / 4 <= 5) {
+				frameDeath++;
+			}
+
+			if (isFacing == FACING_RIGHT_E_BOSS) {
+				currentTexture = gLoadEnemiesBOSS[DEAD_RIGHT_E_BOSS_PHASE2].getTexture();
+				currentClip = &frameClipsDeadRight[frameDeath / 5];
+			}
+			else {
+				currentTexture = gLoadEnemiesBOSS[DEAD_LEFT_E_BOSS_PHASE2].getTexture();
+				currentClip = &frameClipsDeadLeft[frameDeath / 5];
+			}
+
 		}
+
+
+
 	}
+		SDL_Rect renderQuad = { mPosX - gGameMap.getCameraX(),mPosY - gGameMap.getCameraY(),currentClip->w,currentClip->h };
 
+		SDL_RenderCopy(renderer, currentTexture, currentClip, &renderQuad);
 
-
-	SDL_Rect renderQuad = { mPosX - gGameMap.getCameraX(),mPosY - gGameMap.getCameraY(),currentClip->w,currentClip->h };
-
-	SDL_RenderCopy(renderer, currentTexture, currentClip, &renderQuad);
-
-	handleAndRenderProjectile(renderer);
+		handleAndRenderProjectile(renderer);
 
 }
+
 
 
 
@@ -571,16 +703,17 @@ bool EnemyBOSS::getIsColliding() {
 }
 
 
-void EnemyBOSS::setProjectileList(vector <Projectile*> projectilelist) {
-	ProjectileList = projectilelist;
+
+
+
+vector <Projectile*> EnemyBOSS::getProjectileListMeteorite() {
+	return ProjectileListMeteorite;
 }
 
 
-vector <Projectile*> EnemyBOSS::getProjectileList() {
-	return ProjectileList;
+vector<Projectile*> EnemyBOSS:: getProjectileListStar() {
+	return ProjectileListStar;
 }
-
-
 
 void EnemyBOSS::setCameraX(int camerax) {
 	cameraX = camerax;
