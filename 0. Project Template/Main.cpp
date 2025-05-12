@@ -7,6 +7,7 @@
 #include"EnemyBOSS.h"
 #include"Map.h"
 #include"HealthBar.h"
+#include"ManaBar.h"
 #include"Projectile.h"
 using namespace std;
 
@@ -133,6 +134,12 @@ bool LoadMedia() {
 	gLoadProjectile[METEORITE].loadFromFile("image/projectile/meteorite/METEORITE_RUN.png", gRenderer);
 	gLoadProjectile[METEORITE_EXPLOSION].loadFromFile("image/projectile/meteorite/METEORITE_EXPLOSION.png", gRenderer);
 	gLoadProjectile[STAR].loadFromFile("image/projectile/star/STAR.png", gRenderer);
+	gLoadProjectile[ARROW].loadFromFile("image/projectile/arrow/ARROW.png", gRenderer);
+	gLoadProjectile[ARROW_EXPLOSION].loadFromFile("image/projectile/arrow/ARROW_EXPLOSION.png", gRenderer);
+
+	gLoadEffects[RECOVER].loadFromFile("image/effects/RECOVER.png", gRenderer);
+	gLoadEffects[SIGNAL].loadFromFile("image/effects/SIGNAL.png", gRenderer);
+	gLoadEffects[MINE_EXPLOSION].loadFromFile("image/effects/MINE_EXPLOSION.png", gRenderer);
 
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);
@@ -144,8 +151,8 @@ vector<EnemyCD*> MakeEnemyCDList() {
 
 	for (int i = 0; i < 0; ++i) {
 		EnemyCD* pEnemyCD = new EnemyCD();
-		pEnemyCD->getHealthBar().setMaxHealth(ENEMY_BOSS_HEALTH);
-		pEnemyCD->getHealthBar().setHealth(ENEMY_BOSS_HEALTH);
+		pEnemyCD->getHealthBar().setMaxHealth(ENEMY_CD_HEALTH);
+		pEnemyCD->getHealthBar().setHealth(ENEMY_CD_HEALTH);
 		pEnemyCD->setClips();
 		pEnemyCD->setPosX(200 + i * 2000);
 		pEnemyCD->setPosY(0);
@@ -172,7 +179,7 @@ vector<EnemyAZ*> MakeEnemyAZList() {
 }
 
 vector<EnemyBOSS*> MakeEnemyBOSSList() {
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i <1; ++i) {
 		EnemyBOSS* pEnemyBOSS = new EnemyBOSS();
 		pEnemyBOSS->getHealthBar().setMaxHealth(ENEMY_BOSS_HEALTH);
 		pEnemyBOSS->getHealthBar().setHealth(ENEMY_BOSS_HEALTH);
@@ -202,6 +209,9 @@ int main(int argc, char* args[]) {
 	timeGameText.setColor(RED_TEXT);
 	gMainCharacter.getHealthBar().setMaxHealth(CHARACTER_HEALTH);
 	gMainCharacter.getHealthBar().setHealth(CHARACTER_HEALTH);
+	gMainCharacter.getManaBar().setMaxMana(CHARACTER_MANA);
+	gMainCharacter.getManaBar().setMana(CHARACTER_MANA);
+	gEffects.setClips();
 
 	listEnemiesCD = MakeEnemyCDList();
 	listEnemiesAZ = MakeEnemyAZList();
@@ -223,7 +233,7 @@ int main(int argc, char* args[]) {
 		gMainCharacter.FallingInTheHole();
 		gMainCharacter.setClips();
 		gMainCharacter.CenterEntityOnMap();
-		gMainCharacter.checkMapCollision();
+		gMainCharacter.checkMapCollision(gRenderer);
 
 
 		for (int i = 0;i < listEnemiesCD.size();i++) {
@@ -233,11 +243,17 @@ int main(int argc, char* args[]) {
 					pEnemyCD->handleMotion();
 					gMainCharacter.checkCharacterCollisionWithEnemy(pEnemyCD,NULL,NULL);
 					gMainCharacter.checkCharacterAttackedEnemy(pEnemyCD,NULL,NULL);
+					pEnemyCD->checkEnemyCollisionWithProjectile();
 					pEnemyCD->checkEnemyCollisionWithCharacter(gMainCharacter.getPosX(), gMainCharacter.getPosY());
 					pEnemyCD->FallingInTheHole();
 				}
-				pEnemyCD->setCameraX(gGameMap.getCameraX());
-				pEnemyCD->setCameraY(gGameMap.getCameraY());
+				else {
+					if (!pEnemyCD->getTypeFlag().hasGivenMana) {
+					gMainCharacter.handleMana(-10);
+					pEnemyCD->setHasGivenMana(true);
+					}
+				}
+
 				pEnemyCD->checkMapCollision();
 				pEnemyCD->render(gRenderer);
 			}
@@ -252,10 +268,16 @@ int main(int argc, char* args[]) {
 					gMainCharacter.checkCharacterCollisionWithEnemy(NULL, pEnemyAZ,NULL);
 					gMainCharacter.checkCharacterAttackedEnemy(NULL, pEnemyAZ,NULL);
 					gMainCharacter.checkCharacterCollisionWithProjectile(pEnemyAZ,NULL);
+					pEnemyAZ->checkEnemyCollisionWithProjectile();
 					pEnemyAZ->checkEnemyCollisionWithCharacter(gMainCharacter.getPosX(), gMainCharacter.getPosY());
 				}
-				pEnemyAZ->setCameraX(gGameMap.getCameraX());
-				pEnemyAZ->setCameraY(gGameMap.getCameraY());
+				else {
+					if (!pEnemyAZ->getTypeFlag().hasGivenMana) {
+						gMainCharacter.handleMana(-10);
+						pEnemyAZ->setHasGivenMana(true);
+					}
+				}
+
 				pEnemyAZ->checkMapCollision();
 				pEnemyAZ->render(gRenderer);
 			}
@@ -269,10 +291,9 @@ int main(int argc, char* args[]) {
 					gMainCharacter.checkCharacterCollisionWithEnemy(NULL,NULL, pEnemyBOSS);
 					gMainCharacter.checkCharacterAttackedEnemy(NULL, NULL, pEnemyBOSS);
 					gMainCharacter.checkCharacterCollisionWithProjectile(NULL , pEnemyBOSS);
+					pEnemyBOSS->checkEnemyCollisionWithProjectile();
 					pEnemyBOSS->checkEnemyCollisionWithCharacter(gMainCharacter.getPosX(), gMainCharacter.getPosY());
 				}
-				pEnemyBOSS->setCameraX(gGameMap.getCameraX());
-				pEnemyBOSS->setCameraY(gGameMap.getCameraY());
 				pEnemyBOSS->checkMapCollision();
 				pEnemyBOSS->render(gRenderer);
 			}

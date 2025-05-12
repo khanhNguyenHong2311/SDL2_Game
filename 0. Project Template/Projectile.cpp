@@ -11,30 +11,106 @@ Projectile::Projectile() {
 
 	isMoving = false;
 	
+	frameHeight = PROJECTILE_WIDTH;
+	frameWidth = PROJECTILE_HEIGHT;
+
+	frameExplosionWidth = PROJECTILE_EXPLOSION_WIDTH;
+	frameExplosionHeight = PROJECTILE_EXPLOSION_HEIGHT;
+
 	frameRun = 0;
 	
 	frameExplosion = 0;
 
-	timeDelayBeforeFalling = 50;
+	timeDelayBeforeFall = 60;
 
-	isStar = false;
+	isWaitingToFall = false;
 
 }
 
-void Projectile:: projectileExploded() {
-	isMoving = false;
-	typeMotion.isExploding = true;
-	mVelX = 0;
-	mVelY = 0;
+
+void Projectile::setClips() {
+
+	for (int i = 0;i < 33;i++) {
+		frameClipsFireBallRun[i].x = i * frameWidth;
+		frameClipsFireBallRun[i].y = 0;
+		frameClipsFireBallRun[i].w = frameWidth;
+		frameClipsFireBallRun[i].h = frameHeight;
+	}
+
+	for (int i = 0;i < 8;i++) {
+		frameClipsFireBallExplosion[i].x = i * frameExplosionWidth;
+		frameClipsFireBallExplosion[i].y = 0;
+		frameClipsFireBallExplosion[i].w = frameExplosionWidth;
+		frameClipsFireBallExplosion[i].h = frameExplosionHeight;
+	}
+
+	
+	for (int i = 0;i < 15;i++) {
+		frameClipsMeteoriteRun[i].x = i * frameWidth;
+		frameClipsMeteoriteRun[i].y = 0;
+		frameClipsMeteoriteRun[i].w = frameWidth;
+		frameClipsMeteoriteRun[i].h = frameHeight;
+
+		frameClipsMeteoriteExplosion[i].x = i * frameExplosionWidth;
+		frameClipsMeteoriteExplosion[i].y = 0;
+		frameClipsMeteoriteExplosion[i].w = frameExplosionWidth;
+		frameClipsMeteoriteExplosion[i].h = frameExplosionHeight;
+	}
+
+	for (int i = 0;i < 10;i++) {
+		frameClipsStarRun[i].x = i * frameWidth;
+		frameClipsStarRun[i].y = 0;
+		frameClipsStarRun[i].w = frameWidth;
+		frameClipsStarRun[i].h = frameHeight;
+	}
+
+
+	for (int i = 0;i < 14;i++) {
+		frameClipsArrowRun[i].x = i * frameWidth;
+		frameClipsArrowRun[i].y = 0;
+		frameClipsArrowRun[i].w = frameWidth;
+		frameClipsArrowRun[i].h = frameHeight;
+	}
+
+	for (int i = 0;i < 13;i++) {
+		frameClipsArrowExplosion[i].x = i * (frameWidth - 20);
+		frameClipsArrowExplosion[i].y = 0;
+		frameClipsArrowExplosion[i].w = frameWidth - 20;
+		frameClipsArrowExplosion[i].h = frameHeight - 20;
+	}
 }
+
+
+
+void Projectile::handleMotion(int limitX, int limitY, bool isStar) {
+
+	if (!isStar) {
+		checkMapCollision();
+	}
+
+	if (isStar && isWaitingToFall) {
+		timeDelayBeforeFall--;
+		if (timeDelayBeforeFall <= 0) {
+			mVelY = 2 * PROJECTILE_VEL;
+			isWaitingToFall = false;
+		}
+	}
+
+	mPosX += mVelX;
+	mPosY += mVelY;
+	if (mPosX > limitX + 1000) {
+		isMoving = false;
+	}
+}
+
 
 void Projectile::checkMapCollision() {
 
 	int x1 = (mPosX + mVelX) / TILE_SIZE;
-	int x2 = (mPosX + mVelX + PROJECTILE_FIRE_BALL_WIDTH - 80) / TILE_SIZE  ;
+	int x2 = (mPosX + mVelX + frameWidth - 80) / TILE_SIZE  ;
 
 	int y1 = mPosY / TILE_SIZE;
-	int y2 = (mPosY + PROJECTILE_FIRE_BALL_HEIGHT - 100 ) / TILE_SIZE ;
+	int y2 = (mPosY + frameHeight - 100 ) / TILE_SIZE ;
 	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
 		if (mVelX > 0) {
 			if (gGameMap.getValueOfTile(y1, x2) != TILE_EMPTY || gGameMap.getValueOfTile(y2, x2) != TILE_EMPTY) {
@@ -50,11 +126,11 @@ void Projectile::checkMapCollision() {
 	}
 
 	x1 = mPosX / TILE_SIZE;
-	x2 = (mPosX + PROJECTILE_FIRE_BALL_WIDTH - 90) / TILE_SIZE;
+	x2 = (mPosX + frameWidth - 90) / TILE_SIZE;
 
 
 	y1 = (mPosY + mVelY) / TILE_SIZE;
-	y2 = (mPosY + mVelY + PROJECTILE_FIRE_BALL_HEIGHT - 90) / TILE_SIZE;
+	y2 = (mPosY + mVelY + frameHeight - 90) / TILE_SIZE;
 
 	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
 		if (mVelY > 0) {
@@ -70,68 +146,18 @@ void Projectile::checkMapCollision() {
 	}
 }
 
-void Projectile::setClips() {
-
-	if (PROJECTILE_FIRE_BALL_WIDTH > 0 && PROJECTILE_FIRE_BALL_HEIGHT > 0 && PROJECTILE_FIRE_BALL_EXPLOSION_WIDTH > 0 && PROJECTILE_FIRE_BALL_EXPLOSION_HEIGHT > 0) {
-		for (int i = 0;i < 33;i++) {
-			frameClipsFireBallRun[i].x = i * PROJECTILE_FIRE_BALL_WIDTH;
-			frameClipsFireBallRun[i].y = 0;
-			frameClipsFireBallRun[i].w = PROJECTILE_FIRE_BALL_WIDTH;
-			frameClipsFireBallRun[i].h = PROJECTILE_FIRE_BALL_HEIGHT;
-		}
-
-		for (int i = 0;i < 8;i++) {
-			frameClipsFireBallExplosion[i].x = i * PROJECTILE_FIRE_BALL_EXPLOSION_WIDTH;
-			frameClipsFireBallExplosion[i].y = 0;
-			frameClipsFireBallExplosion[i].w = PROJECTILE_FIRE_BALL_EXPLOSION_WIDTH;
-			frameClipsFireBallExplosion[i].h = PROJECTILE_FIRE_BALL_EXPLOSION_HEIGHT;
-		}
-	}
-
-	if (PROJECTILE_METEORITE_WIDTH > 0 && PROJECTILE_METEORITE_HEIGHT > 0 && PROJECTILE_METEORITE_EXPLOSION_WIDTH > 0 && PROJECTILE_METEORITE_EXPLOSION_HEIGHT > 0) {
-		for (int i = 0;i < 15;i++) {
-			frameClipsMeteoriteRun[i].x = i * PROJECTILE_METEORITE_WIDTH;
-			frameClipsMeteoriteRun[i].y = 0;
-			frameClipsMeteoriteRun[i].w = PROJECTILE_METEORITE_WIDTH;
-			frameClipsMeteoriteRun[i].h = PROJECTILE_METEORITE_HEIGHT;
-
-			frameClipsMeteoriteExplosion[i].x = i * PROJECTILE_METEORITE_EXPLOSION_WIDTH;
-			frameClipsMeteoriteExplosion[i].y = 0;
-			frameClipsMeteoriteExplosion[i].w = PROJECTILE_METEORITE_EXPLOSION_WIDTH;
-			frameClipsMeteoriteExplosion[i].h = PROJECTILE_METEORITE_EXPLOSION_HEIGHT;
-		}
-	}
 
 
-	if (PROJECTILE_METEORITE_WIDTH > 0 && PROJECTILE_METEORITE_HEIGHT > 0 && PROJECTILE_METEORITE_EXPLOSION_WIDTH > 0 && PROJECTILE_METEORITE_EXPLOSION_HEIGHT > 0) {
-		for (int i = 0;i < 10;i++) {
-			frameClipsStarRun[i].x = i * PROJECTILE_METEORITE_WIDTH;
-			frameClipsStarRun[i].y = 0;
-			frameClipsStarRun[i].w = PROJECTILE_METEORITE_WIDTH;
-			frameClipsStarRun[i].h = PROJECTILE_METEORITE_HEIGHT;
-		}
-	}
 
+void Projectile::projectileExploded() {
+	isMoving = false;
+	typeFlag.isExploding = true;
+	mVelX = 0;
+	mVelY = 0;
 }
 
 
-
-
-void Projectile::handleMotion(int limitX, int limitY , bool isStar ) {
-
-	if (!isStar) {
-		checkMapCollision();
-	}
-	mPosX+=mVelX;
-	mPosY += mVelY;
-	if (mPosX > limitX) {
-		isMoving = false;
-	}
-}
-
-
-
-void Projectile::renderProjectile(SDL_Renderer* renderer, bool isFireBall, bool isMeteorite, bool isStar) {
+void Projectile::renderProjectile(SDL_Renderer* renderer, bool isFireBall, bool isMeteorite, bool isStar , bool isArrow) {
 	SDL_Rect* currentClip = nullptr;
 
 	SDL_Texture* currentTexture = nullptr;
@@ -141,18 +167,18 @@ void Projectile::renderProjectile(SDL_Renderer* renderer, bool isFireBall, bool 
 		frameRun++;
 		if (frameRun / 4 >= 33) frameRun = 0;
 
-		if (typeMotion.isExploding) {
+		if (typeFlag.isExploding) {
 			frameExplosion++;
 			if (frameExplosion / 4 >= 8) {
 				frameExplosion = 0;
-				typeMotion.isExploding = false;
+				typeFlag.isExploding = false;
 			}
-			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), PROJECTILE_FIRE_BALL_EXPLOSION_WIDTH, PROJECTILE_FIRE_BALL_EXPLOSION_HEIGHT };
+			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), frameExplosionWidth, frameExplosionHeight };
 			currentTexture = gLoadProjectile[FIRE_BALL_EXPLOSION].getTexture();
 			currentClip = &frameClipsFireBallExplosion[frameExplosion / 4];
 		}
 		else {
-			renderQuad = { mPosX - PROJECTILE_FIRE_BALL_WIDTH / 2 - gGameMap.getCameraX(), mPosY - PROJECTILE_FIRE_BALL_HEIGHT / 2 - gGameMap.getCameraY(), PROJECTILE_FIRE_BALL_WIDTH, PROJECTILE_FIRE_BALL_HEIGHT };
+			renderQuad = { mPosX - frameWidth / 2 - gGameMap.getCameraX(), mPosY - frameHeight / 2 - gGameMap.getCameraY(), frameWidth, frameHeight };
 			currentTexture = gLoadProjectile[FIRE_BALL].getTexture();
 			currentClip = &frameClipsFireBallRun[frameRun / 4];
 		}
@@ -160,41 +186,73 @@ void Projectile::renderProjectile(SDL_Renderer* renderer, bool isFireBall, bool 
 	else if (isMeteorite) {
 		frameRun++;
 		if (frameRun / 4 >= 15) frameRun = 0;
-		if (typeMotion.isExploding) {
+		if (typeFlag.isExploding) {
 			frameExplosion++;
 			if (frameExplosion / 4 >= 16) {
 				frameExplosion = 0;
-				typeMotion.isExploding = false;
+				typeFlag.isExploding = false;
 			}
-			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), PROJECTILE_METEORITE_EXPLOSION_WIDTH , PROJECTILE_METEORITE_EXPLOSION_HEIGHT };
+			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), frameExplosionWidth , frameExplosionHeight };
 			currentTexture = gLoadProjectile[METEORITE_EXPLOSION].getTexture();
 			currentClip = &frameClipsMeteoriteExplosion[frameExplosion / 4];
 		}
 		else {
-			renderQuad = { mPosX - PROJECTILE_METEORITE_WIDTH / 2 - gGameMap.getCameraX(), mPosY - PROJECTILE_METEORITE_HEIGHT / 2 - gGameMap.getCameraY(), PROJECTILE_METEORITE_WIDTH, PROJECTILE_METEORITE_HEIGHT };
+			renderQuad = { mPosX - frameWidth / 2 - gGameMap.getCameraX(), mPosY - frameHeight / 2 - gGameMap.getCameraY(), frameWidth, frameHeight };
 			currentTexture = gLoadProjectile[METEORITE].getTexture();
 			currentClip = &frameClipsMeteoriteRun[frameRun / 4];
 		}
 	}
 	else if (isStar) {
+		if (isWaitingToFall) {
+			float effectX = mPosX - 100 ;
+			float effectY = mPosY + 500;
+			gEffects.render(renderer, effectX, effectY, false , true ); // hiệu ứng báo
+		}
 		frameRun++;
 		if (frameRun / 4 >= 10) frameRun = 0;
-		renderQuad = { mPosX - PROJECTILE_METEORITE_WIDTH / 2 - gGameMap.getCameraX(), mPosY - PROJECTILE_METEORITE_HEIGHT / 2 - gGameMap.getCameraY(), PROJECTILE_METEORITE_WIDTH, PROJECTILE_METEORITE_HEIGHT };
+		renderQuad = { mPosX - frameWidth / 2 - gGameMap.getCameraX(), mPosY - frameHeight / 2 - gGameMap.getCameraY(), frameWidth, frameHeight };
 		currentTexture = gLoadProjectile[STAR].getTexture();
 		currentClip = &frameClipsStarRun[frameRun / 4];
+	}
+	else if (isArrow) {
+		frameRun++;
+		if (frameRun / 4 >= 14) frameRun = 0;
+		if (typeFlag.isExploding) {
+			frameExplosion++;
+			if (frameExplosion / 4 >= 13) {
+				frameExplosion = 0;
+				typeFlag.isExploding = false;
+			}
+			renderQuad = { mPosX - gGameMap.getCameraX(), mPosY - gGameMap.getCameraY(), frameExplosionWidth + 36 , frameExplosionHeight + 36 };
+			currentTexture = gLoadProjectile[ARROW_EXPLOSION].getTexture();
+			currentClip = &frameClipsArrowExplosion[frameExplosion / 4];
+		}
+		else {
+			renderQuad = { mPosX - frameWidth / 2 - gGameMap.getCameraX(), mPosY - frameHeight / 2 - gGameMap.getCameraY(), frameWidth, frameHeight };
+			currentTexture = gLoadProjectile[ARROW].getTexture();
+			currentClip = &frameClipsArrowRun[frameRun / 4];
+		}
 	}
 
 	SDL_RenderCopyEx(renderer, currentTexture, currentClip, &renderQuad,rotationAngle,NULL,SDL_FLIP_NONE);
 }
 
+
 void Projectile::setRotationAngle(float rotationangle) {
 	rotationAngle = rotationangle;
 }
 
-float Projectile::getRotationAngle() {
-	return rotationAngle;
+void Projectile::setIsMoving(bool ismoving) {
+	isMoving = ismoving;
 }
 
+void Projectile::setDelayBeforeFall(int delay) {
+	timeDelayBeforeFall = delay; 
+}
+
+void Projectile::setIsWaitingToFall(bool wait) {
+	isWaitingToFall = wait;
+}
 
 	
 void Projectile::setVelX(int mvelx) {
@@ -204,6 +262,15 @@ void Projectile::setVelX(int mvelx) {
 void Projectile::setVelY(int mvely) {
 	mVelY=mvely;
 }
+
+void Projectile::setPosX(int posx) {
+	mPosX = posx;
+}
+
+void Projectile::setPosY(int posy) {
+	mPosY = posy;
+}
+
 
 int Projectile::getVelX() {
 	return mVelX;
@@ -221,23 +288,14 @@ int Projectile::getPosY() {
 	return mPosY;
 }
 
-void Projectile::setPosX(int posx) {
-	mPosX = posx;
+float Projectile::getRotationAngle() {
+	return rotationAngle;
 }
 
-void Projectile::setPosY(int posy) {
-	mPosY = posy;
-}
-
-void Projectile::setIsMoving(bool ismoving) {
-	isMoving=ismoving;
+FlagProjectile& Projectile::getTypeFlag() {
+	return typeFlag;
 }
 
 bool Projectile::getIsMoving() {
 	return isMoving;
-}
-
-
-MotionProjectile Projectile::getTypeMotion() {
-	return typeMotion;
 }

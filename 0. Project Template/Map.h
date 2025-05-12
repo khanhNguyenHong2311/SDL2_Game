@@ -1,19 +1,13 @@
 #pragma once
-#include"Library.h"
 #include"Globals.h"
+#include"Library.h"
 #include"LTexture.h"
 
-
-
-#define TILE_SIZE 80
 #define MAX_TILES 20
 
 
 #define MAX_MAP_X 87
 #define MAX_MAP_Y 8
-
-#define TILE_EMPTY 0
-
 
 
 class TileMatrix:public LTexture {
@@ -24,7 +18,7 @@ public:
 
 class GameMap {
 private:
-
+	
 	int camera_x; 
 	int camera_y;
 
@@ -52,6 +46,8 @@ public:
 
 	void setCameraX(int val );
 	void setCameraY(int val );
+
+	void setValueOfTile(int x, int y,int val );
 
 	int getCameraX();
 	int getCameraY();

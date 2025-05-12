@@ -3,51 +3,57 @@
 #include"EnemyAZ.h"
 #include"EnemyBOSS.h"
 
-struct MotionProjectile {
+struct FlagProjectile {
 	bool isExploding;
 
-	MotionProjectile() {
+	FlagProjectile() {
 		isExploding = false;
 	}
 };
 
 
-enum typeProjectile {
+enum SatusProjectile {
 	FIRE_BALL = 0,
 	FIRE_BALL_EXPLOSION = 1,
 	METEORITE = 3, 
 	METEORITE_EXPLOSION = 4 ,
-	STAR = 5
+	STAR = 5 , 
+	ARROW = 6 , 
+	ARROW_EXPLOSION = 7
 };
 
 class Projectile  {
 private:
 
-	int mVelX;
+	int mVelX, mVelY;
 
-	int mVelY;
+	int mPosX , mPosY;
 
-	int mPosX;
+	int frameWidth, frameHeight;
 
-	int mPosY;
+	int frameExplosionWidth, frameExplosionHeight;
 	
-	bool isMoving;
-
-	bool isExploxing;
+	bool isMoving , isExploxing , isWaitingToFall;
 
 	float rotationAngle;
 
-	int frameRun;
+	int frameRun , frameExplosion;
 
-	int frameExplosion;
+	int timeDelayBeforeFall;
 
-	int timeDelayBeforeFalling;
+	FlagProjectile typeFlag;
 
-	bool hasStartedStarFalling;
+	SDL_Rect frameClipsFireBallRun[33];
+	SDL_Rect frameClipsFireBallExplosion[8];
 
-	bool isStar;
+	SDL_Rect frameClipsMeteoriteRun[15];
+	SDL_Rect frameClipsMeteoriteExplosion[15];
 
-	MotionProjectile typeMotion;
+	SDL_Rect frameClipsStarRun[10];
+
+	SDL_Rect frameClipsArrowRun[14];
+	SDL_Rect frameClipsArrowExplosion[13];
+
 
 public:
 
@@ -55,16 +61,23 @@ public:
 
 	~Projectile() { ; }
 
-	void handleMotion(int limitX, int limitY , bool isStar);
+	void setClips();
 
-	void renderProjectile(SDL_Renderer* renderer , bool isFireBall, bool isMeteorite, bool isStar);
+	void handleMotion(int limitX, int limitY , bool isStar);
 
 	void checkMapCollision();
 
 	void projectileExploded();
 
+	void renderProjectile(SDL_Renderer* renderer , bool isFireBall, bool isMeteorite, bool isStar,bool isArrow);
 
-	void setClips();
+	void setRotationAngle(float rotationangle);
+
+	void setIsMoving(bool ismoving);
+
+	void setDelayBeforeFall(int delay);
+
+	void setIsWaitingToFall(bool wait);
 
 	void setVelX(int mvelx);
 
@@ -81,22 +94,12 @@ public:
 	int getVelX();
 
 	int getVelY();
-
-	void setRotationAngle(float rotationangle);
 	
 	float getRotationAngle();
 
-	MotionProjectile getTypeMotion();
-
-	void setIsMoving(bool ismoving);
+	FlagProjectile& getTypeFlag();
 
 	bool getIsMoving();
 
-	SDL_Rect frameClipsFireBallRun[33];
-	SDL_Rect frameClipsFireBallExplosion[8];
 
-	SDL_Rect frameClipsMeteoriteRun[15];
-	SDL_Rect frameClipsMeteoriteExplosion[15];
-
-	SDL_Rect frameClipsStarRun[10];
 };

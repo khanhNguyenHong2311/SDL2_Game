@@ -3,11 +3,10 @@
 #include"LTexture.h"
 #include"Map.h"
 
-int GameMap::getValueOfTile(int y , int x ) {
-	return tile[y][x];
-}
+
 
 void GameMap::loadMap(string pathFile) {
+
 	fstream fs;
 	fs.open(pathFile);
 	if (!fs.is_open()) {
@@ -87,11 +86,20 @@ void GameMap :: drawMap(SDL_Renderer* renderer) {
 	}
 }
 
+
+void GameMap::setValueOfTile(int y, int x, int val) {
+	tile[y][x] = val;
+}
+
 void GameMap::setCameraX(int val ) {
 	camera_x = val;
 }
 void GameMap::setCameraY(int val ) {
 	camera_y = val;
+}
+
+int GameMap::getValueOfTile(int y, int x) {
+	return tile[y][x];
 }
 
 int GameMap::getCameraX() {
