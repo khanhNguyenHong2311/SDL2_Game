@@ -6,7 +6,7 @@
 
 
 
-typedef struct MotionE_CD {
+typedef struct FlagE_CD {
 	bool goLeft, goRight, isStanding;
 
 	bool isStandingOnGround;
@@ -23,9 +23,13 @@ typedef struct MotionE_CD {
 
 	bool gotHitByCharacter;
 
-	MotionE_CD() {
+	bool hasGivenMana; 
+
+	FlagE_CD() {
 		goLeft = false;
+
 		goRight = false;
+
 		isStanding = false;
 
 		isStandingOnGround = false;
@@ -41,11 +45,13 @@ typedef struct MotionE_CD {
 		isHurting = false;
 
 		gotHitByCharacter = false;
+
+		hasGivenMana = false;
 	}
 };
 
 
-enum Action_CD {
+enum StatusE_CD {
 	FACING_LEFT_E_CD = 0,
 	FACING_RIGHT_E_CD = 1,
 	RUN_RIGHT_E_CD = 2,
@@ -67,32 +73,21 @@ enum Action_CD {
 class EnemyCD  {
 private:
 
-	int cameraX;
-	int cameraY;
+	int mPosX, mPosY;
 
-	int frameWidth;
-	int frameHeight;
+	int mVelX, mVelY;
 
-	int mPosX;
-	int mPosY;
+	int frameWidth, frameHeight;
 
-	int mVelX;
-	int mVelY;
-
-	int frameRun;
-	int frameStand;
-	int frameAttack;
-	int frameHurt;
-	int frameDeath;
+	int frameRun , frameStand , frameAttack , frameHurt , frameDeath; 
 
 	int isFacing;
 
-	int timeRespawn;
+	int timeRespawn, timeStand;
 
-	int timeStand;
+	int limitPosA , limitPosB;
 
-	
-	MotionE_CD typeMotion;
+	FlagE_CD typeFlag;
 
 	HealthBar healthBar;
 
@@ -111,60 +106,61 @@ private:
 	SDL_Rect frameClipsDeadRight[8];
 	SDL_Rect frameClipsDeadLeft[8];
 
-	int limitPosA;
-	int limitPosB;
 
 
 public:
 
 	EnemyCD();
+
 	~EnemyCD() { ; }
-
-	void setVelX(int VelX);
-	void setVelY(int VelY);
-
-	void setPosX(int PosX);
-	void setPosY(int PosY);
-
-	int getPosX();
-	int getPosY();
-
-
-	void handleMotion();
-
-	void render(SDL_Renderer* renderer);
 
 	void setClips();
 
-	void checkMapCollision();
-	void checkEnemyCollisionWithCharacter(int characterPosX , int characterPosY);
-	void checkEnemyAttackedCharacter();
-
-	void FallingInTheHole();
-
-	void setCameraX(int camerax);
-	void setCameraY(int cameray);
-
-	void setLimitPos(int limitposa, int limitposb);
-
-	void moveToCharacterIfInRange(int charX, int charY);
-	
-	int getIsFacing();
-
-	void isHurting();
-
-	bool getIsCollidingWithCharacter();
-
-	void setGotHit(bool value) { typeMotion.gotHitByCharacter = value; }
-
-	bool getGotHit() { return typeMotion.gotHitByCharacter; }
+	void handleMotion();
 
 	void handleDamage(int damage);
 
-	HealthBar& getHealthBar() {
-		return healthBar;
-	}
+	void checkMapCollision();
 
+	void checkEnemyCollisionWithCharacter(int characterPosX , int characterPosY);
+	
+	void checkEnemyCollisionWithProjectile();
+	
+	void checkEnemyAttackedCharacter();
+	
+	void moveToCharacterIfInRange(int charX, int charY);
 
+	void FallingInTheHole();
 
+	void render(SDL_Renderer* renderer);
+
+	void isHurting();
+
+	void setLimitPos(int limitposa, int limitposb);
+
+	void setGotHit(bool value);
+
+	void setVelX(int VelX);
+
+	void setVelY(int VelY);
+
+	void setPosX(int PosX);
+	
+	void setPosY(int PosY);
+
+	void setHasGivenMana(bool check);
+
+	int getIsFacing();
+
+	bool getIsCollidingWithCharacter();
+
+	bool getGotHit();
+
+	FlagE_CD& getTypeFlag();
+
+	HealthBar& getHealthBar();
+
+	int getPosX();
+	
+	int getPosY();
 };

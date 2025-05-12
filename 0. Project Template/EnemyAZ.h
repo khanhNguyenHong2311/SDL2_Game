@@ -9,7 +9,7 @@
 
 class Projectile;
 
-typedef struct MotionE_AZ {
+typedef struct FlagE_AZ {
 	bool goLeft, goRight, isStanding;
 
 	bool isAttacking;
@@ -22,12 +22,14 @@ typedef struct MotionE_AZ {
 
 	bool isDead;
 
-	bool hasShot;
-
 	bool gotHitByCharacter;
-	MotionE_AZ() {
+
+	bool hasGivenMana;
+	FlagE_AZ() {
 		goLeft = false;
+
 		goRight = false;
+
 		isStanding = false;
 
 		isAttacking = false;
@@ -38,16 +40,16 @@ typedef struct MotionE_AZ {
 
 		isHurting = false;
 
-		hasShot = false;
-
 		gotHitByCharacter = false;
 
 		isDead = false;
+
+		hasGivenMana = false;
 	}
 };
 
 
-enum Action_AZ {
+enum Status_AZ {
 	FACING_LEFT_E_AZ = 0,
 	FACING_RIGHT_E_AZ = 1,
 	RUN_RIGHT_E_AZ = 2,
@@ -70,35 +72,25 @@ class EnemyAZ {
 
 private:
 
-	int cameraX;
-	int cameraY;
+	int mPosX, mPosY;
 
-	int frameWidth;
-	int frameHeight;
+	int mVelX, mVelY;
 
-	int mPosX;
-	int mPosY;
+	int frameWidth, frameHeight;
 
-	int mVelX;
-	int mVelY;
-
-	int frameRun;
-	int frameStand;
-	int frameAttack;
-	int frameHurt;
-	int frameDeath;
+	int frameRun, frameStand, frameAttack, frameHurt, frameDeath;
 
 	int isFacing;
 
-	int timeRespawn;
+	int timeRespawn , timeStand , timeCoolDownAttack;
 
-	int timeStand;
+	int limitPosA, limitPosB;
 
-	int timeCoolDownAttack;
-
-	MotionE_AZ typeMotion;
+	FlagE_AZ typeFlag;
 
 	HealthBar healthBar;
+
+	vector<Projectile*> ProjectileList;
 
 	SDL_Rect frameClipsStandRight[9];
 	SDL_Rect frameClipsStandLeft[9];
@@ -116,66 +108,66 @@ private:
 	SDL_Rect frameClipsDeadLeft[6];
 
 
-	vector<Projectile*> ProjectileList;
-
-	int limitPosA;
-	int limitPosB;
-
 public:
 
 	EnemyAZ();
+
 	~EnemyAZ() { ; }
 
-	void setVelX(int VelX);
-	void setVelY(int VelY);
-
-	void setPosX(int PosX);
-	void setPosY(int PosY);
-
-	int getPosX();
-	int getPosY();
-
+	void setClips();
 
 	void handleMotion();
 
+	void handleDamage(int damage);
+
+	void checkMapCollision();
+
+	void checkEnemyCollisionWithCharacter(int characterPosX, int characterPosY);
+
+	void checkEnemyCollisionWithProjectile();
+
+	void checkEnemyAttackedCharacter();
+
+	void moveToCharacterIfInRange(int charX, int charY);
+
+	void createProjectile(SDL_Renderer* renderer);
+
+	void handleAndRenderProjectile(SDL_Renderer* renderer);
+
 	void render(SDL_Renderer* renderer);
 
-	void setClips();
+	void isHurting();
+
+	void setLimitPos(int limitposa, int limitposb);
+
+	void setGotHit(bool value);
+
+	void setVelX(int VelX);
+
+	void setVelY(int VelY);
+
+	void setPosX(int PosX);
+
+	void setPosY(int PosY);
+
+	void setHasGivenMana(bool check);
 
 	void setProjectileList(vector <Projectile*> projectilelist);
 
 	vector <Projectile*> getProjectileList();
 
-	void createProjectile(SDL_Renderer* renderer);
-
-	void checkMapCollision();
-	void checkEnemyCollisionWithCharacter(int characterPosX, int characterPosY);
-	void checkEnemyAttackedCharacter();
-
-	void moveToCharacterIfInRange(int charX, int charY);
-
-
-	void handleAndRenderProjectile(SDL_Renderer* renderer );
-
-	void isHurting();
-
 	int getIsFacing();
 
 	bool getIsColliding();
 
-	void setLimitPos(int limitposa, int limitposb);
+	bool getGotHit();
 
-	void setCameraX(int camerax);
-	void setCameraY(int cameray);
+	FlagE_AZ& getTypeFlag();
 
-	void setGotHit(bool value) { typeMotion.gotHitByCharacter = value; }
+	HealthBar& getHealthBar();
 
-	bool getGotHit() { return typeMotion.gotHitByCharacter; }
+	int getPosX();
 
-	void handleDamage(int damage);
-
-	HealthBar& getHealthBar() {
-		return healthBar;
-	}
+	int getPosY();
 
 };

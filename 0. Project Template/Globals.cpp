@@ -8,6 +8,7 @@
 
 Text timeGameText;
 Character gMainCharacter;
+Effects gEffects;
 LTexture gLoadBackGround;
 LTexture gLoadCharacterHealthBar;
 LTexture gLoadMainCharacter[15];

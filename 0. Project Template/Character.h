@@ -6,11 +6,12 @@
 #include"EnemyCD.h"
 #include"LTexture.h"
 #include"Map.h"
+#include"ManaBar.h"
 
 
 
 
-typedef struct Motion {
+typedef struct Flag {
 	bool goLeft, goRight, isStanding;
 
 	bool isStandingOnGround;
@@ -27,11 +28,9 @@ typedef struct Motion {
 
 	bool isCollidingWithEnemyBOSS;
 
-	bool isCollidingWithProjectileAZ;
+	bool isCasting;
 
-	bool isCollidingWithProjectileBOSS;
-
-	Motion() {
+	Flag() {
 		goLeft = false;
 		goRight = false;
 		isStanding = false;
@@ -50,12 +49,11 @@ typedef struct Motion {
 
 		isCollidingWithEnemyBOSS = false;
 
-		isCollidingWithProjectileAZ = false;
-		
+		isCasting = false;
 	}
 };
 
-enum Action {
+enum Status {
 	FACING_LEFT = 0,
 	FACING_RIGHT = 1,
 	RUN_RIGHT = 2 ,
@@ -80,14 +78,13 @@ private:
 
 	int mVelX, mVelY;
 
-	Motion typeMotion;
+	Flag typeFlag;
 
-	int frameRun;
-	int frameStand;
-	int frameJump;
-	int frameAttack;
-	int frameHurt;
-	int frameDeath;
+	HealthBar healthBar;
+
+	ManaBar manaBar;
+
+	int frameRun , frameStand , frameJump , frameAttack , frameHurt , frameDeath;
 
 	int isFacing;
 
@@ -95,7 +92,7 @@ private:
 
 	int timeRespawn;
 
-	HealthBar healthBar;
+	vector<Projectile*> ProjectileListArrow;
 
 	SDL_Rect frameClipsRunRight[8];
 	SDL_Rect frameClipsRunLeft[8];
@@ -119,35 +116,44 @@ private:
 public:
 
 	Character();
+
 	~Character() { ; }
+
+	void setClips();
 	
+	void handleDamage(int damage);
+
+	void handleMana(int mana);
+
 	void handleMotion(SDL_Event& e);
 
-	void render(SDL_Renderer* renderer);
-	
-	void setClips();
+	void checkMapCollision(SDL_Renderer* renderer);
 
-	void checkMapCollision();
-
-	int getPosX();
-	int getPosY();
-
-	void CenterEntityOnMap();
-
-	void FallingInTheHole();
-
-	void checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD = NULL , EnemyAZ* pEnemyAZ = NULL ,EnemyBOSS* pEnemyBOSS = NULL);
+	void checkCharacterCollisionWithEnemy(EnemyCD* pEnemyCD = NULL, EnemyAZ* pEnemyAZ = NULL, EnemyBOSS* pEnemyBOSS = NULL);
 
 	void checkCharacterCollisionWithProjectile(EnemyAZ* pEnemyAZ = NULL, EnemyBOSS* pEnemyBOSS = NULL);
 
 	void checkCharacterAttackedEnemy(EnemyCD* pEnemyCD = NULL, EnemyAZ* pEnemyAZ = NULL, EnemyBOSS* pEnemyBOSS = NULL);
 
-	void handleDamage(int damage);
+	void createProjectileArrow(SDL_Renderer* renderer);
 
-	HealthBar& getHealthBar() {
-		return healthBar;
-	}
+	void handleAndRenderProjectile(SDL_Renderer* renderer);
 
+	void FallingInTheHole();
+
+	void render(SDL_Renderer* renderer);
+
+	void CenterEntityOnMap();
+
+	int getPosX();
+
+	int getPosY();
+
+	vector <Projectile*>& getProjectileListArrow();
+
+	HealthBar& getHealthBar();
+
+	ManaBar& getManaBar();
 
 };
 

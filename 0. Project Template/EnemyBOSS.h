@@ -4,12 +4,13 @@
 #include"LTexture.h"
 #include"Character.h"
 #include"Projectile.h"
+#include"Effects.h"
 #include<vector>
 
 
 class Projectile;
 
-typedef struct MotionE_BOSS {
+typedef struct FlagE_BOSS {
 	bool goLeft, goRight, isStanding;
 
 	bool isAttacking;
@@ -30,9 +31,11 @@ typedef struct MotionE_BOSS {
 
 	bool isPhase2;
 
-	MotionE_BOSS() {
+	FlagE_BOSS() {
 		goLeft = false;
+
 		goRight = false;
+
 		isStanding = false;
 
 		isAttacking = false;
@@ -56,7 +59,7 @@ typedef struct MotionE_BOSS {
 };
 
 
-enum Action_BOSS {
+enum Status_BOSS {
 	FACING_LEFT_E_BOSS = 0,
 	FACING_RIGHT_E_BOSS = 1,
 	RUN_RIGHT_E_BOSS = 2,
@@ -95,39 +98,27 @@ class EnemyBOSS {
 
 private:
 
-	int cameraX;
-	int cameraY;
+	int mPosX, mPosY;
 
-	int frameWidth;
-	int frameHeight;
+	int mVelX, mVelY;
 
-	int mPosX;
-	int mPosY;
+	int frameWidth, frameHeight;
 
-	int mVelX;
-	int mVelY;
-
-	int frameRun;
-	int frameStand;
-	int frameAttack;
-	int frameHurt;
-	int frameDeath;
+	int frameRun, frameStand, frameAttack, frameHurt, frameDeath;
 
 	int isFacing;
 
-	int timeRespawn;
+	int timeRespawn,timeStand , timeCoolDownAttack , timeReturn , timeCoolDownSummonStar , timeDelayBeforeFall;
 
-	int timeStand;
+	int limitPosA, limitPosB;
 
-	int timeCoolDownAttack;
-
-	int timeReturn;
-
-	int timeSummonStar;
-
-	MotionE_BOSS typeMotion;
+	FlagE_BOSS typeFlag;
 
 	HealthBar healthBar;
+
+	vector<Projectile*> ProjectileListMeteorite;
+
+	vector<Projectile*> ProjectileListStar;
 
 	SDL_Rect frameClipsRunRight[3];
 	SDL_Rect frameClipsRunLeft[3];
@@ -144,47 +135,24 @@ private:
 	SDL_Rect frameClipsStand[7];
 
 
-	vector<Projectile*> ProjectileListMeteorite;
-
-	vector<Projectile*> ProjectileListStar;
-
-	int limitPosA;
-	int limitPosB;
-
 public:
 
 	EnemyBOSS();
+
 	~EnemyBOSS() { ; }
 
-	void setVelX(int VelX);
-	void setVelY(int VelY);
-
-	void setPosX(int PosX);
-	void setPosY(int PosY);
-
-	int getPosX();
-	int getPosY();
-
-
-	void handleMotion();
-
-	void render(SDL_Renderer* renderer);
 
 	void setClips();
 
-	void setProjectileList(vector <Projectile*> projectilelist);
+	void handleMotion();
 
-	vector <Projectile*> getProjectileListMeteorite();
-
-	vector<Projectile*> getProjectileListStar();
-
-	void createProjectileMeteorite(SDL_Renderer* renderer);
-
-	void createProjectileStar(SDL_Renderer* renderer);
+	void handleDamage(float damage);
 
 	void checkMapCollision();
 
 	void checkEnemyCollisionWithCharacter(int characterPosX, int characterPosY);
+
+	void checkEnemyCollisionWithProjectile();
 
 	void checkEnemyAttackedCharacter();
 
@@ -194,27 +162,46 @@ public:
 
 	void summonStar();
 
+	void createProjectileMeteorite(SDL_Renderer* renderer);
+
+	void createProjectileStar(SDL_Renderer* renderer);
+
 	void handleAndRenderProjectile(SDL_Renderer* renderer);
 
+	void render(SDL_Renderer* renderer);
+
 	void isHurting();
+
+	void setLimitPos(int limitposa, int limitposb);
+
+	void setGotHit(bool value);
+
+	void setVelX(int VelX);
+
+	void setVelY(int VelY);
+
+	void setPosX(int PosX);
+
+	void setPosY(int PosY);
+
+	vector <Projectile*> getProjectileListMeteorite();
+
+	vector<Projectile*> getProjectileListStar();
 
 	int getIsFacing();
 
 	bool getIsColliding();
 
-	void setLimitPos(int limitposa, int limitposb);
+	bool getGotHit();
 
-	void setCameraX(int camerax);
-	void setCameraY(int cameray);
+	FlagE_BOSS& getTypeFlag();
 
-	void setGotHit(bool value) { typeMotion.gotHitByCharacter = value; }
+	HealthBar& getHealthBar();
 
-	bool getGotHit() { return typeMotion.gotHitByCharacter; }
+	int getPosX();
 
-	void handleDamage(float damage);
+	int getPosY();
 
-	HealthBar& getHealthBar() {
-		return healthBar;
-	}
+
 
 };
