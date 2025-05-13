@@ -9,6 +9,7 @@
 #include"EnemyBOSS.h"
 #include"Projectile.h"
 #include"HealthBar.h"
+#include"Menu.h"
 // gClass
 
 extern Text timeGameText;
@@ -19,7 +20,9 @@ extern Effects gEffects;
 
 extern LTexture gLoadCharacterHealthBar;
 
-extern LTexture gLoadBackGround;
+extern LTexture gLoadBackGroundGame;
+
+extern LTexture gLoadBackGroundMenu;
 
 extern LTexture gLoadMainCharacter[15];
 
@@ -40,6 +43,8 @@ extern vector<EnemyAZ*> listEnemiesAZ;
 extern vector<EnemyBOSS*> listEnemiesBOSS;
 
 extern GameMap gGameMap;
+
+extern Menu gMenu;
 
 
 static SDL_Window* gWindow = NULL;

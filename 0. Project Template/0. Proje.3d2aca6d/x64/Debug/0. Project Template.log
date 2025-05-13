@@ -17,6 +17,109 @@ C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.cpp(128,14): warni
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.cpp(129,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.cpp(523,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.cpp(524,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Effects.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'Effects.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'Effects.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'Effects.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'Effects.cpp')
+  
+  EnemyAZ.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'EnemyAZ.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'EnemyAZ.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'EnemyAZ.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'EnemyAZ.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(107,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(108,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(342,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(350,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(351,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(352,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(353,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.cpp(354,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  EnemyBOSS.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'EnemyBOSS.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'EnemyBOSS.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'EnemyBOSS.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'EnemyBOSS.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(370,17): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(443,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(451,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(452,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(453,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(454,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(455,54): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(462,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(463,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(464,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(465,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(466,54): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(480,15): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(486,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.cpp(487,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  EnemyCD.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'EnemyCD.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'EnemyCD.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'EnemyCD.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'EnemyCD.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.cpp(101,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.cpp(102,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Globals.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'Globals.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'Globals.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'Globals.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'Globals.cpp')
+  
+  LTexture.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'LTexture.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'LTexture.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'LTexture.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'LTexture.cpp')
+  
   Main.cpp
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
   (compiling source file 'Main.cpp')
@@ -30,6 +133,49 @@ C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C40
 C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
   (compiling source file 'Main.cpp')
   
-C:\Users\hp\Documents\SDL2_Game\0. Project Template\Main.cpp(305,23): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Main.cpp(429,23): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Map.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'Map.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'Map.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'Map.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'Map.cpp')
+  
+  Menu.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'Menu.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'Menu.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'Menu.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'Menu.cpp')
+  
+  Projectile.cpp
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyBOSS.h(13,16): warning C4091: 'typedef ': ignored on left of 'FlagE_BOSS' when no variable is declared
+  (compiling source file 'Projectile.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyAZ.h(12,16): warning C4091: 'typedef ': ignored on left of 'FlagE_AZ' when no variable is declared
+  (compiling source file 'Projectile.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\EnemyCD.h(9,16): warning C4091: 'typedef ': ignored on left of 'FlagE_CD' when no variable is declared
+  (compiling source file 'Projectile.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Character.h(14,16): warning C4091: 'typedef ': ignored on left of 'Flag' when no variable is declared
+  (compiling source file 'Projectile.cpp')
+  
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Projectile.cpp(207,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Projectile.cpp(208,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Projectile.cpp(209,39): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\hp\Documents\SDL2_Game\0. Project Template\Projectile.cpp(209,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
   0. Project Template.vcxproj -> C:\Users\hp\Documents\SDL2_Game\0. Project Template\x64\Debug\0. Project Template.exe

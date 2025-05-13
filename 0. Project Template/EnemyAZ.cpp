@@ -551,3 +551,4 @@ int EnemyAZ::getPosX() {
 int EnemyAZ::getPosY() {
 	return mPosY;
 }
+

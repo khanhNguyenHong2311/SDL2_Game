@@ -5,6 +5,7 @@
 enum Color {
 	RED_TEXT = 0,
 	WHITE_TEXT = 1,
+	BLUE_TEXT = 2, 
 };
 
 class Text {

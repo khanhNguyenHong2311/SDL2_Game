@@ -155,5 +155,15 @@ public:
 
 	ManaBar& getManaBar();
 
+	void setPosX(int posx);
+
+	void setPosY(int posy);
+
+	void setVelX(int velx);
+	
+	void setVelY(int vely);
+
+	void clearProjectiles();
+
 };
 

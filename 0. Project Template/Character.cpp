@@ -704,4 +704,27 @@ int Character::getPosY() {
 	return mPosY;
 }
 
+void Character::setPosX(int posx) {
+	mPosX = posx;
+}
 
+void Character::setPosY(int posy) {
+	mPosY = posy;
+}
+
+
+void Character::setVelX(int velx) {
+	mVelX = velx;
+}
+
+void Character::setVelY(int vely) {
+	mVelY = vely;
+}
+
+
+void Character::clearProjectiles() {
+	for (auto x : ProjectileListArrow) {
+		delete x;
+	}
+	ProjectileListArrow.clear();
+}

@@ -49,6 +49,9 @@ void Text::setColor(int type) {
 	else if (type == WHITE_TEXT) {
 		textColor = { 255,255,255 };
 	}
+	else if (type == BLUE_TEXT) {
+		textColor = { 0,0,255 };
+	}
 }
 
 void Text::render(SDL_Renderer* renderer, int posX, int posY, SDL_Rect* clip, double angle , SDL_Point* point , SDL_RendererFlip flip ) {

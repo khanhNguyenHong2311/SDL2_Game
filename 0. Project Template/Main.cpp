@@ -9,6 +9,8 @@
 #include"HealthBar.h"
 #include"ManaBar.h"
 #include"Projectile.h"
+#include"Menu.h"
+
 using namespace std;
 
 
@@ -56,7 +58,7 @@ bool init() {
 
 
 void close() {
-	gLoadBackGround.free();
+	gLoadBackGroundGame.free();
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
@@ -71,7 +73,8 @@ bool LoadMedia() {
 
 	gFont = TTF_OpenFont("font/ThaleahFat.ttf",28);
 
-	gLoadBackGround.loadFromFile("image/background/background.jpg", gRenderer);
+	gLoadBackGroundGame.loadFromFile("image/background/background.jpg", gRenderer);
+	gLoadBackGroundMenu.loadFromFile("image/background/backgroundmenu.png", gRenderer);
 	gMainCharacter.getHealthBar().loadFromFile("image/icons/healthbar.png", gRenderer);
 
 	gLoadMainCharacter[RUN_RIGHT].loadFromFile("image/character/maincharacter/RUN_RIGHT.png", gRenderer);
@@ -194,6 +197,35 @@ vector<EnemyBOSS*> MakeEnemyBOSSList() {
 }
 
 
+void restartGame() {
+
+	gGameMap.loadMap("map.txt");
+	gGameMap.loadTiles(gRenderer);
+
+	for (auto x : listEnemiesCD) delete x;
+	for (auto x : listEnemiesAZ) delete x;
+	for (auto x : listEnemiesBOSS) delete x;
+	listEnemiesCD.clear();
+	listEnemiesAZ.clear();
+	listEnemiesBOSS.clear();
+
+	gMainCharacter.setPosX(0);
+	gMainCharacter.setPosY(0);
+	gMainCharacter.setVelX(0);
+	gMainCharacter.setVelY(0);
+	gMainCharacter.getHealthBar().setMaxHealth(CHARACTER_HEALTH);
+	gMainCharacter.getHealthBar().setHealth(CHARACTER_HEALTH);
+	gMainCharacter.getManaBar().setMaxMana(CHARACTER_MANA);
+	gMainCharacter.getManaBar().setMana(CHARACTER_MANA);
+	gMainCharacter.clearProjectiles();
+
+
+	listEnemiesCD = MakeEnemyCDList();
+	listEnemiesAZ = MakeEnemyAZList();
+	listEnemiesBOSS = MakeEnemyBOSSList();
+}
+
+
 int main(int argc, char* args[]) {
 
 	if (!init()) {
@@ -206,29 +238,121 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 
-	timeGameText.setColor(RED_TEXT);
-	gMainCharacter.getHealthBar().setMaxHealth(CHARACTER_HEALTH);
-	gMainCharacter.getHealthBar().setHealth(CHARACTER_HEALTH);
-	gMainCharacter.getManaBar().setMaxMana(CHARACTER_MANA);
-	gMainCharacter.getManaBar().setMana(CHARACTER_MANA);
-	gEffects.setClips();
 
-	listEnemiesCD = MakeEnemyCDList();
-	listEnemiesAZ = MakeEnemyAZList();
-	listEnemiesBOSS = MakeEnemyBOSSList();
+	gMenu.init(gFont, gRenderer);
 
 	bool quit = false;
+	bool startGame = false;
+	bool isPaused = false;
+	bool resumeGame = false;
+	bool backToMenu = false;
+	bool isRestart = false;
+
+	gMenu.setMenuType(MAIN_MENU);
+
+	while (!quit && !startGame) {
+		while (SDL_PollEvent(&e)) {
+			if (e.type == SDL_QUIT) quit = true;
+			gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu);
+		}
+
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255); 
+		SDL_RenderClear(gRenderer);
+		gLoadBackGroundMenu.render(0, 0, gRenderer);
+		gMenu.render(gRenderer);
+
+		SDL_RenderPresent(gRenderer);
+	}
+
+	if (quit) {
+		close();
+		return 0;
+	}
+
+
+	timeGameText.setColor(RED_TEXT);
+	gEffects.setClips();
+	restartGame();
+
+
+
 	while (!quit) {
-		while (SDL_PollEvent(&e) != 0) {
-			if (e.type == SDL_QUIT) {
-				quit = true;
+		while (SDL_PollEvent(&e)) {
+			if (e.type == SDL_QUIT) quit = true;
+			if (!isPaused && gMainCharacter.getHealthBar().getCurrentHealth()>0) gMainCharacter.handleMotion(e);
+			if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p && !isPaused) {
+				isPaused = true;
 			}
-			if (gMainCharacter.getHealthBar().getCurrentHealth()>0) gMainCharacter.handleMotion(e);
+
+		}
+		if (isPaused) {
+			gMenu.setMenuType(PAUSE_MENU);
+
+			gMainCharacter.setVelX(0);
+			gMainCharacter.setVelY(0);
+
+
+			while (isPaused) {
+				while (SDL_PollEvent(&e)) {
+					if (e.type == SDL_QUIT) {
+						quit = true;
+						isPaused = false;
+						break;
+					}
+
+					gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu);
+
+					if (resumeGame) {
+						resumeGame = false;
+						isPaused = false;
+
+						break;
+					}
+
+					if (backToMenu) {
+
+						restartGame();
+
+						close();
+
+						main(argc, args);
+
+
+						for (auto x : listEnemiesCD) delete x;
+						for (auto x : listEnemiesAZ) delete x;
+						for (auto x : listEnemiesBOSS) delete x;
+						listEnemiesCD.clear();
+						listEnemiesAZ.clear();
+						listEnemiesBOSS.clear();
+
+						return 0;
+
+						isPaused = false;
+						startGame = false;
+					}
+
+					if (isRestart) {
+
+						isRestart = false;
+						isPaused = false;
+
+						restartGame();
+
+						break;
+					}
+				}
+				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+				SDL_RenderClear(gRenderer);
+				gLoadBackGroundMenu.render(0, 0, gRenderer);
+				gMenu.render(gRenderer);
+				SDL_RenderPresent(gRenderer);
+			}
+			continue;
 		}
 
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
-		gLoadBackGround.render(0, 0, gRenderer);
+		gLoadBackGroundGame.render(0, 0, gRenderer);
 		gGameMap.drawMap(gRenderer);
 		gMainCharacter.FallingInTheHole();
 		gMainCharacter.setClips();
