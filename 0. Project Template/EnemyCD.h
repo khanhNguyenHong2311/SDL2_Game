@@ -25,6 +25,8 @@ typedef struct FlagE_CD {
 
 	bool hasGivenMana; 
 
+	bool hasGivenScore;
+
 	FlagE_CD() {
 		goLeft = false;
 
@@ -47,6 +49,8 @@ typedef struct FlagE_CD {
 		gotHitByCharacter = false;
 
 		hasGivenMana = false;
+
+		hasGivenScore = false;
 	}
 };
 
@@ -136,6 +140,7 @@ public:
 
 	void isHurting();
 
+
 	void setLimitPos(int limitposa, int limitposb);
 
 	void setGotHit(bool value);
@@ -147,6 +152,8 @@ public:
 	void setPosX(int PosX);
 	
 	void setPosY(int PosY);
+
+	void setHasGivenScore(bool check);
 
 	void setHasGivenMana(bool check);
 

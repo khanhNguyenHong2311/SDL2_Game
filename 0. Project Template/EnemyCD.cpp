@@ -469,6 +469,10 @@ FlagE_CD& EnemyCD::getTypeFlag() {
 void EnemyCD::setHasGivenMana(bool check) {
 	typeFlag.hasGivenMana = check;
 }
+
+void EnemyCD::setHasGivenScore(bool check) {
+	typeFlag.hasGivenScore = check;
+}
 HealthBar& EnemyCD:: getHealthBar() {
 	return healthBar;
 }

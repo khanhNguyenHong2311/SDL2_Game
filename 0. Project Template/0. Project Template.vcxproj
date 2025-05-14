@@ -142,8 +142,10 @@
     <ClCompile Include="ManaBar.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Music.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="TimeAndScore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Effects.h" />
@@ -151,6 +153,7 @@
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="ManaBar.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Music.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="EnemyAZ.h" />
     <ClInclude Include="EnemyCD.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="TimeAndScore.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -31,6 +31,8 @@ typedef struct FlagE_BOSS {
 
 	bool isPhase2;
 
+	bool hasGivenScore;
+
 	FlagE_BOSS() {
 		goLeft = false;
 
@@ -55,6 +57,8 @@ typedef struct FlagE_BOSS {
 		hasSummonedStar = false;
 
 		isPhase2 = false;
+
+		hasGivenScore = false;
 	}
 };
 
@@ -171,6 +175,8 @@ public:
 	void render(SDL_Renderer* renderer);
 
 	void isHurting();
+
+	void setHasGivenScore(bool check);
 
 	void setLimitPos(int limitposa, int limitposb);
 

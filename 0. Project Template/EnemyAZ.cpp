@@ -513,6 +513,10 @@ void EnemyAZ::setHasGivenMana(bool check) {
 	typeFlag.hasGivenMana = check;
 }
 
+void EnemyAZ::setHasGivenScore(bool check) {
+	typeFlag.hasGivenScore = check;
+}
+
 void EnemyAZ::setProjectileList(vector <Projectile*> projectilelist) {
 	ProjectileList = projectilelist;
 }

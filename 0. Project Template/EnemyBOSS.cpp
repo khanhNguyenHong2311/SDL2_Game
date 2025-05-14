@@ -684,6 +684,10 @@ void EnemyBOSS::isHurting() {
 	typeFlag.isHurting = true;
 }
 
+void EnemyBOSS::setHasGivenScore(bool check) {
+	typeFlag.hasGivenScore = check;
+}
+
 void EnemyBOSS::setLimitPos(int limitposa, int limitposb) {
 	limitPosA = limitposa;
 	limitPosB = limitposb;

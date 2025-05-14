@@ -10,6 +10,7 @@
 #include"ManaBar.h"
 #include"Projectile.h"
 #include"Menu.h"
+#include"TimeAndScore.h"
 
 using namespace std;
 
@@ -72,9 +73,14 @@ bool LoadMedia() {
 	bool success = true;
 
 	gFont = TTF_OpenFont("font/ThaleahFat.ttf",28);
+	gFontA = TTF_OpenFont("font/ThaleahFat.ttf", 40);
 
 	gLoadBackGroundGame.loadFromFile("image/background/background.jpg", gRenderer);
 	gLoadBackGroundMenu.loadFromFile("image/background/backgroundmenu.png", gRenderer);
+	gLoadBackGroundMenuWin.loadFromFile("image/background/backgroundmenu_win.png",gRenderer);
+	gLoadBackGroundMenuLose.loadFromFile("image/background/backgroundmenu_lose.png", gRenderer);
+	gLoadBackGroundMenuHowToPlay.loadFromFile("image/background/backgroundmenu_howtoplay.png", gRenderer);
+	gLoadBackGroundMenuHighScores.loadFromFile("image/background/backgroundmenu_highscores.png", gRenderer);
 	gMainCharacter.getHealthBar().loadFromFile("image/icons/healthbar.png", gRenderer);
 
 	gLoadMainCharacter[RUN_RIGHT].loadFromFile("image/character/maincharacter/RUN_RIGHT.png", gRenderer);
@@ -196,9 +202,10 @@ vector<EnemyBOSS*> MakeEnemyBOSSList() {
 	return listEnemiesBOSS;
 }
 
-
 void restartGame() {
-
+	score = 0;
+	timeDelayGameOver = 100;
+	startTime = SDL_GetTicks();
 	gGameMap.loadMap("map.txt");
 	gGameMap.loadTiles(gRenderer);
 
@@ -209,15 +216,7 @@ void restartGame() {
 	listEnemiesAZ.clear();
 	listEnemiesBOSS.clear();
 
-	gMainCharacter.setPosX(0);
-	gMainCharacter.setPosY(0);
-	gMainCharacter.setVelX(0);
-	gMainCharacter.setVelY(0);
-	gMainCharacter.getHealthBar().setMaxHealth(CHARACTER_HEALTH);
-	gMainCharacter.getHealthBar().setHealth(CHARACTER_HEALTH);
-	gMainCharacter.getManaBar().setMaxMana(CHARACTER_MANA);
-	gMainCharacter.getManaBar().setMana(CHARACTER_MANA);
-	gMainCharacter.clearProjectiles();
+	gMainCharacter.resetCharacter();
 
 
 	listEnemiesCD = MakeEnemyCDList();
@@ -225,6 +224,220 @@ void restartGame() {
 	listEnemiesBOSS = MakeEnemyBOSSList();
 }
 
+
+
+
+void showMainMenu(bool& quit, bool& startGame, bool& isPaused, bool& resumeGame, bool& isRestart, bool& backToMenu, bool& howToPlay , bool& highScore) {
+	gMenu.setMenuType(MAIN_MENU);
+	while (!quit && !startGame) {
+		while (SDL_PollEvent(&e)) {
+			if (e.type == SDL_QUIT) quit = true;
+			gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay , highScore);
+		}
+
+		if (howToPlay) {
+			gMenu.setMenuType(HOW_TO_PLAY_MENU);
+			howToPlay = false;
+
+			bool inHowToPlay = true;
+			while (inHowToPlay && !quit) {
+				while (SDL_PollEvent(&e)) {
+					if (e.type == SDL_QUIT) {
+						quit = true;
+						break;
+					}
+					gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay , highScore);
+				}
+
+				if (backToMenu) {
+					backToMenu = false;
+					gMenu.setMenuType(MAIN_MENU);
+					inHowToPlay = false;
+				}
+
+				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+				SDL_RenderClear(gRenderer);
+				gLoadBackGroundMenuHowToPlay.render(0, 0, gRenderer);
+				gMenu.render(gRenderer);
+				SDL_RenderPresent(gRenderer);
+			}
+
+			continue;
+		}
+
+		if (highScore) {
+			gMenu.setMenuType(HIGH_SCORE_MENU);
+			highScore = false;
+
+			bool inHighScore = true;
+			while (inHighScore && !quit) {
+				while (SDL_PollEvent(&e)) {
+					if (e.type == SDL_QUIT) {
+						quit = true;
+						break;
+					}
+					gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+				}
+
+				if (backToMenu) {
+					backToMenu = false;
+
+					gMenu.setMenuType(MAIN_MENU);
+
+					inHighScore = false;
+
+					showMainMenu(quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+
+					if (quit) break;
+
+					restartGame();
+
+					break;
+
+				}
+
+				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+				SDL_RenderClear(gRenderer);
+				gLoadBackGroundMenuHighScores.render(0, 0, gRenderer);
+				gMenu.render(gRenderer);
+				SDL_RenderPresent(gRenderer);
+			}
+
+			continue;
+		}
+
+
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+		SDL_RenderClear(gRenderer);
+		gLoadBackGroundMenu.render(0, 0, gRenderer);
+		gMenu.render(gRenderer);
+		SDL_RenderPresent(gRenderer);
+	}
+}
+
+
+void showPauseMenu(bool& quit, bool& startGame, bool& isPaused, bool& resumeGame, bool& isRestart, bool& backToMenu, bool& howToPlay, bool& highScore) {
+	gMenu.setMenuType(PAUSE_MENU);
+
+	gMainCharacter.setVelX(0);
+	gMainCharacter.setVelY(0);
+
+
+	while (isPaused) {
+		while (SDL_PollEvent(&e)) {
+			if (e.type == SDL_QUIT) {
+				quit = true;
+				isPaused = false;
+				break;
+			}
+
+			gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+
+			if (resumeGame) {
+				resumeGame = false;
+				isPaused = false;
+
+				break;
+			}
+
+			if (backToMenu) {
+
+				backToMenu = false;
+
+				isPaused = false;
+
+				startGame = false;
+
+				showMainMenu(quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+
+				if (quit) break;
+
+				restartGame();
+
+				break;
+			}
+
+			if (isRestart) {
+
+				isRestart = false;
+				isPaused = false;
+
+				restartGame();
+
+				break;
+			}
+		}
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+		SDL_RenderClear(gRenderer);
+		gLoadBackGroundMenu.render(0, 0, gRenderer);
+		gMenu.render(gRenderer);
+		SDL_RenderPresent(gRenderer);
+	}
+}
+
+void showGameOverMenu(bool& quit, bool& startGame, bool& isPaused, bool& resumeGame, bool& isRestart, bool& backToMenu, bool& howToPlay, bool& highScore) {
+	gMenu.setMenuType(GAME_OVER_MENU);
+
+	gMainCharacter.setVelX(0);
+	gMainCharacter.setVelY(0);
+
+	bool inGameOverMenu = true;
+
+	while (inGameOverMenu) {
+		while (SDL_PollEvent(&e)) {
+			if (e.type == SDL_QUIT) {
+				quit = true;
+				inGameOverMenu = false;
+				break;
+			}
+			gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+
+			if (quit) {
+				inGameOverMenu = false;
+				break;
+			}
+
+			if (backToMenu) {
+
+				backToMenu = false;
+
+				isPaused = false;
+
+				startGame = false;
+
+				inGameOverMenu = false;
+
+				showMainMenu(quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+
+				if (quit) break;
+
+				restartGame();
+
+				break;
+			}
+
+			if (isRestart) {
+
+				isRestart = false;
+
+				isPaused = false;
+
+				inGameOverMenu = false;
+
+				restartGame();
+
+				break;
+			}
+		}
+		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+		SDL_RenderClear(gRenderer);
+		if (gMainCharacter.getHealthBar().getCurrentHealth() <= 0) gLoadBackGroundMenuLose.render(0, 0, gRenderer);
+		else gLoadBackGroundMenuWin.render(0, 0, gRenderer);
+		gMenu.render(gRenderer);
+		SDL_RenderPresent(gRenderer);
+	}
+
+}
 
 int main(int argc, char* args[]) {
 
@@ -239,7 +452,7 @@ int main(int argc, char* args[]) {
 	}
 
 
-	gMenu.init(gFont, gRenderer);
+	gMenu.init(gFontA, gRenderer);
 
 	bool quit = false;
 	bool startGame = false;
@@ -247,34 +460,28 @@ int main(int argc, char* args[]) {
 	bool resumeGame = false;
 	bool backToMenu = false;
 	bool isRestart = false;
+	bool howToPlay = false;
+	bool highScore = false;
+	bool hasSavedScore = false;
 
+	// Menu
 	gMenu.setMenuType(MAIN_MENU);
 
-	while (!quit && !startGame) {
-		while (SDL_PollEvent(&e)) {
-			if (e.type == SDL_QUIT) quit = true;
-			gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu);
-		}
-
-		SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255); 
-		SDL_RenderClear(gRenderer);
-		gLoadBackGroundMenu.render(0, 0, gRenderer);
-		gMenu.render(gRenderer);
-
-		SDL_RenderPresent(gRenderer);
-	}
+	showMainMenu(quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay , highScore);
 
 	if (quit) {
+		restartGame();
 		close();
 		return 0;
 	}
 
 
 	timeGameText.setColor(RED_TEXT);
+
 	gEffects.setClips();
 	restartGame();
 
-
+	// Menu pause
 
 	while (!quit) {
 		while (SDL_PollEvent(&e)) {
@@ -286,70 +493,16 @@ int main(int argc, char* args[]) {
 
 		}
 		if (isPaused) {
-			gMenu.setMenuType(PAUSE_MENU);
-
-			gMainCharacter.setVelX(0);
-			gMainCharacter.setVelY(0);
-
-
-			while (isPaused) {
-				while (SDL_PollEvent(&e)) {
-					if (e.type == SDL_QUIT) {
-						quit = true;
-						isPaused = false;
-						break;
-					}
-
-					gMenu.handleMouse(e, quit, startGame, isPaused, resumeGame, isRestart, backToMenu);
-
-					if (resumeGame) {
-						resumeGame = false;
-						isPaused = false;
-
-						break;
-					}
-
-					if (backToMenu) {
-
-						restartGame();
-
-						close();
-
-						main(argc, args);
-
-
-						for (auto x : listEnemiesCD) delete x;
-						for (auto x : listEnemiesAZ) delete x;
-						for (auto x : listEnemiesBOSS) delete x;
-						listEnemiesCD.clear();
-						listEnemiesAZ.clear();
-						listEnemiesBOSS.clear();
-
-						return 0;
-
-						isPaused = false;
-						startGame = false;
-					}
-
-					if (isRestart) {
-
-						isRestart = false;
-						isPaused = false;
-
-						restartGame();
-
-						break;
-					}
-				}
-				SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
-				SDL_RenderClear(gRenderer);
-				gLoadBackGroundMenu.render(0, 0, gRenderer);
-				gMenu.render(gRenderer);
-				SDL_RenderPresent(gRenderer);
-			}
-			continue;
+			showPauseMenu(quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
 		}
 
+		if (quit) {
+			restartGame();
+			close();
+			return 0;
+		}
+
+		// Main game play
 		SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
 		gLoadBackGroundGame.render(0, 0, gRenderer);
@@ -376,6 +529,10 @@ int main(int argc, char* args[]) {
 					gMainCharacter.handleMana(-10);
 					pEnemyCD->setHasGivenMana(true);
 					}
+					if (!pEnemyCD->getTypeFlag().hasGivenScore) {
+						score += 10;
+						pEnemyCD->setHasGivenScore(true);
+					}
 				}
 
 				pEnemyCD->checkMapCollision();
@@ -400,6 +557,10 @@ int main(int argc, char* args[]) {
 						gMainCharacter.handleMana(-10);
 						pEnemyAZ->setHasGivenMana(true);
 					}
+					if (!pEnemyAZ->getTypeFlag().hasGivenScore) {
+						score += 20;
+						pEnemyAZ->setHasGivenScore(true);
+					}
 				}
 
 				pEnemyAZ->checkMapCollision();
@@ -418,6 +579,27 @@ int main(int argc, char* args[]) {
 					pEnemyBOSS->checkEnemyCollisionWithProjectile();
 					pEnemyBOSS->checkEnemyCollisionWithCharacter(gMainCharacter.getPosX(), gMainCharacter.getPosY());
 				}
+				else {
+					if (!pEnemyBOSS->getTypeFlag().hasGivenScore) {
+						score += 100;
+						pEnemyBOSS->setHasGivenScore(true);
+					}
+					if (!hasSavedScore) {
+						int finalScore = score;
+						saveScore(score, "highscore.txt");
+						hasSavedScore = true;
+					}
+					timeDelayGameOver--;
+					if (timeDelayGameOver == 0) {
+						showGameOverMenu(quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+					}
+					if (quit) {
+						restartGame();
+						close();
+						return 0;
+					}
+
+				}
 				pEnemyBOSS->checkMapCollision();
 				pEnemyBOSS->render(gRenderer);
 			}
@@ -425,19 +607,32 @@ int main(int argc, char* args[]) {
 
 		gMainCharacter.render(gRenderer);
 
-		string strTimeGameText = "Health : ";
-		int valTimeGameText = gMainCharacter.getHealthBar().getCurrentHealth();
-		//string	strTime = to_string(valTimeGameText);
-		strTimeGameText += to_string(valTimeGameText);
-		timeGameText.setText(strTimeGameText);
-		timeGameText.loadFromRenderText(gFont, gRenderer);
-		timeGameText.render(gRenderer, SCREEN_HEIGHT - 200, 15);
+		renderScoreText(gRenderer,gFont);
+		renderTimeGameText(gRenderer , gFont);
 
 		SDL_RenderPresent(gRenderer);
+
+		if (gMainCharacter.getHealthBar().getCurrentHealth() <= 0) {
+			if (!hasSavedScore) {
+				int finalScore = score;
+				saveScore(score, "highscore.txt");
+				hasSavedScore = true;
+			}
+			timeDelayGameOver--;
+			if (timeDelayGameOver == 0) {
+			showGameOverMenu(quit, startGame, isPaused, resumeGame, isRestart, backToMenu, howToPlay, highScore);
+			}
+			
+			if (quit) {
+				restartGame();
+				close();
+				return 0;
+			}
+
+		}
+		
 	}
 
-
-	cout << listEnemiesAZ.size() << endl;
 	for (auto x  : listEnemiesCD) {
 		delete x;  
 	}

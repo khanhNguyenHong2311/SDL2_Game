@@ -14,6 +14,14 @@
 
 extern Text timeGameText;
 
+extern Text scoreText;
+
+extern Uint32 startTime;
+
+extern int score; 
+
+extern int timeDelayGameOver;
+
 extern Character gMainCharacter;
 
 extern Effects gEffects;
@@ -23,6 +31,14 @@ extern LTexture gLoadCharacterHealthBar;
 extern LTexture gLoadBackGroundGame;
 
 extern LTexture gLoadBackGroundMenu;
+
+extern LTexture gLoadBackGroundMenuWin;
+
+extern LTexture gLoadBackGroundMenuLose;
+
+extern LTexture gLoadBackGroundMenuHowToPlay;
+
+extern LTexture gLoadBackGroundMenuHighScores;
 
 extern LTexture gLoadMainCharacter[15];
 
@@ -50,6 +66,8 @@ extern Menu gMenu;
 static SDL_Window* gWindow = NULL;
 static SDL_Renderer* gRenderer = NULL;
 static TTF_Font* gFont = NULL;
+static TTF_Font* gFontA = NULL;
+
 static SDL_Event e;
 
 	
@@ -80,7 +98,7 @@ const int SCREEN_HEIGHT = 640;
 #define CHARACTER_VEL 8
 #define CHARACTER_VEL_JUMP 30
 #define CHARACTER_DAMAGE 20
-#define CHARACTER_HEALTH 10000
+#define CHARACTER_HEALTH 10
 #define CHARACTER_MANA 100
 
 #define GRAVITY_SPEED 1

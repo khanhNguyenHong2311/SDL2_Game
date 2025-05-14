@@ -47,7 +47,7 @@ void Text::setColor(int type) {
 		textColor = { 255,0,0 };
 	}
 	else if (type == WHITE_TEXT) {
-		textColor = { 255,255,255 };
+		textColor = {50, 255, 50};
 	}
 	else if (type == BLUE_TEXT) {
 		textColor = { 0,0,255 };

@@ -728,3 +728,52 @@ void Character::clearProjectiles() {
 	}
 	ProjectileListArrow.clear();
 }
+
+
+void Character::resetCharacter() {
+
+	mPosX = 0;
+	mPosY = 0;
+
+	mVelX = 0;
+	mVelY = 0;
+
+	healthBar.setMaxHealth(CHARACTER_HEALTH);
+	healthBar.setHealth(CHARACTER_HEALTH);
+	manaBar.setMaxMana(CHARACTER_MANA);
+	manaBar.setMana(CHARACTER_MANA);
+
+	frameRun = 0;
+	frameStand = 0;
+	frameJump = 0;
+	frameAttack = 0;
+	frameDeath = 0;
+
+	timeRespawn = 0;
+
+	isFacing = FACING_RIGHT;
+
+	typeFlag.isStanding = true;
+
+	typeFlag.isStandingOnGround = false;
+
+	typeFlag.goLeft = false;
+
+	typeFlag.goRight = false;
+
+	typeFlag.isFallingIntoHole = false;
+
+	typeFlag.isAttacking = false;
+
+	typeFlag.isHurting = false;
+
+	typeFlag.isCollidingWithEnemyCD = false;
+
+	typeFlag.isCollidingWithEnemyAZ = false;
+
+	typeFlag.isCollidingWithEnemyBOSS = false;
+
+	typeFlag.isCasting = false;
+
+	clearProjectiles();
+}

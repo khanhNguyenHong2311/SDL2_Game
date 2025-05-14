@@ -165,5 +165,6 @@ public:
 
 	void clearProjectiles();
 
+	void resetCharacter();
 };
 

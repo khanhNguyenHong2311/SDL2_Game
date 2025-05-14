@@ -25,6 +25,9 @@ typedef struct FlagE_AZ {
 	bool gotHitByCharacter;
 
 	bool hasGivenMana;
+
+	bool hasGivenScore;
+
 	FlagE_AZ() {
 		goLeft = false;
 
@@ -45,6 +48,8 @@ typedef struct FlagE_AZ {
 		isDead = false;
 
 		hasGivenMana = false;
+
+		hasGivenScore = false;
 	}
 };
 
@@ -149,6 +154,8 @@ public:
 	void setPosX(int PosX);
 
 	void setPosY(int PosY);
+
+	void setHasGivenScore(bool check);
 
 	void setHasGivenMana(bool check);
 
